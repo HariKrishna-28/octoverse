@@ -1,3 +1,22 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer components {
+  .list__cards__light {
+    padding: 10px 10px;
+    border-radius: 10px;
+  }
+  .list__cards__light:hover {
+    background: theme("colors.sideBar_light_hover");
+    cursor: pointer;
+  }
+  .list__cards__dark {
+    padding: 10px 10px;
+    border-radius: 10px;
+  }
+  .list__cards__dark:hover {
+    background: theme("colors.sideBar_dark_hover");
+    cursor: pointer;
+  }
+}

@@ -17,11 +17,13 @@ const TopBar: React.FC = () => {
     return (
         <>
             <div
-                className='flex sticky items-center flex-wrap justify-between mt-0 bg-navBar_BG text-navBar_Text h-auto p-2 w-100 '>
+                className='flex w-full items-center flex-wrap justify-between mt-0 bg-navBar_BG text-navBar_Text h-auto p-2 '>
                 {/* logo */}
+
                 <div className='font-bold lg:text-2xl'>
                     <span>OctoVerse</span>
                 </div>
+
                 {/* center section */}
                 <div className='flex'>
                     <input
@@ -38,6 +40,7 @@ const TopBar: React.FC = () => {
                         </Tooltip>
                     </div> */}
                 </div>
+
                 {/* Right section */}
                 <div className='flex justify-evenly items-center gap-6'>
                     {/* Topbar links */}
@@ -87,13 +90,13 @@ const TopBar: React.FC = () => {
                                 {/* <Notifications className='h-5 color-black' /> */}
                             </div>
                         </Tooltip>
-
                     </div>
+
                     {/* profile image */}
                     <div >
                         <img
                             // src="https://mui.com/static/branding/companies/nasa-dark.svg"
-                            src="https://yt3.ggpht.com/ytc/AKedOLQ2YdApvlnXWj5L1fVoKM-B3YGb2SuNc5LJkw7sGg=s48-c-k-c0x00ffffff-no-rj"
+                            src="https://mui.com/static/branding/companies/nasa-dark.svg"
                             alt="profile pic"
                             className='object-cover rounded-full cursor-pointer h-10'
                         />
