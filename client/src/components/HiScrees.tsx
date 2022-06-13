@@ -6,7 +6,6 @@ interface Props {
 }
 
 const HiScrees: React.FC<Props> = ({ name, age }) => {
-
   return (
     <div>{name}{age}</div>
   )
