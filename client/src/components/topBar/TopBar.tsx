@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import { Search, Person, Chat, Notifications, Lightbulb, NightlightRound } from '@mui/icons-material';
 import { Tooltip, Zoom } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
-import { selectTheme, setTheme } from '../features/themeSlice';
+import { selectTheme, setTheme } from '../../features/themeSlice';
 
 const TopBar: React.FC = () => {
     const dispatch = useDispatch()
