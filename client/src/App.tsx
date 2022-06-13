@@ -1,5 +1,5 @@
 import React from 'react';
-import { TopBar } from './components';
+import { TopBar, SideBar, Feed } from './components';
 import { useSelector } from 'react-redux';
 import { selectTheme } from './features/themeSlice';
 
@@ -9,6 +9,8 @@ function App() {
   return (
     <div className={darkThemePreference ? 'dark' : ''}>
       <TopBar />
+      <SideBar />
+      <Feed />
     </div>
   );
 }
