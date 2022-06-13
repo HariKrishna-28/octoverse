@@ -3,6 +3,7 @@ import { RssFeed, Chat } from '@mui/icons-material'
 
 
 const Sidebar: React.FC = () => {
+
     const listStyling = 'dark:list__cards__dark list__cards__light transition-all duration-200 ease-out my-1'
 
     return (

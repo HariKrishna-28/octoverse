@@ -8,13 +8,15 @@ function App() {
 
   return (
     <div className={darkThemePreference ? 'dark' : ''}>
-      <TopBar />
+      <div>
+        <TopBar />
+      </div>
       <div className='flex h-screen w-full '>
         <div
-          className='hidden md:block lg:block w-1/5'>
+          className='hidden md:block lg:block w-1/3'>
           <SideBar />
         </div>
-        <div className='w-full lg:w-1/2'>
+        <div className='w-full'>
           <Feed />
         </div>
         <div className='hidden md:block lg:block w-1/3'>

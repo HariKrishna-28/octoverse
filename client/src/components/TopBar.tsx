@@ -17,7 +17,7 @@ const TopBar: React.FC = () => {
     return (
         <>
             <div
-                className='flex w-full items-center flex-wrap justify-between mt-0 bg-navBar_BG text-navBar_Text h-auto p-2 '>
+                className='flex w-full sticky items-center flex-wrap justify-between mt-0 bg-navBar_BG text-navBar_Text h-auto p-2 '>
                 {/* logo */}
 
                 <div className='font-bold lg:text-2xl'>
