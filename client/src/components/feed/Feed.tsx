@@ -8,6 +8,14 @@ const Feed: React.FC = () => {
             <div className='p-5'>
                 <Share />
                 <Post />
+                <Post />
+                <Post />
+                <Post />
+                <Post />
+                <Post />
+                <Post />
+                <Post />
+                <Post />
             </div>
         </div>
     )

@@ -1,5 +1,6 @@
 import React from 'react'
-import { PermMedia, Label, Room, EmojiEmotions } from "@mui/icons-material"
+import { PermMedia, Label, Room, EmojiEmotions, Shortcut } from "@mui/icons-material"
+import { Tooltip, Zoom } from '@mui/material'
 
 const Share: React.FC = () => {
     return (
@@ -21,15 +22,55 @@ const Share: React.FC = () => {
                 <hr className='my-4' />
                 <div className='mt-4'>
                     <div className='flex justify-evenly'>
-                        <div className='flex gap-2 items-center'>
-                            <PermMedia className='text-red-600' />
-                            <span>Photo or Video</span>
+                        <div className='flex flex-wrap gap-2 items-center'>
+                            <Tooltip
+                                TransitionComponent={Zoom}
+                                TransitionProps={{ timeout: 400 }}
+                                title="Photo/Video">
+                                <div className='cursor-pointer p-1.5 hover:bg-red-600 transition-all duration-300 ease-out rounded-lg'>
+                                    <PermMedia />
+                                </div>
+                            </Tooltip>
+                            {/* <span>Photo or Video</span> */}
+                            <Tooltip
+                                TransitionComponent={Zoom}
+                                TransitionProps={{ timeout: 400 }}
+                                title="Tag">
+                                <div className='cursor-pointer p-1.5 hover:bg-blue-600 transition-all duration-300 ease-out rounded-lg'>
+                                    <Label />
+                                </div>
+                            </Tooltip>
+
+                            <Tooltip
+                                TransitionComponent={Zoom}
+                                TransitionProps={{ timeout: 400 }}
+                                title="Location">
+                                <div className='cursor-pointer p-1.5 hover:bg-purple-600 transition-all duration-300 ease-out rounded-lg'>
+                                    <Room />
+                                </div>
+                            </Tooltip>
+
+                            <Tooltip
+                                TransitionComponent={Zoom}
+                                TransitionProps={{ timeout: 400 }}
+                                title="Feeling">
+                                <div className='cursor-pointer p-1.5 hover:bg-yellow-600 transition-all duration-300 ease-out rounded-lg'>
+                                    <EmojiEmotions />
+                                </div>
+                            </Tooltip>
+
+                            <Tooltip
+                                TransitionComponent={Zoom}
+                                TransitionProps={{ timeout: 400 }}
+                                title="Share">
+                                <div className='cursor-pointer p-1.5 hover:bg-green-600 transition-all duration-300 ease-out rounded-lg'>
+                                    <Shortcut />
+                                </div>
+                            </Tooltip>
                         </div>
-                        <div className='flex gap-2 items-center'>
-                            <Label className='text-blue-600' />
-                            <span>Tag</span>
-                        </div>
-                        <div className='flex gap-2 items-center'>
+
+
+                        {/* <div className='flex gap-2 items-center'>
                             <Room className='text-purple-600' />
                             <span>Location</span>
                         </div>
@@ -37,7 +78,7 @@ const Share: React.FC = () => {
                             <EmojiEmotions className='text-yellow-600' />
                             <span>Feeling</span>
                         </div>
-                        <button className='bg-green-500 hover:bg-green-700 text-white font-bold py-1 px-3 rounded'>Share</button>
+                        <button className='bg-green-500 hover:bg-green-700 text-white font-bold py-1 px-3 rounded'>Share</button> */}
                     </div>
                 </div>
             </div>

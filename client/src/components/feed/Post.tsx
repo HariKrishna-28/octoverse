@@ -1,7 +1,8 @@
 import React from 'react'
-import { MoreVert } from '@mui/icons-material'
+import { MoreVert, Favorite, ThumbUp } from '@mui/icons-material'
 
 const Post: React.FC = () => {
+
     return (
         <div className='w-full dark:bg-dark_feed_secondary rounded-lg mt-3  shadow-lg bg-light_feed_secondary dark:text-navBar_Text text-black'>
             <div className='p-3'>
@@ -22,19 +23,27 @@ const Post: React.FC = () => {
                     </div>
                 </ div>
                 {/* center */}
-                <div>
+                <div >
                     <span>First post</span>
-                    <img
-                        // src="https://mui.com/static/branding/companies/nasa-dark.svg"
-                        className='object-cover rounded-lg cursor-pointer h-48'
-                        src="https://yt3.ggpht.com/ytc/AKedOLQ2YdApvlnXWj5L1fVoKM-B3YGb2SuNc5LJkw7sGg=s48-c-k-c0x00ffffff-no-rj"
-                        alt="profile pic"
-                        draggable="false" />
+                    <div className='flex justify-center'>
+                        <img
+                            // src="https://mui.com/static/branding/companies/nasa-dark.svg"
+                            className='object-contain rounded-lg cursor-pointer max-h-64 '
+                            src="https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__480.jpg"
+                            alt="post"
+                        />
+                    </div>
                 </div >
                 {/* bottom */}
-                <div>
-                    <div></div>
-                    <div></div>
+                <div className='flex items-center p-2 justify-between'>
+                    <div className='flex gap-3 items-center'>
+                        <Favorite className='cursor-pointer' />
+                        <ThumbUp className='cursor-pointer' />
+                        <span className='text-sm'>100 likes</span>
+                    </div>
+                    <div>
+                        <span className='text-sm dark:hover:text-navbar_hover_highlight hover:text-blue-600'>10 comments</span>
+                    </div>
                 </div >
             </div >
         </div >
