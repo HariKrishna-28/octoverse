@@ -1,5 +1,7 @@
 import React from 'react'
 import { RssFeed, Chat } from '@mui/icons-material'
+import { Users } from '../../dummyData'
+import SideBarLists from './SideBarLists'
 
 
 const Sidebar: React.FC = () => {
@@ -44,58 +46,15 @@ const Sidebar: React.FC = () => {
                 </div>
                 <hr className='bg-black' />
                 <div className='flex flex-col mt-2'>
-                    <div className={`${listStyling} flex items-center`}>
-                        <img src="https://mui.com/static/branding/companies/nasa-dark.svg" alt="user" className='object-cover rounded-full cursor-pointer h-6' />
-                        <span>Name</span>
-                    </div>
-                    <div className={`${listStyling} flex items-center`}>
-                        <img src="https://mui.com/static/branding/companies/nasa-dark.svg" alt="user" className='object-cover rounded-full cursor-pointer h-6' />
-                        <span>Name of the</span>
-                    </div>
-                    <div className={`${listStyling} flex items-center`}>
-                        <img src="https://mui.com/static/branding/companies/nasa-dark.svg" alt="user" className='object-cover rounded-full cursor-pointer h-6' />
-                        <span>Name of the</span>
-                    </div>
-                    <div className={`${listStyling} flex items-center`}>
-                        <img src="https://mui.com/static/branding/companies/nasa-dark.svg" alt="user" className='object-cover rounded-full cursor-pointer h-6' />
-                        <span>Name of the</span>
-                    </div>
-                    <div className={`${listStyling} flex items-center`}>
-                        <img src="https://mui.com/static/branding/companies/nasa-dark.svg" alt="user" className='object-cover rounded-full cursor-pointer h-6' />
-                        <span>Name of the</span>
-                    </div>
-                    <div className={`${listStyling} flex items-center`}>
-                        <img src="https://mui.com/static/branding/companies/nasa-dark.svg" alt="user" className='object-cover rounded-full cursor-pointer h-6' />
-                        <span>Name of the</span>
-                    </div>
-                    <div className={`${listStyling} flex items-center`}>
-                        <img src="https://mui.com/static/branding/companies/nasa-dark.svg" alt="user" className='object-cover rounded-full cursor-pointer h-6' />
-                        <span>Name of the</span>
-                    </div>
-                    <div className={`${listStyling} flex items-center`}>
-                        <img src="https://mui.com/static/branding/companies/nasa-dark.svg" alt="user" className='object-cover rounded-full cursor-pointer h-6' />
-                        <span>Name of the</span>
-                    </div>
-                    <div className={`${listStyling} flex items-center`}>
-                        <img src="https://mui.com/static/branding/companies/nasa-dark.svg" alt="user" className='object-cover rounded-full cursor-pointer h-6' />
-                        <span>Name of the</span>
-                    </div>
-                    <div className={`${listStyling} flex items-center`}>
-                        <img src="https://mui.com/static/branding/companies/nasa-dark.svg" alt="user" className='object-cover rounded-full cursor-pointer h-6' />
-                        <span>Name of the</span>
-                    </div>
-                    <div className={`${listStyling} flex items-center`}>
-                        <img src="https://mui.com/static/branding/companies/nasa-dark.svg" alt="user" className='object-cover rounded-full cursor-pointer h-6' />
-                        <span>Name of the</span>
-                    </div>
-                    <div className={`${listStyling} flex items-center`}>
-                        <img src="https://mui.com/static/branding/companies/nasa-dark.svg" alt="user" className='object-cover rounded-full cursor-pointer h-6' />
-                        <span>Name of the</span>
-                    </div>
-                    <div className={`${listStyling} flex items-center`}>
-                        <img src="https://mui.com/static/branding/companies/nasa-dark.svg" alt="user" className='object-cover rounded-full cursor-pointer h-6' />
-                        <span>Name of the</span>
-                    </div>
+                    {Users.map((user, index) => {
+                        return (
+                            <SideBarLists
+                                key={index}
+                                username={user.username}
+                                profilePicture={user.profilePicture}
+                                id={user.id} />
+                        )
+                    })}
                 </div>
             </div>
         </div>

@@ -11,7 +11,7 @@ function App() {
       <div>
         <TopBar />
       </div>
-      <div className='flex h-screen w-full '>
+      <div className='flex h-[calc(100vh-56px)] w-full '>
         <div
           className='hidden md:block lg:block w-1/3'>
           <SideBar />
