@@ -82,8 +82,11 @@ const RightBar: React.FC<Props> = ({ profile }) => {
     return (
         <div className={`h-full dark:bg-sideBar_dark_primary flex-grow overflow-y-auto scrollbar-hide bg-sideBar_light_primary dark:text-dark_Text text-black p-2 pt-4 ${profile ? "rounded-lg" : ""}`}>
             <div>
-                {/* <HomeRightBar /> */}
-                <ProfileRightBar />
+                {
+                    profile !== "" ?
+                        <HomeRightBar /> :
+                        <ProfileRightBar />
+                }
             </div>
         </div>
     )
