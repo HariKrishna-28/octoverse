@@ -3,6 +3,7 @@ import { Search, Person, Chat, Notifications, Lightbulb, NightlightRound } from 
 import { Tooltip, Zoom } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectTheme, setTheme } from '../../features/themeSlice';
+import { Link } from 'react-router-dom';
 
 const TopBar: React.FC = () => {
     const dispatch = useDispatch()
@@ -21,7 +22,9 @@ const TopBar: React.FC = () => {
                 {/* logo */}
 
                 <div className='font-bold lg:text-2xl'>
-                    <span>OctoVerse</span>
+                    <Link to="/">
+                        <span className='hover:text-blue-600 cursor-pointer'>OctoVerse</span>
+                    </Link>
                 </div>
 
                 {/* center section */}

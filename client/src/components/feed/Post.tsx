@@ -1,6 +1,7 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { MoreVert, Favorite, ThumbUp } from '@mui/icons-material'
 import { Users } from '../../dummyData'
+import { GetUser } from '../../api/userAPI'
 
 interface Props {
     post: {
@@ -17,11 +18,29 @@ interface Props {
 const Post: React.FC<Props> = ({ post }) => {
     const [like, setLike] = useState(post.like)
     const [isLiked, setIsLiked] = useState(false)
+    const [user, setUser] = useState({})
+    const [load, setLoad] = useState(false)
+
 
     const handleLike = () => {
         setLike(isLiked ? like - 1 : like + 1)
         setIsLiked(!isLiked)
     }
+
+    useEffect(() => {
+        async function getPostData() {
+            try {
+                const res = await GetUser(post.userId)
+                setUser(res.data)
+                console.log(user)
+            } catch (error) {
+                console.log(error)
+            }
+            setLoad(false)
+        }
+        setLoad(true)
+        getPostData()
+    }, [post])
 
     return (
         <div className='w-full dark:bg-dark_feed_secondary rounded-lg mt-3  shadow-lg bg-light_feed_secondary dark:text-navBar_Text text-black'>

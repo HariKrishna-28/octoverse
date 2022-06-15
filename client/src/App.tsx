@@ -6,6 +6,7 @@ import ProfiePage from './pages/profile/ProfiePage';
 import HomePage from './pages/Home/HomePage';
 import Login from './pages/login/Login';
 import Register from './pages/login/register/Register';
+import SearchRoutes from './routes/SearchRoutes';
 
 function App() {
   const darkThemePreference = useSelector(selectTheme)
@@ -13,7 +14,8 @@ function App() {
   return (
     <div className={darkThemePreference ? 'dark' : ''}>
       {/* <ProfiePage /> */}
-      <HomePage />
+      {/* <HomePage /> */}
+      <SearchRoutes />
       {/* <Login /> */}
       {/* <Register /> */}
     </div>
