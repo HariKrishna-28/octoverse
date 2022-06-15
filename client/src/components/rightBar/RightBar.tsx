@@ -7,7 +7,7 @@ import ActiveUsers from './ActiveUsers'
 const RightBar: React.FC = () => {
 
     return (
-        <div className='h-full dark:bg-sideBar_dark_primary flex-grow overflow-y-auto scrollbar-hide bg-sideBar_light_primary dark:text-dark_Text text-black p-2 pt-4'>
+        <div className='h-full dark:bg-sideBar_dark_primary flex-grow overflow-y-auto scrollbar-hide bg-sideBar_light_primary dark:text-dark_Text text-black p-2 pt-4 rounded-lg'>
             <div>
                 <div className='flex items-center mb-2 gap-2'>
                     <Cake className='text-blue-600' />
