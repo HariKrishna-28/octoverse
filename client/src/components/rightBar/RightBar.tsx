@@ -2,13 +2,17 @@ import React from 'react'
 import { Cake } from '@mui/icons-material'
 import { Users } from '../../dummyData'
 import ActiveUsers from './ActiveUsers'
+import UserFriends from './UserFriends'
 
+interface Props {
+    profile?: any
+}
 
-const RightBar: React.FC = () => {
+const RightBar: React.FC<Props> = ({ profile }) => {
 
-    return (
-        <div className='h-full dark:bg-sideBar_dark_primary flex-grow overflow-y-auto scrollbar-hide bg-sideBar_light_primary dark:text-dark_Text text-black p-2 pt-4 rounded-lg'>
-            <div>
+    const HomeRightBar = () => {
+        return (
+            <>
                 <div className='flex items-center mb-2 gap-2'>
                     <Cake className='text-blue-600' />
                     <h4 className='font-bold'>Birthdays</h4>
@@ -33,6 +37,53 @@ const RightBar: React.FC = () => {
                         })}
                     </div>
                 </div>
+            </>
+        )
+    }
+
+    const ProfileRightBar = () => {
+        return (
+            <>
+                <div className='p-3'>
+                    <div className='font-bold'>
+                        User Info
+                    </div>
+                    <div>
+                        <div>
+                            <span>City:</span>
+                            <span>NYC</span>
+                        </div>
+                        <div>
+                            <span>From:</span>
+                            <span>Wakanda</span>
+                        </div>
+                    </div>
+                </div>
+                <div className='font-bold p-3'>
+                    Friends
+                </div>
+                <div>
+                    <div className='flex flex-wrap items-center justify-center gap-1'>
+                        {Users.map((user, index) => {
+                            return (
+                                <UserFriends
+                                    key={index}
+                                    username={user.username}
+                                    profilePicture={user.profilePicture}
+                                    id={user.id} />
+                            )
+                        })}
+                    </div>
+                </div>
+            </>
+        )
+    }
+
+    return (
+        <div className={`h-full dark:bg-sideBar_dark_primary flex-grow overflow-y-auto scrollbar-hide bg-sideBar_light_primary dark:text-dark_Text text-black p-2 pt-4 ${profile ? "rounded-lg" : ""}`}>
+            <div>
+                {/* <HomeRightBar /> */}
+                <ProfileRightBar />
             </div>
         </div>
     )

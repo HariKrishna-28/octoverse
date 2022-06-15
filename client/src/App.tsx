@@ -3,6 +3,7 @@ import { TopBar, SideBar, Feed, RightBar } from './components';
 import { useSelector } from 'react-redux';
 import { selectTheme } from './features/themeSlice';
 import ProfiePage from './pages/profile/ProfiePage';
+import HomePage from './pages/Home/HomePage';
 
 function App() {
   const darkThemePreference = useSelector(selectTheme)
@@ -10,6 +11,7 @@ function App() {
   return (
     <div className={darkThemePreference ? 'dark' : ''}>
       <ProfiePage />
+      {/* <HomePage /> */}
       {/* <div>
         <TopBar />
       </div>

@@ -19,4 +19,20 @@
     background: theme("colors.sideBar_dark_hover");
     cursor: pointer;
   }
+  .list__tiles__light {
+    padding: 5px 5px;
+    border-radius: 10px;
+  }
+  .list__tiles__light:hover {
+    background: theme("colors.sideBar_light_hover");
+    cursor: pointer;
+  }
+  .list__tiles__dark {
+    padding: 5px 5px;
+    border-radius: 10px;
+  }
+  .list__tiles__dark:hover {
+    background: theme("colors.sideBar_dark_hover");
+    cursor: pointer;
+  }
 }

@@ -33,7 +33,7 @@ const ProfiePage: React.FC = () => {
                     <div className='flex w-full h-screen'>
                         <Feed />
                         <div className='hidden mt-6 rounded-lg md:block lg:block w-1/3'>
-                            <RightBar />
+                            <RightBar profile={""} />
                         </div>
                     </div>
                 </div>
