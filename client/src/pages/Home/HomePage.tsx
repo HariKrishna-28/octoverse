@@ -13,10 +13,10 @@ const HomePage: React.FC = () => {
                     <SideBar />
                 </div>
                 <div className='w-full '>
-                    <Feed />
+                    <Feed userName={undefined} />
                 </div>
                 <div className='hidden md:block lg:block w-1/3'>
-                    <RightBar />
+                    <RightBar user={undefined} />
                 </div>
             </div>
         </>

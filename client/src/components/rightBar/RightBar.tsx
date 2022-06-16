@@ -3,13 +3,14 @@ import { Cake } from '@mui/icons-material'
 import { Users } from '../../dummyData'
 import ActiveUsers from './ActiveUsers'
 import UserFriends from './UserFriends'
+import { userProp } from '../interfaces/userProps'
+
 
 interface Props {
-    profile?: any
+    user: userProp | undefined
 }
 
-const RightBar: React.FC<Props> = ({ profile }) => {
-
+const RightBar: React.FC<Props> = ({ user }) => {
     const HomeRightBar = () => {
         return (
             <>
@@ -50,12 +51,12 @@ const RightBar: React.FC<Props> = ({ profile }) => {
                     </div>
                     <div>
                         <div>
-                            <span>City:</span>
-                            <span>NYC</span>
+                            <span className='font-semibold'>City : </span>
+                            <span>{user?.city}</span>
                         </div>
                         <div>
-                            <span>From:</span>
-                            <span>Wakanda</span>
+                            <span className='font-semibold'>From : </span>
+                            <span>{user?.from}</span>
                         </div>
                     </div>
                 </div>
@@ -80,10 +81,10 @@ const RightBar: React.FC<Props> = ({ profile }) => {
     }
 
     return (
-        <div className={`h-full dark:bg-sideBar_dark_primary flex-grow overflow-y-auto scrollbar-hide bg-sideBar_light_primary dark:text-dark_Text text-black p-2 pt-4 ${profile ? "rounded-lg" : ""}`}>
+        <div className={`h-full dark:bg-sideBar_dark_primary flex-grow overflow-y-auto scrollbar-hide bg-sideBar_light_primary dark:text-dark_Text text-black p-2 pt-4 ${user ? "rounded-lg" : ""}`}>
             <div>
                 {
-                    profile !== "" ?
+                    !user ?
                         <HomeRightBar /> :
                         <ProfileRightBar />
                 }

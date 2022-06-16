@@ -1,10 +1,16 @@
 import axios, { AxiosRequestConfig } from "axios";
 const userAPI = `${process.env.REACT_APP_API_URL}/users`;
 
-export function GetUser(userId: number) {
+export function getUser(
+  userId: string | undefined,
+  userName: string | undefined
+) {
+  const URL = userId
+    ? `${userAPI}?userId=${userId}`
+    : `${userAPI}?userName=${userName}`;
   const config: AxiosRequestConfig = {
     method: "get",
-    url: `${userAPI}/users/${userId}`,
+    url: URL,
   };
   return axios(config);
 }
