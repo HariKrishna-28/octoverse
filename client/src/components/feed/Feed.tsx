@@ -38,6 +38,7 @@ const Feed: React.FC<Props> = ({ userName = undefined }) => {
         getPostData()
     }, [userName])
 
+
     return (
         <div className='h-[calc(100vh-56px)] flex-grow overflow-y-auto scrollbar-hide dark:bg-dark_feed_primary bg-light_feed_primary dark:text-dark_Text text-black'>
             <div className='p-5'>

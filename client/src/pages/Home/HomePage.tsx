@@ -1,7 +1,17 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { TopBar, SideBar, Feed, RightBar } from '../../components'
+import { useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { getUserData } from '../../features/authSlice';
 
 const HomePage: React.FC = () => {
+    const userAuth = useSelector(getUserData)
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        !userAuth.user && navigate("/login")
+    }, [])
+
     return (
         <>
             <div>

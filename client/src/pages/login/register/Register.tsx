@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { Visibility, VisibilityOff } from '@mui/icons-material'
+import { Link } from 'react-router-dom'
 
 
 const Register: React.FC = () => {
@@ -63,10 +64,12 @@ const Register: React.FC = () => {
                                     className='text-blue-600 hover:text-purple-600 cursor-pointer'>
                                     Forgot Password?
                                 </span>
-                                <button
-                                    className='bg-green-500 hover:bg-green-700 text-white font-bold py-1 px-3 rounded'>
-                                    Log Into account
-                                </button>
+                                <Link to='/login'>
+                                    <div
+                                        className=' w-full text-center cursor-pointer bg-green-500 hover:bg-green-700 text-white font-bold py-1 px-3 rounded'>
+                                        Log Into account
+                                    </div>
+                                </Link>
                             </div>
 
                         </form>
