@@ -1,9 +1,10 @@
 import React, { useEffect } from 'react'
-import { Search, Person, Chat, Notifications, Lightbulb, NightlightRound } from '@mui/icons-material';
+import { Search, Person, Chat, Notifications, Lightbulb, NightlightRound, Logout } from '@mui/icons-material';
 import { Tooltip, Zoom } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectTheme, setTheme } from '../../features/themeSlice';
 import { Link } from 'react-router-dom';
+import { setUserStatus } from '../../features/authSlice';
 
 const TopBar: React.FC = () => {
     const dispatch = useDispatch()
@@ -13,6 +14,15 @@ const TopBar: React.FC = () => {
         dispatch(setTheme({
             darkTheme: !themePreference
         }))
+    }
+
+    const logout = () => {
+        const initialState = {
+            user: null,
+            isFetching: false,
+            error: { message: "" },
+        };
+        dispatch(setUserStatus(initialState))
     }
 
     return (
@@ -91,6 +101,16 @@ const TopBar: React.FC = () => {
                             <div className='cursor-pointer p-1.5 hover:bg-navbar_hover_highlight transition-all duration-300 ease-out rounded-lg' onClick={changeTheme}>
                                 {themePreference ? <Lightbulb className='h-4' /> : <NightlightRound className='h-4' />}
                                 {/* <Notifications className='h-5 color-black' /> */}
+                            </div>
+                        </Tooltip>
+
+                        <Tooltip
+                            onClick={logout}
+                            TransitionComponent={Zoom}
+                            TransitionProps={{ timeout: 400 }}
+                            title="Logout">
+                            <div className='cursor-pointer p-1.5 hover:bg-navbar_hover_highlight transition-all duration-300 ease-out rounded-lg'>
+                                <Logout className='h-4' />
                             </div>
                         </Tooltip>
                     </div>

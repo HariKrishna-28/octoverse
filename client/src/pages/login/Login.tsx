@@ -47,7 +47,7 @@ const Login: React.FC = () => {
         try {
             const res = await login(credentials)
             saveUserData(res.data)
-            navigator("")
+            // navigator("")
             // loginStart(false)
         } catch (error) {
             console.log(error)

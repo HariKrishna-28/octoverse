@@ -11,7 +11,7 @@ const SearchRoutes: React.FC = () => {
   const user = useSelector(getUserData)
   return <>
     <Routes>
-      <Route path="/" element={<HomePage />} />
+      <Route path="/" element={user.user ? <HomePage /> : <Login />} />
       {!user.user &&
         <>
           <Route path="/login" element={<Login />} />
