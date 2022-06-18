@@ -59,11 +59,13 @@ const Login: React.FC = () => {
     const handleSubmit = (e: React.SyntheticEvent) => {
         e.preventDefault()
         loginStart(true)
-        const credentials = {
-            email: emailRef.current?.value,
-            password: pwdRef.current?.value
+        if (emailRef.current?.value && pwdRef.current?.value) {
+            const credentials = {
+                email: emailRef.current.value,
+                password: pwdRef.current.value
+            }
+            loginWithPassword(credentials)
         }
-        loginWithPassword(credentials)
     }
 
     // const getErrorMessage = (error: unknown) => {
