@@ -21,6 +21,5 @@ export function getCurrentUserData(userEmail: string) {
     method: "get",
     url: URL,
   };
-  console.log(config);
   return axios(config);
 }

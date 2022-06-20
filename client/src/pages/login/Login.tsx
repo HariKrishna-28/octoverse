@@ -9,13 +9,13 @@ import { CircularProgress } from '@mui/material'
 import { getErrorMessage } from '../../components/helpers/errorMessageGenerator'
 import { Link, useNavigate } from 'react-router-dom'
 import { auth, provider } from '../../firebase'
+import LoadAnimation from '../../components/load/LoadAnimation';
 
 
 const Login: React.FC = () => {
     // @ts-ignore
     const [user, authLoading, error] = useAuthState(auth)
     // @ts-ignore
-    const [currUser, userLoad] = useAuthState(auth)
 
     const dispatch = useDispatch();
     const navigate = useNavigate()
@@ -55,6 +55,7 @@ const Login: React.FC = () => {
     // }, [user])
 
 
+
     const navigator = (url: string) => {
         navigate(`/${url}`)
     }
@@ -69,6 +70,7 @@ const Login: React.FC = () => {
         dispatch(setUserStatus({
             user: user,
             isFetching: false,
+            error: { message: "" }
         }))
     }
 
@@ -84,6 +86,7 @@ const Login: React.FC = () => {
         try {
             const res = await login(credentials)
             saveUserData(res.data)
+            console.log("logged in")
         } catch (error) {
             console.log(error)
             setUserError(getErrorMessage(error))
@@ -99,14 +102,14 @@ const Login: React.FC = () => {
                 email: emailRef.current.value,
                 password: pwdRef.current.value
             }
-            // loginWithPassword(credentials)
         }
     }
 
-    // const getErrorMessage = (error: unknown) => {
-    //     if (error instanceof Error) return error.message
-    //     return String(error)
-    // }
+
+    useEffect(() => {
+        userAuthStats.user &&
+            navigate("/")
+    }, [userAuthStats])
 
 
     return (
@@ -123,70 +126,17 @@ const Login: React.FC = () => {
                         {/* <form onSubmit={(e) => handleSubmit(e)}> */}
                         <div className='flex flex-col p-10 lg:p-16 gap-3 dark:bg-dark_feed_secondary shadow-lg bg-light_feed_secondary rounded-lg'>
                             <div className='font-bold text-2xl text-center'>Login</div>
-                            {/* <input
-                                    type="text"
-                                    ref={userRef}
-                                    placeholder='UserName'
-                                    className='focus:outline-none w-64 rounded-md dark:bg-navBar_BG bg-sideBar_light_secondary text-black dark:text-navBar_Text p-1.5'
-                                    required
-                                    autoFocus
-                                    autoComplete='false'
-                                /> */}
-                            <button
-                                className='cursor-pointer text-center bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-3 rounded'
-                                onClick={(e) => signIn(e)}>
-                                Login With Google
-                            </button>
-                            {/* <input
-                                    type="email"
-                                    ref={emailRef}
-                                    placeholder='Email'
-                                    className='focus:outline-none w-64 rounded-md dark:bg-navBar_BG bg-sideBar_light_secondary text-black dark:text-navBar_Text p-1.5'
-                                    required
-                                    autoComplete='false'
-                                />
-                                <div>
-                                    <div
-                                        onClick={() => setShowPassword(!showPassword)}
-                                        className='absolute text-end cursor-pointer mt-1 ml-56 text-black dark:text-navBar_Text'>
-                                        {showPassword ?
-                                            <>
-                                                <VisibilityOff />
-                                            </>
-                                            :
-                                            <>
-                                                <Visibility />
-                                            </>
-                                        }
-                                    </div>
-                                    <input
-                                        ref={pwdRef}
-                                        type={showPassword ? "text" : "password"}
-                                        placeholder='password'
-                                        // pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}" 
-                                        // title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters"
-                                        className='focus:outline-none w-full rounded-md dark:bg-navBar_BG text-black bg-sideBar_light_secondary dark:text-navBar_Text p-1.5'
-                                        autoComplete='false'
-                                        required
-                                    />
-                                </div>
+
+                            {!authLoading ?
                                 <button
-                                    // onClick={(e) => handleSubmit(e)}
-                                    disabled={userAuthStats.isFetching}
-                                    type='submit'
-                                    className={` ${!userAuthStats.isFetching ? "hover:bg-blue-700 bg-blue-500" : "bg-gray-600"} text-white font-bold py-1 px-3 rounded`}>
-                                    {!userAuthStats.isFetching ? "Login" : <CircularProgress size="15px" color="primary" />}
+                                    className='cursor-pointer text-center bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-3 rounded'
+                                    onClick={(e) => signIn(e)}>
+                                    Login With Google
                                 </button>
-                                <div
-                                    className='text-blue-600 text-center hover:text-purple-600 cursor-pointer'>
-                                    Forgot Password?
-                                </div>
-                                <Link to="/register">
-                                    <div
-                                        className=' cursor-pointer text-center bg-green-500 hover:bg-green-700 text-white font-bold py-1 px-3 rounded'>
-                                        Create new account
-                                    </div>
-                                </Link> */}
+                                :
+                                <LoadAnimation />
+                            }
+
                         </div>
                         {/* </form> */}
                     </div>

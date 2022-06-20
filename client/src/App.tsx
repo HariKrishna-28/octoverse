@@ -7,17 +7,17 @@ import HomePage from './pages/Home/HomePage';
 import Login from './pages/login/Login';
 import Register from './pages/login/register/Register';
 import SearchRoutes from './routes/SearchRoutes';
+import { useAuthState } from 'react-firebase-hooks/auth';
+import { auth } from './firebase';
 
 function App() {
   const darkThemePreference = useSelector(selectTheme)
+  // @ts-ignore
+  const [user, loading, error] = useAuthState(auth)
 
   return (
     <div className={darkThemePreference ? 'dark' : ''}>
-      {/* <ProfiePage /> */}
-      {/* <HomePage /> */}
       <SearchRoutes />
-      {/* <Login /> */}
-      {/* <Register /> */}
     </div>
   );
 }

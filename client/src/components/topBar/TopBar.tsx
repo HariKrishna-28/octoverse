@@ -5,12 +5,16 @@ import { useDispatch, useSelector } from 'react-redux';
 import { selectTheme, setTheme } from '../../features/themeSlice';
 import { Link } from 'react-router-dom';
 import { getUserData, setUserStatus } from '../../features/authSlice';
+import { useAuthState } from 'react-firebase-hooks/auth';
+import { auth } from '../../firebase';
 
 const TopBar: React.FC = () => {
     const dispatch = useDispatch()
     const themePreference = useSelector(selectTheme)
     const user = useSelector(getUserData)
     const currUser = user.user
+    // @ts-ignore
+    const [authUser, loading] = useAuthState(auth)
 
 
     const changeTheme = () => {
@@ -20,12 +24,17 @@ const TopBar: React.FC = () => {
     }
 
     const logout = () => {
+        auth.signOut()
         const initialState = {
             user: null,
             isFetching: false,
             error: { message: "" },
         };
-        dispatch(setUserStatus(initialState))
+        dispatch(setUserStatus({
+            user: null,
+            isFetching: false,
+            error: { message: "" },
+        }))
     }
 
     return (
