@@ -49,8 +49,8 @@ router.get("/", async (req, res) => {
     const user = userId
       ? await User.findById(userId)
       : await User.findOne({ email: email });
-    const { updatedAt, ...other } = user._doc;
-    res.status(200).json(other);
+    // const { updatedAt, ...other } = user._doc;
+    res.status(200).json(user);
   } catch (error) {
     console.log(error);
     return res.status(500).json(error);

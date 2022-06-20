@@ -50,7 +50,7 @@ const SearchRoutes: React.FC = () => {
 
 
   return <>
-    {!primaryLoad ?
+    {!loading ?
       <Routes>
         <Route path="/" element={!currentUser ? <Login /> : <HomePage />} />
         <Route path="/login" element={<Login />} />
