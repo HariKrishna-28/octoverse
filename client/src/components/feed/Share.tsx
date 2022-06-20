@@ -1,15 +1,19 @@
 import React from 'react'
 import { PermMedia, Label, Room, EmojiEmotions, Shortcut } from "@mui/icons-material"
 import { Tooltip, Zoom } from '@mui/material'
+import { useSelector } from 'react-redux'
+import { getUserData } from '../../features/authSlice'
 
 const Share: React.FC = () => {
+    const user = useSelector(getUserData)
+    const currUser = user.user
     return (
         <div className='w-100 h-44 rounded-lg dark:bg-dark_feed_secondary shadow-lg bg-light_feed_secondary dark:text-navBar_Text text-black'>
             <div className='p-3'>
                 <div className='flex items-center'>
                     <img
                         // src="https://mui.com/static/branding/companies/nasa-dark.svg"
-                        src="https://mui.com/static/branding/companies/nasa-dark.svg"
+                        src={currUser?.profilePicture === "" ? `https://avatars.dicebear.com/api/initials/${currUser?.userName}.svg` : currUser?.profilePicture}
                         alt="profile pic"
                         draggable="false"
                         className='object-cover rounded-full cursor-pointer w-12 h-12 mr-2'

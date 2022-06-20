@@ -4,11 +4,14 @@ import { Tooltip, Zoom } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectTheme, setTheme } from '../../features/themeSlice';
 import { Link } from 'react-router-dom';
-import { setUserStatus } from '../../features/authSlice';
+import { getUserData, setUserStatus } from '../../features/authSlice';
 
 const TopBar: React.FC = () => {
     const dispatch = useDispatch()
     const themePreference = useSelector(selectTheme)
+    const user = useSelector(getUserData)
+    const currUser = user.user
+
 
     const changeTheme = () => {
         dispatch(setTheme({
@@ -117,12 +120,20 @@ const TopBar: React.FC = () => {
 
                     {/* profile image */}
                     <div >
-                        <img
-                            // src="https://mui.com/static/branding/companies/nasa-dark.svg"
-                            src="https://mui.com/static/branding/companies/nasa-dark.svg"
-                            alt="profile pic"
-                            className='object-cover rounded-full cursor-pointer h-10'
-                        />
+                        <Tooltip
+                            onClick={logout}
+                            TransitionComponent={Zoom}
+                            TransitionProps={{ timeout: 400 }}
+                            title={currUser?.userName}>
+                            <Link to={`profile/${currUser?.userName}`}>
+                                <img
+                                    // src="https://mui.com/static/branding/companies/nasa-dark.svg"
+                                    src={currUser?.profilePicture === "" ? `https://avatars.dicebear.com/api/initials/${currUser?.userName}.svg` : currUser?.profilePicture}
+                                    alt="profile pic"
+                                    className='object-cover rounded-full cursor-pointer h-10'
+                                />
+                            </Link>
+                        </Tooltip>
                     </div>
                 </div >
             </div >

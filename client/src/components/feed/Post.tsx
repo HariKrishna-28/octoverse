@@ -6,6 +6,9 @@ import { format } from "timeago.js"
 import { Link } from 'react-router-dom'
 // import { postInterface } from '.././interfaces/postProps'
 import { userProp } from '../interfaces/userProps'
+import { likePosts } from '../../api/postAPI'
+import { useSelector } from 'react-redux'
+import { getUserData } from '../../features/authSlice'
 
 interface Props {
     post: {
@@ -43,9 +46,23 @@ const Post: React.FC<Props> = ({ post }) => {
     const [isLiked, setIsLiked] = useState(false)
     const [user, setUser] = useState<userProp>()
     const [load, setLoad] = useState(false)
+    const userData = useSelector(getUserData)
+    const currentUser: userProp = userData.user
 
 
-    const handleLike = () => {
+    const handleLike = async () => {
+        try {
+            if (currentUser?._id) {
+                const response = await likePosts(post._id, currentUser._id)
+                console.log(response.data)
+            }
+            // if (currentUser?._id)  {
+            //     const res = await likePosts(post._id, currentUser._id)
+            // }
+        } catch (error) {
+            console.error(error)
+        }
+
         setLike(isLiked ? like - 1 : like + 1)
         setIsLiked(!isLiked)
     }
@@ -63,6 +80,12 @@ const Post: React.FC<Props> = ({ post }) => {
         setLoad(true)
         getPostData()
     }, [post.userId])
+
+    // useEffect(() => {
+    //     if (currentUser?._id) {
+    //         setIsLiked(post.likes.includes(currentUser._id))
+    //     }
+    // }, [])
 
 
     return (
@@ -102,7 +125,7 @@ const Post: React.FC<Props> = ({ post }) => {
                 {/* bottom */}
                 <div className='flex items-center p-2 justify-between'>
                     <div className='flex gap-3 items-center'>
-                        <Favorite className='cursor-pointer' />
+                        {/* <Favorite className='cursor-pointer' /> */}
                         <ThumbUp
                             className={`cursor-pointer ${isLiked ? "text-blue-600" : ""}`}
                             onClick={handleLike} />

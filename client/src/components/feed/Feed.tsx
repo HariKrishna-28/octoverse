@@ -4,6 +4,8 @@ import Share from './Share'
 import { Posts } from '../../dummyData'
 import { getTimelinePosts, getUserProfilePosts } from '../../api/postAPI'
 import LoadAnimation from '../load/LoadAnimation'
+import { useSelector } from 'react-redux'
+import { getUserData } from '../../features/authSlice'
 
 interface userPosts {
     createdAt: string,
@@ -23,11 +25,12 @@ interface Props {
 const Feed: React.FC<Props> = ({ userName = undefined }) => {
     const [post, setPost] = useState([])
     const [load, setLoad] = useState(false)
+    const currUser = useSelector(getUserData)
 
     useEffect(() => {
         async function getPostData() {
             try {
-                const res = !userName ? await getTimelinePosts() : await getUserProfilePosts(userName)
+                const res = !userName ? await getTimelinePosts(currUser.user?._id) : await getUserProfilePosts(userName)
                 setPost(res.data)
             } catch (error) {
                 console.log(error)
@@ -36,7 +39,7 @@ const Feed: React.FC<Props> = ({ userName = undefined }) => {
         }
         setLoad(true)
         getPostData()
-    }, [userName])
+    }, [userName, currUser])
 
 
     return (
