@@ -1,6 +1,7 @@
 export interface userCredentials {
+  userName: string;
   email: string;
-  password: string;
+  profilePicture: string;
 }
 
 export interface newUserCredentials {

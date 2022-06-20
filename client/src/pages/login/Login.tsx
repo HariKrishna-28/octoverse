@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { Visibility, VisibilityOff } from '@mui/icons-material'
+import { useAuthState } from 'react-firebase-hooks/auth';
 import { useDispatch, useSelector } from 'react-redux'
 import { getUserData, setUserStatus } from '../../features/authSlice'
 import { userCredentials } from '../../components/interfaces/userCredentials'
@@ -7,9 +8,15 @@ import { login } from '../../api/authAPI'
 import { CircularProgress } from '@mui/material'
 import { getErrorMessage } from '../../components/helpers/errorMessageGenerator'
 import { Link, useNavigate } from 'react-router-dom'
+import { auth, provider } from '../../firebase'
 
 
 const Login: React.FC = () => {
+    // @ts-ignore
+    const [user, authLoading, error] = useAuthState(auth)
+    // @ts-ignore
+    const [currUser, userLoad] = useAuthState(auth)
+
     const dispatch = useDispatch();
     const navigate = useNavigate()
     const userAuthStats = useSelector(getUserData)
@@ -17,6 +24,36 @@ const Login: React.FC = () => {
     // const userRef = useRef<HTMLInputElement>(null)
     const emailRef = useRef<HTMLInputElement>(null)
     const pwdRef = useRef<HTMLInputElement>(null)
+
+    const signIn = async (e: React.SyntheticEvent) => {
+        e.preventDefault()
+        await auth.signInWithPopup(provider)
+            .then(() => {
+                if (user?.displayName && user.email && user.photoURL) {
+                    const data = {
+                        userName: user.displayName,
+                        email: user.email,
+                        profilePicture: user.photoURL,
+                    }
+                    initialiseUser(data)
+                }
+            })
+            .catch((err) => {
+                alert(err.message)
+            })
+    }
+
+    // useEffect(() => {
+    //     if (user) {
+    //         const data = {
+    //             userName: user.displayName,
+    //             email: user.email,
+    //             profilePicture: user.photoURL,
+    //         }
+    //     }
+    //     console.log(data)
+    // }, [user])
+
 
     const navigator = (url: string) => {
         navigate(`/${url}`)
@@ -43,12 +80,10 @@ const Login: React.FC = () => {
         }))
     }
 
-    const loginWithPassword = async (credentials: userCredentials) => {
+    const initialiseUser = async (credentials: userCredentials) => {
         try {
             const res = await login(credentials)
             saveUserData(res.data)
-            // navigator("")
-            // loginStart(false)
         } catch (error) {
             console.log(error)
             setUserError(getErrorMessage(error))
@@ -64,7 +99,7 @@ const Login: React.FC = () => {
                 email: emailRef.current.value,
                 password: pwdRef.current.value
             }
-            loginWithPassword(credentials)
+            // loginWithPassword(credentials)
         }
     }
 
@@ -83,10 +118,12 @@ const Login: React.FC = () => {
                 </div>
                 <div>
                     <div>
-                        <form onSubmit={(e) => handleSubmit(e)}>
-                            <div className='flex flex-col p-10 lg:p-16 gap-3 dark:bg-dark_feed_secondary shadow-lg bg-light_feed_secondary rounded-lg'>
-                                <div className='font-bold text-2xl text-center'>Login</div>
-                                {/* <input
+
+
+                        {/* <form onSubmit={(e) => handleSubmit(e)}> */}
+                        <div className='flex flex-col p-10 lg:p-16 gap-3 dark:bg-dark_feed_secondary shadow-lg bg-light_feed_secondary rounded-lg'>
+                            <div className='font-bold text-2xl text-center'>Login</div>
+                            {/* <input
                                     type="text"
                                     ref={userRef}
                                     placeholder='UserName'
@@ -95,7 +132,12 @@ const Login: React.FC = () => {
                                     autoFocus
                                     autoComplete='false'
                                 /> */}
-                                <input
+                            <button
+                                className='cursor-pointer text-center bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-3 rounded'
+                                onClick={(e) => signIn(e)}>
+                                Login With Google
+                            </button>
+                            {/* <input
                                     type="email"
                                     ref={emailRef}
                                     placeholder='Email'
@@ -144,9 +186,9 @@ const Login: React.FC = () => {
                                         className=' cursor-pointer text-center bg-green-500 hover:bg-green-700 text-white font-bold py-1 px-3 rounded'>
                                         Create new account
                                     </div>
-                                </Link>
-                            </div>
-                        </form>
+                                </Link> */}
+                        </div>
+                        {/* </form> */}
                     </div>
                 </div>
             </div >

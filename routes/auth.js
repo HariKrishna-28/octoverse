@@ -33,18 +33,21 @@ router.post("/register", async (req, res) => {
 // LOGIN
 router.post("/login", async (req, res) => {
   try {
-    const user = await User.findOne({ email: req.body.email });
+    const userCheck = await User.findOne({ email: req.body.email });
+    if (!userCheck) {
+      const newUser = new User(req.body);
+      const user = await newUser.save();
+      res.status(200).json(user);
+    } else res.status(200).json(userCheck);
+    // else {
+    //   const validPassword = await bcrypt.compare(
+    //     req.body.password,
+    //     user.password
+    //   );
 
-    if (!user) res.status(404).json({ message: "User not found" });
-    else {
-      const validPassword = await bcrypt.compare(
-        req.body.password,
-        user.password
-      );
-
-      if (!validPassword) res.status(400).json({ message: "Wrong password" });
-      else res.status(200).json(user);
-    }
+    //   if (!validPassword) res.status(400).json({ message: "Wrong password" });
+    //   else res.status(200).json(user);
+    // }
   } catch (error) {
     res.status(500).json({
       status: "failed",

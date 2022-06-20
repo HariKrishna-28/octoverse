@@ -14,3 +14,13 @@ export function getUser(
   };
   return axios(config);
 }
+
+export function getCurrentUserData(userEmail: string) {
+  const URL = `${userAPI}?userEmail=${userEmail}`;
+  const config: AxiosRequestConfig = {
+    method: "get",
+    url: URL,
+  };
+  console.log(config);
+  return axios(config);
+}

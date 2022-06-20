@@ -17,7 +17,7 @@ const user = {
 };
 
 const initialState = {
-  user: user,
+  user: null,
   isFetching: false,
   error: { message: "" },
 };
