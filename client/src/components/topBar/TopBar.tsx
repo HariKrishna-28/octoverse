@@ -7,6 +7,7 @@ import { Link } from 'react-router-dom';
 import { getUserData, setUserStatus } from '../../features/authSlice';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth } from '../../firebase';
+import DropDown from '../dropdown/DropDown';
 
 const TopBar: React.FC = () => {
     const dispatch = useDispatch()
@@ -116,7 +117,7 @@ const TopBar: React.FC = () => {
                             </div>
                         </Tooltip>
 
-                        <Tooltip
+                        {/* <Tooltip
                             onClick={logout}
                             TransitionComponent={Zoom}
                             TransitionProps={{ timeout: 400 }}
@@ -124,13 +125,18 @@ const TopBar: React.FC = () => {
                             <div className='cursor-pointer p-1.5 hover:bg-navbar_hover_highlight transition-all duration-300 ease-out rounded-lg'>
                                 <Logout className='h-4' />
                             </div>
-                        </Tooltip>
+                        </Tooltip> */}
+                        <DropDown
+                            logOut={() => logout()}
+                            userName={currUser?.userName}
+                            profileImage={currUser?.profilePicture === "" ? `https://avatars.dicebear.com/api/initials/${currUser?.userName}.svg` : currUser?.profilePicture}
+                        />
                     </div>
 
                     {/* profile image */}
                     <div >
-                        <Tooltip
-                            onClick={logout}
+                        {/* <Tooltip
+                            // onClick={logout}
                             TransitionComponent={Zoom}
                             TransitionProps={{ timeout: 400 }}
                             title={currUser?.userName}>
@@ -142,7 +148,7 @@ const TopBar: React.FC = () => {
                                     className='object-cover rounded-full cursor-pointer h-10'
                                 />
                             </Link>
-                        </Tooltip>
+                        </Tooltip> */}
                     </div>
                 </div >
             </div >
