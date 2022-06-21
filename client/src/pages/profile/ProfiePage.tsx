@@ -14,6 +14,7 @@ const ProfiePage: React.FC = () => {
             try {
                 const res = await getUser(undefined, params.username)
                 setUser(res.data)
+                console.log(res)
             } catch (error) {
                 console.log(error)
             }

@@ -10,6 +10,7 @@ import { getErrorMessage } from '../../components/helpers/errorMessageGenerator'
 import { Link, useNavigate } from 'react-router-dom'
 import { auth, provider } from '../../firebase'
 import LoadAnimation from '../../components/load/LoadAnimation';
+import { Google } from '@mui/icons-material';
 
 
 const Login: React.FC = () => {
@@ -129,9 +130,9 @@ const Login: React.FC = () => {
 
                             {!authLoading ?
                                 <button
-                                    className='cursor-pointer text-center bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-3 rounded'
+                                    className='cursor-pointer flex items-center justify-center gap-2 bg-blue-700 hover:bg-blue-500 text-white font-bold py-1 px-3 rounded'
                                     onClick={(e) => signIn(e)}>
-                                    Login With Google
+                                    Login With Google <Google className='h-auto' />
                                 </button>
                                 :
                                 <LoadAnimation />
