@@ -81,12 +81,12 @@ const Post: React.FC<Props> = ({ post }) => {
         getPostData()
     }, [post.userId])
 
-    // useEffect(() => {
-    //     if (currentUser?._id) {
-    //         setIsLiked(post.likes.includes(currentUser._id))
-    //     }
-    // }, [])
-
+    useEffect(() => {
+        if (currentUser?._id) {
+            // @ts-ignore
+            setIsLiked(post.likes.includes(currentUser._id))
+        }
+    }, [currentUser])
 
     return (
         <div className='w-full dark:bg-dark_feed_secondary rounded-lg mt-3  shadow-lg bg-light_feed_secondary dark:text-navBar_Text text-black'>
@@ -96,7 +96,7 @@ const Post: React.FC<Props> = ({ post }) => {
                     <div className='flex items-center gap-1'>
                         <Link to={`profile/${user?.userName}`}>
                             <img
-                                src={user?.profilePicture === "" ? `https://avatars.dicebear.com/api/initials/${user?.userName}.svg` : user?.profilePicture}
+                                src={!user?.profilePicture ? `https://avatars.dicebear.com/api/initials/${user?.userName}.svg` : user?.profilePicture}
                                 alt="profile pic"
                                 className='object-cover rounded-full h-10'
                                 draggable="false" />
@@ -111,7 +111,7 @@ const Post: React.FC<Props> = ({ post }) => {
                 {/* center */}
                 <div>
                     {post?.img &&
-                        <div className='flex justify-center'>
+                        <div className='flex justify-center mt-2 mb-2'>
                             <img
                                 // src="https://mui.com/static/branding/companies/nasa-dark.svg"
                                 className='object-contain rounded-lg cursor-pointer max-h-64 '

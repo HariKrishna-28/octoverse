@@ -1,16 +1,91 @@
-import React from 'react'
+import React, { useRef, useState } from 'react'
 import { PermMedia, Label, Room, EmojiEmotions, Shortcut } from "@mui/icons-material"
 import { Tooltip, Zoom } from '@mui/material'
 import { useSelector } from 'react-redux'
 import { getUserData } from '../../features/authSlice'
+import { userProp } from '../interfaces/userProps'
+import { uploadPost } from '../../api/postAPI'
+import { v4 as uuid } from 'uuid'
+import { getDownloadURL, ref, uploadBytes } from 'firebase/storage'
+import { storage } from '../../firebase'
+import LoadAnimation from '../load/LoadAnimation'
 
-const Share: React.FC = () => {
+interface Props {
+    triggerReload: () => void
+}
+
+const Share: React.FC<Props> = ({ triggerReload }) => {
+    const [file, setFile] = useState<File | undefined>(undefined)
     const user = useSelector(getUserData)
-    const currUser = user.user
+    const currUser: userProp = user.user
+    const desc = useRef<HTMLInputElement>(null)
+    const [error, setError] = useState("")
+    const [upload, setUpload] = useState(false)
+    const [imageURL, setImageURL] = useState("")
+    const [post, setPost] = useState(false)
+
+    const uploadImage = async (image: File) => {
+        try {
+            setUpload(true)
+            const id = `images/${uuid().slice(0, 10)}`
+            const imageRef = ref(storage, id)
+            // @ts-ignore
+            await uploadBytes(imageRef, image)
+                .then(() => {
+                    getDownloadURL(imageRef)
+                        .then((url) => {
+                            console.log(url)
+                            setImageURL(url)
+                        })
+                }).catch(err => {
+                    setError(err.message)
+                    // console.log(err.message)
+                })
+        } catch (error) {
+            console.error(error)
+        }
+        setUpload(false)
+    }
+
+    const uploadCurrentPost = async () => {
+        console.log("hi")
+        const newPost = {
+            userId: currUser._id,
+            desc: desc?.current?.value ? desc.current.value : "",
+            userEmail: currUser.email,
+            img: imageURL,
+        }
+        try {
+            const res = await uploadPost(newPost)
+            console.log(res.data)
+        } catch (error) {
+            console.error(error)
+        }
+        cleanUp()
+    }
+
+    const cleanUp = () => {
+        setImageURL("")
+        if (desc?.current?.value)
+            desc.current.value = ""
+        triggerReload()
+    }
+
+    const handleSubmit = async (e: React.SyntheticEvent) => {
+        e.preventDefault()
+        // @ts-ignore
+        if (desc.current.value === "" && imageURL === "") return
+        setPost(true)
+        uploadCurrentPost()
+        setPost(false)
+    }
+
+
     return (
         <div className='w-100 h-44 rounded-lg dark:bg-dark_feed_secondary shadow-lg bg-light_feed_secondary dark:text-navBar_Text text-black'>
             <div className='p-3'>
-                <div className='flex items-center'>
+                <div className='flex items-center'
+                >
                     <img
                         // src="https://mui.com/static/branding/companies/nasa-dark.svg"
                         src={currUser?.profilePicture === "" ? `https://avatars.dicebear.com/api/initials/${currUser?.userName}.svg` : currUser?.profilePicture}
@@ -19,8 +94,9 @@ const Share: React.FC = () => {
                         className='object-cover rounded-full cursor-pointer w-12 h-12 mr-2'
                     />
                     <input
+                        ref={desc}
                         type="text"
-                        placeholder="What's in your mind?"
+                        placeholder={"What's in your mind " + currUser?.userName + "?"}
                         className='w-full focus:outline-none rounded-md dark:bg-navBar_secondary text-black dark:text-navBar_Text p-1.5' />
                 </div>
                 <hr className='my-4' />
@@ -31,10 +107,35 @@ const Share: React.FC = () => {
                                 TransitionComponent={Zoom}
                                 TransitionProps={{ timeout: 400 }}
                                 title="Photo/Video">
-                                <div className='cursor-pointer p-1.5 hover:bg-red-600 transition-all duration-300 ease-out rounded-lg'>
+                                <label
+                                    htmlFor='image-upload'
+                                    className='cursor-pointer p-1.5 hover:bg-red-600 transition-all duration-300 ease-out rounded-lg'>
                                     <PermMedia />
-                                </div>
+                                </label>
                             </Tooltip>
+                            <input
+                                // hidden input for image upload
+                                className='hidden'
+                                id='image-upload'
+                                type="file"
+                                onChange={(e) => {
+                                    // @ts-ignore
+                                    setFile(e.target?.files ? e.target.files[0] : undefined)
+                                    // @ts-ignore
+                                    const filee = e.target.files[0]
+                                    if (filee !== undefined) {
+                                        console.log("hi")
+                                        if (filee.size > 3000000) {
+                                            alert("File can only be below 3 mb")
+                                            setFile(undefined)
+                                        }
+                                        else {
+                                            // @ts-ignore
+                                            uploadImage(filee)
+                                        }
+                                    }
+                                }}
+                                accept='.png, .jpeg, .jpg' />
                             {/* <span>Photo or Video</span> */}
                             <Tooltip
                                 TransitionComponent={Zoom}
@@ -63,14 +164,39 @@ const Share: React.FC = () => {
                                 </div>
                             </Tooltip>
 
-                            <Tooltip
+
+                            {/* <Tooltip
                                 TransitionComponent={Zoom}
                                 TransitionProps={{ timeout: 400 }}
-                                title="Share">
-                                <div className='cursor-pointer p-1.5 hover:bg-green-600 transition-all duration-300 ease-out rounded-lg'>
-                                    <Shortcut />
+                                title="Share"> */}
+                            {!upload ?
+                                <button
+                                    onClick={(e) => handleSubmit(e)}
+                                    className='bg-green-500 hover:bg-green-700 text-white font-bold py-1 px-3 rounded'>
+                                    {/* <Shortcut /> */}
+                                    Submit
+                                </button>
+                                :
+                                <div>
+                                    Loading
                                 </div>
-                            </Tooltip>
+                            }
+                            {/* </Tooltip> */}
+
+                            {
+                                // file &&
+                                // <div>
+                                //     {file.name}
+                                // </div>
+                                !upload ?
+                                    imageURL !== "" &&
+                                    // <img src={imageURL} />
+                                    <div>Uploaded</div>
+                                    :
+                                    <>
+                                        <LoadAnimation />
+                                    </>
+                            }
                         </div>
 
 
@@ -91,3 +217,7 @@ const Share: React.FC = () => {
 }
 
 export default Share
+
+function newPost(newPost: any) {
+    throw new Error('Function not implemented.')
+}

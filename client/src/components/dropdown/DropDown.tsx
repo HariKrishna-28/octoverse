@@ -45,7 +45,7 @@ const DropDown: React.FC<Props> = ({ userName, profileImage, logOut }) => {
                         aria-haspopup="true"
                         aria-expanded={open ? 'true' : undefined}
                     >
-                        <Avatar sx={{ width: 32, height: 32 }} src={profileImage} />
+                        <Avatar sx={{ width: 35, height: 35 }} src={profileImage} />
                     </IconButton>
                 </Tooltip>
             </Box>

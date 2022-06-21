@@ -27,16 +27,17 @@ const Feed: React.FC<Props> = ({ userName = undefined }) => {
     const [load, setLoad] = useState(false)
     const currUser = useSelector(getUserData)
 
-    useEffect(() => {
-        async function getPostData() {
-            try {
-                const res = !userName ? await getTimelinePosts(currUser.user?._id) : await getUserProfilePosts(userName)
-                setPost(res.data)
-            } catch (error) {
-                console.log(error)
-            }
-            setLoad(false)
+    async function getPostData() {
+        try {
+            const res = !userName ? await getTimelinePosts(currUser.user?._id) : await getUserProfilePosts(userName)
+            setPost(res.data)
+        } catch (error) {
+            console.log(error)
         }
+        setLoad(false)
+    }
+
+    useEffect(() => {
         setLoad(true)
         getPostData()
     }, [userName, currUser])
@@ -45,7 +46,12 @@ const Feed: React.FC<Props> = ({ userName = undefined }) => {
     return (
         <div className='h-[calc(100vh-56px)] flex-grow overflow-y-auto scrollbar-hide dark:bg-dark_feed_primary bg-light_feed_primary dark:text-dark_Text text-black'>
             <div className='p-5'>
-                <Share />
+                <Share
+                    triggerReload={() => {
+                        setLoad(true)
+                        getPostData()
+                    }}
+                />
                 {
                     load
                         ?

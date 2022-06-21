@@ -1,4 +1,5 @@
 import axios, { AxiosRequestConfig } from "axios";
+import { uploadPostProps } from "../components/interfaces/postProps";
 const postAPI = `${process.env.REACT_APP_API_URL}/post`;
 // const profileAPI = `${process.env.REACT_APP_API_URL}/profile`;
 
@@ -27,5 +28,15 @@ export function likePosts(postId: number, userId: string) {
     url: `${postAPI}/${postId}/like`,
     data: data,
   };
+  return axios(config);
+}
+
+export function uploadPost(post: uploadPostProps) {
+  const config: AxiosRequestConfig = {
+    method: "post",
+    url: postAPI,
+    data: post,
+  };
+  console.log(config);
   return axios(config);
 }

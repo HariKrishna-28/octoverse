@@ -79,7 +79,7 @@ const TopBar: React.FC = () => {
                             {themePreference ? '💡' : '🌙'}
                         </button> */}
                     </div>
-                    <div className='flex space-x-1'>
+                    <div className='flex space-x-1 items-center'>
                         <Tooltip
                             TransitionComponent={Zoom}
                             TransitionProps={{ timeout: 400 }}
@@ -126,6 +126,7 @@ const TopBar: React.FC = () => {
                                 <Logout className='h-4' />
                             </div>
                         </Tooltip> */}
+
                         <DropDown
                             logOut={() => logout()}
                             userName={currUser?.userName}
