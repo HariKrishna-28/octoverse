@@ -1,16 +1,39 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Cake } from '@mui/icons-material'
 import { Users } from '../../dummyData'
 import ActiveUsers from './ActiveUsers'
 import UserFriends from './UserFriends'
-import { userProp } from '../interfaces/userProps'
+import { userFriendsProp, userProp } from '../interfaces/userProps'
+import { getUserFriends } from '../../api/userAPI'
+import LoadAnimation from '../load/LoadAnimation'
 
 
 interface Props {
     user: userProp | undefined
 }
 
+
 const RightBar: React.FC<Props> = ({ user }) => {
+    const [load, setLoad] = useState(false)
+    // const [friends, setFriends] = useState<userFriendsProp>(null!)
+    const [friends, setFriends] = useState([])
+
+    const getFriends = async (userId: string) => {
+        try {
+            const res = await getUserFriends(userId)
+            setFriends(res.data)
+            setLoad(false)
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    useEffect(() => {
+        if (!user) return
+        setLoad(true)
+        getFriends(user._id)
+    }, [user])
+
     const HomeRightBar = () => {
         return (
             <>
@@ -65,15 +88,20 @@ const RightBar: React.FC<Props> = ({ user }) => {
                 </div>
                 <div>
                     <div className='flex flex-wrap items-center justify-center gap-1'>
-                        {Users.map((user, index) => {
-                            return (
-                                <UserFriends
-                                    key={index}
-                                    username={user.username}
-                                    profilePicture={user.profilePicture}
-                                    id={user.id} />
-                            )
-                        })}
+                        {
+                            !load ?
+                                friends.map((user, index) => {
+                                    return (
+                                        <div key={index}>
+                                            <UserFriends
+                                                user={user}
+                                            />
+                                        </div>
+                                    )
+                                })
+                                :
+                                <LoadAnimation />
+                        }
                     </div>
                 </div>
             </>

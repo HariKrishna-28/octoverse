@@ -23,3 +23,12 @@ export function getCurrentUserData(userEmail: string) {
   };
   return axios(config);
 }
+
+export function getUserFriends(userId: string) {
+  const URL = `${userAPI}/friends/${userId}`;
+  const config: AxiosRequestConfig = {
+    method: "get",
+    url: URL,
+  };
+  return axios(config);
+}

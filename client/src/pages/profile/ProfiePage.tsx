@@ -15,7 +15,7 @@ const ProfiePage: React.FC = () => {
                 // @ts-ignore
                 const res = await getCurrentUserData(params.useremail)
                 setUser(res.data)
-                console.log(res)
+                // console.log(res)
             } catch (error) {
                 console.log(error)
             }

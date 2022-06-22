@@ -9,7 +9,7 @@ const HomePage: React.FC = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        !userAuth.user && navigate("/login")
+        !userAuth.user && navigate("/")
     }, [])
 
     return (

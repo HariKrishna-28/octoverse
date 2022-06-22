@@ -3,7 +3,7 @@ import { Search, Person, Chat, Notifications, Lightbulb, NightlightRound, Logout
 import { Tooltip, Zoom } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectTheme, setTheme } from '../../features/themeSlice';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { getUserData, setUserStatus } from '../../features/authSlice';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth } from '../../firebase';
@@ -11,6 +11,7 @@ import DropDown from '../dropdown/DropDown';
 
 const TopBar: React.FC = () => {
     const dispatch = useDispatch()
+    const navigate = useNavigate()
     const themePreference = useSelector(selectTheme)
     const user = useSelector(getUserData)
     const currUser = user.user
@@ -24,8 +25,7 @@ const TopBar: React.FC = () => {
         }))
     }
 
-    const logout = () => {
-        auth.signOut()
+    const logout = async () => {
         const initialState = {
             user: null,
             isFetching: false,
@@ -36,6 +36,8 @@ const TopBar: React.FC = () => {
             isFetching: false,
             error: { message: "" },
         }))
+        await auth.signOut()
+        navigate("/")
     }
 
     return (
@@ -129,7 +131,7 @@ const TopBar: React.FC = () => {
 
                         <DropDown
                             logOut={() => logout()}
-                            userName={currUser?.userName}
+                            userName={currUser?.userName ? currUser.userName : "Account"}
                             profileImage={currUser?.profilePicture === "" ? `https://avatars.dicebear.com/api/initials/${currUser?.userName}.svg` : currUser?.profilePicture}
                         />
                     </div>

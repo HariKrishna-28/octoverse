@@ -23,7 +23,7 @@ const SearchRoutes: React.FC = () => {
   const getUserDtails = async (userEmail: string) => {
     try {
       const res = await getCurrentUserData(userEmail)
-      console.log(res.data)
+      // console.log(res.data)
       updateUser(res.data)
     } catch (error) {
       console.log(error)
@@ -36,7 +36,7 @@ const SearchRoutes: React.FC = () => {
       isFetching: false,
       error: { message: "" },
     }))
-    console.log(user)
+    // console.log(user)
     setPrimaryLoad(false)
   }
 

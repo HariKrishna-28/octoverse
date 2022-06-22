@@ -13,3 +13,10 @@ export interface userProp {
   createdAt: string;
   // __v: number
 }
+
+export interface userFriendsProp {
+  _id: string;
+  email: string;
+  profilePicture: string;
+  userName: string;
+}
