@@ -14,7 +14,7 @@ const postRoute = require("./routes/posts");
 app.use(express.json());
 app.use(helmet());
 app.use(cors());
-app.use(morgan("common"));
+// app.use(morgan("common"));
 app.use("/api/users", userRoute);
 app.use("/api/auth", authRoute);
 app.use("/api/post", postRoute);

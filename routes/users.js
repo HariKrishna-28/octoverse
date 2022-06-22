@@ -2,10 +2,6 @@ const router = require("express").Router();
 const bcrypt = require("bcrypt");
 const User = require("../models/User");
 
-router.get("/", (req, res) => {
-  res.send("Welcome to user routes");
-});
-
 // Update user
 router.put("/:id", async (req, res) => {
   if (req.body.userId === req.params.id || req.body.isAdmin) {
@@ -45,13 +41,41 @@ router.delete("/:id", async (req, res) => {
 });
 
 // Get a user
-router.get("/:id", async (req, res) => {
+router.get("/", async (req, res) => {
+  const userId = req.query.userId;
+  const userName = req.query.userName;
+  const email = req.query.userEmail;
   try {
-    const user = await User.findById(req.params.id);
-    const { password, updatedAt, ...other } = user._doc;
-    res.status(200).json(other);
+    const user = userId
+      ? await User.findById(userId)
+      : email
+      ? await User.findOne({ email: email })
+      : await User.findOne({ userName: userName });
+    // const { updatedAt, ...other } = user._doc;
+    res.status(200).json(user);
   } catch (error) {
-    return res.status(500).json(err);
+    console.log(error);
+    return res.status(500).json(error);
+  }
+});
+
+// Get friends
+router.get("/friends/:userId", async (req, res) => {
+  try {
+    const user = await User.findById(req.params.userId);
+    const friends = await Promise.all(
+      user.following.map((friendId) => {
+        return User.findById(friendId);
+      })
+    );
+    let friendsList = [];
+    friends.map((friend) => {
+      const { _id, userName, profilePicture, email } = friend;
+      friendsList.push({ _id, userName, profilePicture, email });
+    });
+    res.status(200).json(friendsList);
+  } catch (error) {
+    return res.status(500).json(error);
   }
 });
 
