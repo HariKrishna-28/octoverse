@@ -26,6 +26,6 @@ connectDb();
 //   res.send("Welcome to users page");
 // });
 
-app.listen(5000, () => {
+app.listen(process.env.PORT || 5000, () => {
   console.log("Server up");
 });
