@@ -94,7 +94,7 @@ const Post: React.FC<Props> = ({ post }) => {
                 {/* top */}
                 <div className='flex items-center justify-between'>
                     <div className='flex items-center gap-1'>
-                        <Link to={`profile/${user?.userName}`}>
+                        <Link to={`profile/${user?.email}`}>
                             <img
                                 src={!user?.profilePicture ? `https://avatars.dicebear.com/api/initials/${user?.userName}.svg` : user?.profilePicture}
                                 alt="profile pic"

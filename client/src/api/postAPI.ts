@@ -11,10 +11,10 @@ export function getTimelinePosts(id: string) {
   return axios(config);
 }
 
-export function getUserProfilePosts(userName: string) {
+export function getUserProfilePosts(userEmail: string) {
   const config: AxiosRequestConfig = {
     method: "get",
-    url: `${postAPI}/profile/${userName}`,
+    url: `${postAPI}/profile/${userEmail}`,
   };
   return axios(config);
 }

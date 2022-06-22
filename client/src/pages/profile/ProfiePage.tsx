@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { getUser } from '../../api/userAPI'
+import { getCurrentUserData, getUser } from '../../api/userAPI'
 import { TopBar, SideBar, Feed, RightBar } from '../../components'
 import { userProp } from '../../components/interfaces/userProps'
 import { useParams } from 'react-router'
@@ -12,7 +12,8 @@ const ProfiePage: React.FC = () => {
     useEffect(() => {
         async function getPostData() {
             try {
-                const res = await getUser(undefined, params.username)
+                // @ts-ignore
+                const res = await getCurrentUserData(params.useremail)
                 setUser(res.data)
                 console.log(res)
             } catch (error) {
@@ -22,7 +23,7 @@ const ProfiePage: React.FC = () => {
         }
         setLoad(true)
         getPostData()
-    }, [params.username])
+    }, [params.useremail])
 
 
     return (
@@ -54,7 +55,7 @@ const ProfiePage: React.FC = () => {
                         </div>
                     </div>
                     <div className='flex w-full h-screen'>
-                        <Feed userName={user?.userName} />
+                        <Feed userName={user?.email} />
                         <div className='hidden mt-6 rounded-lg md:block lg:block w-1/3'>
                             <RightBar user={user} />
                         </div>

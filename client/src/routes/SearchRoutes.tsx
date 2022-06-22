@@ -54,7 +54,7 @@ const SearchRoutes: React.FC = () => {
       <Routes>
         <Route path="/" element={!currentUser ? <Login /> : <HomePage />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/profile/:username" element={<ProfiePage />} />
+        <Route path="/profile/:useremail" element={<ProfiePage />} />
         <Route path="*" element={<Navigate replace to="/" />} />
       </Routes>
       :
