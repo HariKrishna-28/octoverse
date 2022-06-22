@@ -27,5 +27,6 @@ connectDb();
 // });
 
 app.listen(process.env.PORT || 5000, () => {
+  res.send("Octoverse up");
   console.log("Server up");
 });
