@@ -22,11 +22,10 @@ app.use("/api/post", postRoute);
 // Database connection
 connectDb();
 
-// app.get("/users", (req, res) => {
-//   res.send("Welcome to users page");
-// });
+app.get("/", (req, res) => {
+  res.send("Octoverse up");
+});
 
 app.listen(process.env.PORT || 5000, () => {
-  res.send("Octoverse up");
   console.log("Server up");
 });
