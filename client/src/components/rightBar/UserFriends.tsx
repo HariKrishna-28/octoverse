@@ -2,7 +2,7 @@ import { Tooltip, Zoom } from '@mui/material'
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
 import { userFriendsProp } from '../interfaces/userProps'
-import { Link } from 'react-router-dom'
+// import { Link } from 'react-router-dom'
 
 interface Props {
     user: userFriendsProp

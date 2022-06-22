@@ -35,6 +35,7 @@ router.post("/login", async (req, res) => {
   try {
     const userCheck = await User.findOne({ email: req.body.email });
     if (!userCheck) {
+      // console.log(req.body);
       const newUser = new User(req.body);
       const user = await newUser.save();
       res.status(200).json(user);

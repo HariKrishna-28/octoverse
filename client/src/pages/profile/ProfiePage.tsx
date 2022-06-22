@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react'
-import { getCurrentUserData, getUser } from '../../api/userAPI'
+import { getCurrentUserData } from '../../api/userAPI'
 import { TopBar, SideBar, Feed, RightBar } from '../../components'
 import { userProp } from '../../components/interfaces/userProps'
 import { useParams } from 'react-router'
 
 const ProfiePage: React.FC = () => {
     const [user, setUser] = useState<userProp>()
-    const [load, setLoad] = useState(false)
+    // const [load, setLoad] = useState(false)
     const params = useParams()
 
     useEffect(() => {
@@ -19,9 +19,9 @@ const ProfiePage: React.FC = () => {
             } catch (error) {
                 console.log(error)
             }
-            setLoad(false)
+            // setLoad(false)
         }
-        setLoad(true)
+        // setLoad(true)
         getPostData()
     }, [params.useremail])
 
@@ -42,12 +42,14 @@ const ProfiePage: React.FC = () => {
                         <div className='mt-2'>
                             <div className='flex items-center justify-end'>
                                 <img
+                                    alt=''
                                     className='h-20 w-auto absolute mt-52 rounded border-2 border-transparent'
                                     src={user?.profilePicture !== "" ? user?.profilePicture : `https://avatars.dicebear.com/api/initials/${user?.userName}.svg`} />
                             </div>
                             <img
                                 className='h-64 w-full object-fill rounded-lg'
-                                src={user?.coverPicture == "" ? "https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__480.jpg" : user?.coverPicture} />
+                                alt=''
+                                src={user?.coverPicture === "" ? "https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__480.jpg" : user?.coverPicture} />
                         </div>
                         <div>
                             <div className='font-bold text-2xl'>{user?.userName}</div>

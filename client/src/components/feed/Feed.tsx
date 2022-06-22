@@ -1,22 +1,22 @@
 import React, { useEffect, useState } from 'react'
 import Post from './Post'
 import Share from './Share'
-import { Posts } from '../../dummyData'
+// import { Posts } from '../../dummyData'
 import { getTimelinePosts, getUserProfilePosts } from '../../api/postAPI'
 import LoadAnimation from '../load/LoadAnimation'
 import { useSelector } from 'react-redux'
 import { getUserData } from '../../features/authSlice'
 
-interface userPosts {
-    createdAt: string,
-    desc?: string,
-    img?: string,
-    likes: [],
-    updatedAt: string,
-    userId: string,
-    __v: number,
-    _id: string,
-}
+// interface userPosts {
+//     createdAt: string,
+//     desc?: string,
+//     img?: string,
+//     likes: [],
+//     updatedAt: string,
+//     userId: string,
+//     __v: number,
+//     _id: string,
+// }
 
 interface Props {
     userName: string | undefined
@@ -44,13 +44,14 @@ const Feed: React.FC<Props> = ({ userName = undefined }) => {
     useEffect(() => {
         setLoad(true)
         getPostData()
+        // eslint-disable-next-line
     }, [userName, currUser])
 
 
     return (
         <div className='h-[calc(100vh-56px)] flex-grow overflow-y-auto scrollbar-hide dark:bg-dark_feed_primary bg-light_feed_primary dark:text-dark_Text text-black'>
             <div className='p-5'>
-                {userName == undefined && <Share
+                {userName === undefined && <Share
                     triggerReload={() => {
                         setLoad(true)
                         getPostData()

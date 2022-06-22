@@ -1,23 +1,23 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { Routes, Route, Navigate } from 'react-router-dom'
 import { getCurrentUserData } from "../api/userAPI";
 import { userProp } from "../components/interfaces/userProps";
 import LoadingWIndow from "../components/load/LoadingWIndow";
-import { getUserData, setUserStatus } from "../features/authSlice";
+import { setUserStatus } from "../features/authSlice";
 import { auth } from "../firebase";
 import HomePage from "../pages/Home/HomePage";
 import Login from "../pages/login/Login";
-import Register from "../pages/login/register/Register";
+// import Register from "../pages/login/register/Register";
 import ProfiePage from "../pages/profile/ProfiePage";
 
 const SearchRoutes: React.FC = () => {
-  const user = useSelector(getUserData)
+  // const user = useSelector(getUserData)
   const dispatch = useDispatch()
   // @ts-ignore
-  const [currentUser, loading, error] = useAuthState(auth)
-  const [primaryLoad, setPrimaryLoad] = useState(true)
+  const [currentUser, loading] = useAuthState(auth)
+  // const [primaryLoad, setPrimaryLoad] = useState(true)
 
 
   const getUserDtails = async (userEmail: string) => {
@@ -37,7 +37,7 @@ const SearchRoutes: React.FC = () => {
       error: { message: "" },
     }))
     // console.log(user)
-    setPrimaryLoad(false)
+    // setPrimaryLoad(false)
   }
 
   useEffect(() => {
@@ -46,6 +46,7 @@ const SearchRoutes: React.FC = () => {
     if (currentUser?.email) {
       getUserDtails(currentUser.email)
     }
+    // eslint-disable-next-line
   }, [currentUser, loading])
 
 

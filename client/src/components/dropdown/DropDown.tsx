@@ -12,8 +12,8 @@ import Tooltip from '@mui/material/Tooltip';
 // import Settings from '@mui/icons-material/Settings';
 import Logout from '@mui/icons-material/Logout';
 import { Link } from 'react-router-dom';
-import { useSelector } from 'react-redux';
-import { selectTheme } from '../../features/themeSlice'
+// import { useSelector } from 'react-redux';
+// import { selectTheme } from '../../features/themeSlice'
 
 interface Props {
     userName: string,
@@ -24,7 +24,7 @@ interface Props {
 const DropDown: React.FC<Props> = ({ userName, profileImage, logOut }) => {
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
     const open = Boolean(anchorEl);
-    const darkTheme = useSelector(selectTheme)
+    // const darkTheme = useSelector(selectTheme)
     const handleClick = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorEl(event.currentTarget);
     };

@@ -9,3 +9,9 @@ export interface newUserCredentials {
   userName: string;
   password: string;
 }
+
+export interface authUserCredentials {
+  userName: string;
+  email: string;
+  profilePicture: string;
+}
