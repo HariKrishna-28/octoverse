@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react'
-import { Cake } from '@mui/icons-material'
+import { Add, Cake, Close } from '@mui/icons-material'
 import { Users } from '../../dummyData'
 import ActiveUsers from './ActiveUsers'
 import UserFriends from './UserFriends'
 import { userFriendsProp, userProp } from '../interfaces/userProps'
-import { getUserFriends } from '../../api/userAPI'
+import { followOrUnfollowUser, getCurrentUserData, getUserFriends } from '../../api/userAPI'
 import LoadAnimation from '../load/LoadAnimation'
+import { useDispatch, useSelector } from 'react-redux'
+import { getUserData, setUserStatus } from '../../features/authSlice'
 
 
 interface Props {
@@ -17,6 +19,10 @@ const RightBar: React.FC<Props> = ({ user }) => {
     const [load, setLoad] = useState(false)
     // const [friends, setFriends] = useState<userFriendsProp>(null!)
     const [friends, setFriends] = useState([])
+    const currentUser = useSelector(getUserData)
+    const curr = currentUser.user
+    const dispatch = useDispatch()
+    const [following, setFollowing] = useState(false)
 
     const getFriends = async (userId: string) => {
         try {
@@ -27,6 +33,37 @@ const RightBar: React.FC<Props> = ({ user }) => {
             console.log(error)
         }
     }
+
+    const updateUser = async () => {
+        try {
+            const res = await getCurrentUserData(curr.email)
+            dispatch(setUserStatus({
+                user: res.data,
+                isFetching: false,
+                error: { message: "" },
+            }))
+            console.log(curr)
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    const handleClick = async () => {
+        try {
+            if (!user) return
+            const res = await followOrUnfollowUser(user._id, following, curr._id)
+            setFollowing(!following)
+            updateUser()
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    useEffect(() => {
+        if (curr?.following) {
+            setFollowing(curr.following.includes(user?._id))
+        }
+    }, [curr, user?._id])
 
     useEffect(() => {
         if (!user) return
@@ -83,6 +120,17 @@ const RightBar: React.FC<Props> = ({ user }) => {
                         </div>
                     </div>
                 </div>
+
+                {user?.email !== curr?.email &&
+                    <div className='flex justify-center'>
+                        <button
+                            onClick={handleClick}
+                            className={`flex items-center gap-1 ${!following ? "bg-blue-500 hover:bg-blue-700" : "bg-red-500 hover:bg-red-700"} text-white font-bold py-1 px-3 rounded`}>
+                            {!following ? <div className='flex items-center'>Follow<Add /></div> : <div className='flex items-center'>UnFollow<Close /></div>}
+                        </button>
+                    </div>
+                }
+
                 <div className='font-bold p-3'>
                     Friends
                 </div>

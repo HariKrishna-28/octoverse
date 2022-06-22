@@ -32,3 +32,20 @@ export function getUserFriends(userId: string) {
   };
   return axios(config);
 }
+
+export function followOrUnfollowUser(
+  userId: string,
+  flag: boolean,
+  currentId: string
+) {
+  const URL = `${userAPI}/${userId}/${!flag ? "follow" : "unfollow"}`;
+  const config: AxiosRequestConfig = {
+    method: "put",
+    url: URL,
+    data: {
+      userId: currentId,
+    },
+  };
+  console.log(config);
+  return axios(config);
+}
