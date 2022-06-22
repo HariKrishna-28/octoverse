@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { MoreVert, ThumbUp } from '@mui/icons-material'
 // import { Users } from '../../dummyData'
 import { getUser } from '../../api/userAPI'
-import { format } from "timeago.js"
+import moment from 'moment'
 import { Link } from 'react-router-dom'
 // import { postInterface } from '.././interfaces/postProps'
 import { userProp } from '../interfaces/userProps'
@@ -104,7 +104,8 @@ const Post: React.FC<Props> = ({ post }) => {
                                 draggable="false" />
                         </Link>
                         <span className='font-bold'>{user?.userName}</span>
-                        <span className='text-sm'>{format(post?.createdAt)}</span>
+                        {/* <span className='text-sm'>{format(post?.createdAt)}</span> */}
+                        <span className='text-sm'>{moment(post?.createdAt).fromNow()}</span>
                     </div>
                     <div>
                         <MoreVert />
