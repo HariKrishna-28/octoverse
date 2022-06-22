@@ -3,7 +3,7 @@ import { Add, Cake, Close } from '@mui/icons-material'
 import { Users } from '../../dummyData'
 import ActiveUsers from './ActiveUsers'
 import UserFriends from './UserFriends'
-import { userFriendsProp, userProp } from '../interfaces/userProps'
+import { userProp } from '../interfaces/userProps'
 import { followOrUnfollowUser, getCurrentUserData, getUserFriends } from '../../api/userAPI'
 import LoadAnimation from '../load/LoadAnimation'
 import { useDispatch, useSelector } from 'react-redux'
@@ -51,7 +51,7 @@ const RightBar: React.FC<Props> = ({ user }) => {
     const handleClick = async () => {
         try {
             if (!user) return
-            const res = await followOrUnfollowUser(user._id, following, curr._id)
+            await followOrUnfollowUser(user._id, following, curr._id)
             setFollowing(!following)
             updateUser()
         } catch (error) {

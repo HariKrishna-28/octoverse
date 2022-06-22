@@ -1,11 +1,11 @@
-import React, { useEffect } from 'react'
-import { Search, Person, Chat, Notifications, Lightbulb, NightlightRound, Logout } from '@mui/icons-material';
+import React from 'react'
+import { Person, Chat, Notifications, Lightbulb, NightlightRound } from '@mui/icons-material';
 import { Tooltip, Zoom } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectTheme, setTheme } from '../../features/themeSlice';
 import { Link, useNavigate } from 'react-router-dom';
 import { getUserData, setUserStatus } from '../../features/authSlice';
-import { useAuthState } from 'react-firebase-hooks/auth';
+// import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth } from '../../firebase';
 import DropDown from '../dropdown/DropDown';
 
@@ -16,7 +16,7 @@ const TopBar: React.FC = () => {
     const user = useSelector(getUserData)
     const currUser = user.user
     // @ts-ignore
-    const [authUser, loading] = useAuthState(auth)
+    // const [authUser, loading] = useAuthState(auth)
 
 
     const changeTheme = () => {
@@ -26,11 +26,11 @@ const TopBar: React.FC = () => {
     }
 
     const logout = async () => {
-        const initialState = {
-            user: null,
-            isFetching: false,
-            error: { message: "" },
-        };
+        // const initialState = {
+        //     user: null,
+        //     isFetching: false,
+        //     error: { message: "" },
+        // };
         dispatch(setUserStatus({
             user: null,
             isFetching: false,

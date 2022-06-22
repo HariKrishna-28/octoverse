@@ -1,20 +1,20 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const user = {
-  _id: "629f7ac1de8cb5eec75f0e2e",
-  userName: "hario",
-  email: "harioo@gmail.com",
-  profilePicture: "",
-  coverPicture: "",
-  followers: ["629f7acade8cb5eec75f0e30", "62a9e37f2eab78bf004a947b"],
-  following: ["629f7acade8cb5eec75f0e30"],
-  isAdmin: false,
-  description: "this is my description",
-  city: "",
-  from: "",
-  createdAt: "2022-06-07T16:20:17.543Z",
-  __v: 0,
-};
+// const user = {
+//   _id: "629f7ac1de8cb5eec75f0e2e",
+//   userName: "hario",
+//   email: "harioo@gmail.com",
+//   profilePicture: "",
+//   coverPicture: "",
+//   followers: ["629f7acade8cb5eec75f0e30", "62a9e37f2eab78bf004a947b"],
+//   following: ["629f7acade8cb5eec75f0e30"],
+//   isAdmin: false,
+//   description: "this is my description",
+//   city: "",
+//   from: "",
+//   createdAt: "2022-06-07T16:20:17.543Z",
+//   __v: 0,
+// };
 
 const initialState = {
   user: null,

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
-import { MoreVert, Favorite, ThumbUp } from '@mui/icons-material'
-import { Users } from '../../dummyData'
+import { MoreVert, ThumbUp } from '@mui/icons-material'
+// import { Users } from '../../dummyData'
 import { getUser } from '../../api/userAPI'
 import { format } from "timeago.js"
 import { Link } from 'react-router-dom'
@@ -45,6 +45,7 @@ const Post: React.FC<Props> = ({ post }) => {
     const [like, setLike] = useState<number>(post.likes.length)
     const [isLiked, setIsLiked] = useState(false)
     const [user, setUser] = useState<userProp>()
+    // eslint-disable-next-line
     const [load, setLoad] = useState(false)
     const userData = useSelector(getUserData)
     const currentUser: userProp = userData.user
@@ -86,6 +87,7 @@ const Post: React.FC<Props> = ({ post }) => {
             // @ts-ignore
             setIsLiked(post.likes.includes(currentUser._id))
         }
+        // eslint-disable-next-line
     }, [currentUser])
 
     return (

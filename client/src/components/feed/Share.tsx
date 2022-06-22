@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react'
-import { PermMedia, Label, Room, EmojiEmotions, Shortcut } from "@mui/icons-material"
+import { PermMedia, Label, Room, EmojiEmotions } from "@mui/icons-material"
 import { Tooltip, Zoom } from '@mui/material'
 import { useSelector } from 'react-redux'
 import { getUserData } from '../../features/authSlice'
@@ -15,13 +15,16 @@ interface Props {
 }
 
 const Share: React.FC<Props> = ({ triggerReload }) => {
+    // eslint-disable-next-line
     const [file, setFile] = useState<File | undefined>(undefined)
     const user = useSelector(getUserData)
     const currUser: userProp = user.user
     const desc = useRef<HTMLInputElement>(null)
+    // eslint-disable-next-line
     const [error, setError] = useState("")
     const [upload, setUpload] = useState(false)
     const [imageURL, setImageURL] = useState("")
+    // eslint-disable-next-line
     const [post, setPost] = useState(false)
 
     const uploadImage = async (image: File) => {
@@ -218,6 +221,4 @@ const Share: React.FC<Props> = ({ triggerReload }) => {
 
 export default Share
 
-function newPost(newPost: any) {
-    throw new Error('Function not implemented.')
-}
+

@@ -1,43 +1,50 @@
-import React, { useEffect, useRef, useState } from 'react'
-import { Visibility, VisibilityOff } from '@mui/icons-material'
+import React, { useEffect } from 'react'
+// import { Visibility, VisibilityOff } from '@mui/icons-material'
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { useDispatch, useSelector } from 'react-redux'
 import { getUserData, setUserStatus } from '../../features/authSlice'
 import { userCredentials } from '../../components/interfaces/userCredentials'
 import { login } from '../../api/authAPI'
-import { CircularProgress } from '@mui/material'
+// import { CircularProgress } from '@mui/material'
 import { getErrorMessage } from '../../components/helpers/errorMessageGenerator'
-import { Link, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { auth, provider } from '../../firebase'
 import LoadAnimation from '../../components/load/LoadAnimation';
 import { Google } from '@mui/icons-material';
 
 
 const Login: React.FC = () => {
+
     // @ts-ignore
-    const [user, authLoading, error] = useAuthState(auth)
+    const [authLoading] = useAuthState(auth)
     // @ts-ignore
 
     const dispatch = useDispatch();
     const navigate = useNavigate()
     const userAuthStats = useSelector(getUserData)
-    const [showPassword, setShowPassword] = useState(false)
+    // const [showPassword, setShowPassword] = useState(false)
     // const userRef = useRef<HTMLInputElement>(null)
-    const emailRef = useRef<HTMLInputElement>(null)
-    const pwdRef = useRef<HTMLInputElement>(null)
+    // const emailRef = useRef<HTMLInputElement>(null)
+    // const pwdRef = useRef<HTMLInputElement>(null)
 
     const signIn = async (e: React.SyntheticEvent) => {
         e.preventDefault()
         await auth.signInWithPopup(provider)
-            .then(() => {
-                if (user?.displayName && user.email && user.photoURL) {
-                    const data = {
-                        userName: user.displayName,
-                        email: user.email,
-                        profilePicture: user.photoURL,
-                    }
-                    initialiseUser(data)
+            .then((res) => {
+                // if (user?.displayName && user.email && user.photoURL) {
+                const data = res.user
+                const cred = {
+                    userName: data?.displayName,
+                    email: data?.email,
+                    profilePicture: data?.photoURL
                 }
+                // const data = {
+                //     userName: user.displayName,
+                //     email: user.email,
+                //     profilePicture: user.photoURL,
+                // }
+                initialiseUser(cred)
+                // }
             })
             .catch((err) => {
                 alert(err.message)
@@ -57,15 +64,15 @@ const Login: React.FC = () => {
 
 
 
-    const navigator = (url: string) => {
-        navigate(`/${url}`)
-    }
+    // const navigator = (url: string) => {
+    //     navigate(`/${url}`)
+    // }
 
-    const loginStart = (status: boolean) => {
-        dispatch(setUserStatus({
-            isFetching: status,
-        }))
-    }
+    // const loginStart = (status: boolean) => {
+    //     dispatch(setUserStatus({
+    //         isFetching: status,
+    //     }))
+    // }
 
     const saveUserData = (user: userCredentials) => {
         dispatch(setUserStatus({
@@ -83,7 +90,7 @@ const Login: React.FC = () => {
         }))
     }
 
-    const initialiseUser = async (credentials: userCredentials) => {
+    const initialiseUser = async (credentials: any) => {
         try {
             const res = await login(credentials)
             saveUserData(res.data)
@@ -95,21 +102,22 @@ const Login: React.FC = () => {
     }
 
 
-    const handleSubmit = (e: React.SyntheticEvent) => {
-        e.preventDefault()
-        loginStart(true)
-        if (emailRef.current?.value && pwdRef.current?.value) {
-            const credentials = {
-                email: emailRef.current.value,
-                password: pwdRef.current.value
-            }
-        }
-    }
+    // const handleSubmit = (e: React.SyntheticEvent) => {
+    //     e.preventDefault()
+    //     loginStart(true)
+    //     if (emailRef.current?.value && pwdRef.current?.value) {
+    //         const credentials = {
+    //             email: emailRef.current.value,
+    //             password: pwdRef.current.value
+    //         }
+    //     }
+    // }
 
 
     useEffect(() => {
         userAuthStats.user &&
             navigate("/")
+        // eslint-disable-next-line
     }, [userAuthStats])
 
 

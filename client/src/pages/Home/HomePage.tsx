@@ -10,6 +10,7 @@ const HomePage: React.FC = () => {
 
     useEffect(() => {
         !userAuth.user && navigate("/")
+        // eslint-disable-next-line
     }, [])
 
     return (
