@@ -66,7 +66,14 @@ const Feed: React.FC<Props> = ({ userName = undefined }) => {
                         :
                         post.map((post, index) => {
                             return (
-                                <Post key={index} post={post} />
+                                <Post
+                                    key={index}
+                                    post={post}
+                                    triggerReload={() => {
+                                        setLoad(true)
+                                        getPostData()
+                                    }}
+                                />
                             )
                         })
                 }
