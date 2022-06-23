@@ -1,11 +1,11 @@
 import React, { useEffect } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Routes, Route, Navigate } from 'react-router-dom'
 import { getCurrentUserData } from "../api/userAPI";
 import { userProp } from "../components/interfaces/userProps";
 import LoadingWIndow from "../components/load/LoadingWIndow";
-import { setUserStatus } from "../features/authSlice";
+import { getUserData, setUserStatus } from "../features/authSlice";
 import { auth } from "../firebase";
 import HomePage from "../pages/Home/HomePage";
 import Login from "../pages/login/Login";
@@ -13,7 +13,7 @@ import Login from "../pages/login/Login";
 import ProfiePage from "../pages/profile/ProfiePage";
 
 const SearchRoutes: React.FC = () => {
-  // const user = useSelector(getUserData)
+  const user = useSelector(getUserData)
   const dispatch = useDispatch()
   // @ts-ignore
   const [currentUser, loading] = useAuthState(auth)
@@ -53,7 +53,7 @@ const SearchRoutes: React.FC = () => {
   return <>
     {!loading ?
       <Routes>
-        <Route path="/" element={!currentUser ? <Login /> : <HomePage />} />
+        <Route path="/" element={!user.user && currentUser ? <Login /> : <HomePage />} />
         <Route path="/login" element={<Login />} />
         <Route path="/profile/:useremail" element={<ProfiePage />} />
         <Route path="*" element={<Navigate replace to="/" />} />
