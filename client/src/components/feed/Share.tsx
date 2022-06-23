@@ -51,7 +51,6 @@ const Share: React.FC<Props> = ({ triggerReload }) => {
     }
 
     const uploadCurrentPost = async () => {
-        console.log("hi")
         const newPost = {
             userId: currUser._id,
             desc: desc?.current?.value ? desc.current.value : "",
@@ -177,7 +176,7 @@ const Share: React.FC<Props> = ({ triggerReload }) => {
                                     onClick={(e) => handleSubmit(e)}
                                     className='bg-green-500 hover:bg-green-700 text-white font-bold py-1 px-3 rounded'>
                                     {/* <Shortcut /> */}
-                                    Submit
+                                    Post
                                 </button>
                                 :
                                 <div>

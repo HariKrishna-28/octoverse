@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { MoreVert, ThumbUp } from '@mui/icons-material'
+import { ThumbUp } from '@mui/icons-material'
 // import { Users } from '../../dummyData'
 import { getUser } from '../../api/userAPI'
 import moment from 'moment'
@@ -11,6 +11,7 @@ import { useSelector } from 'react-redux'
 import { getUserData } from '../../features/authSlice'
 import PostDropDown from '../dropdown/PostDropDown'
 import PostDeleteModal from '../modals/PostDeleteModal'
+import UpdatePostModal from '../modals/UpdatePostModal'
 
 interface Props {
     post: {
@@ -51,6 +52,7 @@ const Post: React.FC<Props> = ({ post, triggerReload }) => {
     // eslint-disable-next-line
     const [load, setLoad] = useState(false)
     const [openDelete, setOpenDelete] = useState(false)
+    const [openUpdate, setOpenUpdate] = useState(false)
     const userData = useSelector(getUserData)
     const currentUser: userProp = userData.user
 
@@ -119,6 +121,7 @@ const Post: React.FC<Props> = ({ post, triggerReload }) => {
                                     postId={post._id}
                                     userId={post.userId}
                                     handleDelete={() => setOpenDelete(true)}
+                                    handleUpdate={() => setOpenUpdate(true)}
                                 />}
                         </div>
                     </ div>
@@ -158,6 +161,17 @@ const Post: React.FC<Props> = ({ post, triggerReload }) => {
                 open={openDelete}
                 handleClose={(flag) => {
                     setOpenDelete(false)
+                    if (flag) triggerReload()
+                }}
+            />
+            <UpdatePostModal
+                postId={post._id}
+                userId={post.userId}
+                description={post?.desc ? post.desc : ""}
+                imageUrl={post.img}
+                open={openUpdate}
+                handleClose={(flag) => {
+                    setOpenUpdate(false)
                     if (flag) triggerReload()
                 }}
             />

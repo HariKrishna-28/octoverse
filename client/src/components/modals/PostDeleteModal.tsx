@@ -18,7 +18,7 @@ interface Props {
 const PostDeleteModal: React.FC<Props> = ({ handleClose, open, userId, postId }) => {
     const themePreference = useSelector(selectTheme)
     const [load, setLoad] = useState(false)
-    const [success, setSuccess] = useState(false)
+    // const [success, setSuccess] = useState(false)
 
 
     const style = {
@@ -61,10 +61,10 @@ const PostDeleteModal: React.FC<Props> = ({ handleClose, open, userId, postId })
             >
                 <div className='flex items-center justify-between p-3'>
                     <div className='text-2xl font-bold'>
-                        Are you sure?
+                        Delete Post
                     </div>
                     <button
-                        className='cursor-pointer p-1.5  hover:bg-light_feed_primary transition-all duration-300 ease-out rounded-lg'
+                        className={`cursor-pointer p-1.5  ${!themePreference ? "hover:bg-light_feed_primary text-black" : "hover:bg-dark_feed_primary text-navBar_Text"} transition-all duration-300 ease-out rounded-lg`}
                         onClick={() => handleClose(false)}
                     >
                         <CloseIcon className='h-4' />

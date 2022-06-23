@@ -1,18 +1,18 @@
 import * as React from 'react';
-import Box from '@mui/material/Box';
-import Avatar from '@mui/material/Avatar';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import ListItemIcon from '@mui/material/ListItemIcon';
-// import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
-// import Typography from '@mui/material/Typography';
 import Tooltip from '@mui/material/Tooltip';
+import { Edit, MoreVert, Settings } from '@mui/icons-material';
+import Box from '@mui/material/Box';
+// import Avatar from '@mui/material/Avatar';
+// import Divider from '@mui/material/Divider';
+// import Typography from '@mui/material/Typography';
 // import PersonAdd from '@mui/icons-material/PersonAdd';
 // import Settings from '@mui/icons-material/Settings';
-import Logout from '@mui/icons-material/Logout';
-import { Link } from 'react-router-dom';
-import { Edit, MoreVert, Settings } from '@mui/icons-material';
+// import Logout from '@mui/icons-material/Logout';
+// import { Link } from 'react-router-dom';
 // import { useSelector } from 'react-redux';
 // import { selectTheme } from '../../features/themeSlice'
 
@@ -20,10 +20,11 @@ interface Props {
     userId: string,
     postId: string,
     handleDelete: () => void
+    handleUpdate: () => void
 
 }
 
-const PostDropDown: React.FC<Props> = ({ userId, postId, handleDelete }) => {
+const PostDropDown: React.FC<Props> = ({ userId, postId, handleDelete, handleUpdate }) => {
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
     const open = Boolean(anchorEl);
     // const darkTheme = useSelector(selectTheme)
@@ -102,6 +103,7 @@ const PostDropDown: React.FC<Props> = ({ userId, postId, handleDelete }) => {
                     </span>
                 </MenuItem>
                 <MenuItem
+                    onClick={handleUpdate}
                 // onClick={logOut}
                 >
                     <ListItemIcon>
