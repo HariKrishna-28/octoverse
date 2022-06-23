@@ -120,6 +120,7 @@ const Post: React.FC<Props> = ({ post }) => {
                                 className='object-contain rounded-lg cursor-pointer max-h-64 '
                                 src={post?.img}
                                 alt="post"
+                                draggable="false"
                             />
                         </div>
                     }

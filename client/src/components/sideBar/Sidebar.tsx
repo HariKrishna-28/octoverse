@@ -41,9 +41,9 @@ const Sidebar: React.FC = () => {
                         <span>Jobs</span>
                     </li>
                 </ul>
-                <div className='text-center mb-2'>
+                {/* <div className='text-center mb-2'>
                     <button className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-3 rounded'>show more</button>
-                </div>
+                </div> */}
                 <hr className='bg-black' />
                 <div className='flex flex-col mt-2'>
                     {Users.map((user, index) => {

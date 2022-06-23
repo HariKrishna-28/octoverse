@@ -16,12 +16,13 @@ import { Link } from 'react-router-dom';
 // import { selectTheme } from '../../features/themeSlice'
 
 interface Props {
+    email: string,
     userName: string,
     profileImage: string | undefined,
     logOut: () => void
 }
 
-const DropDown: React.FC<Props> = ({ userName, profileImage, logOut }) => {
+const DropDown: React.FC<Props> = ({ userName, profileImage, logOut, email }) => {
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
     const open = Boolean(anchorEl);
     // const darkTheme = useSelector(selectTheme)
@@ -88,7 +89,7 @@ const DropDown: React.FC<Props> = ({ userName, profileImage, logOut }) => {
                 anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
             >
                 <MenuItem>
-                    <Link to={`profile/${userName}`}>
+                    <Link to={`profile/${email}`}>
                         <span className='font-sans'>
                             My Profile
                         </span>

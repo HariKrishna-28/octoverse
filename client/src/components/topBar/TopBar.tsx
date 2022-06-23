@@ -73,23 +73,25 @@ const TopBar: React.FC = () => {
                 <div className='flex justify-evenly items-center gap-6'>
                     {/* Topbar links */}
                     <div className='flex gap-2 mr-3'>
-                        <span>Homepage</span>
-                        <span>Timeline</span>
+                        {/* <span>Homepage</span>
+                        <span>Timeline</span> */}
                         {/* <button
                             onClick={() => changeTheme()}
                             className="rounded">
                             {themePreference ? '💡' : '🌙'}
                         </button> */}
                     </div>
-                    <div className='flex space-x-1 items-center'>
-                        <Tooltip
-                            TransitionComponent={Zoom}
-                            TransitionProps={{ timeout: 400 }}
-                            title="Person">
-                            <div className='cursor-pointer p-1.5 hover:bg-navbar_hover_highlight transition-all duration-300 ease-out rounded-lg'>
-                                <Person className='h-4' />
-                            </div>
-                        </Tooltip>
+                    <div className='flex space-x-1 items-center justify-center'>
+                        <Link to={`profile/${currUser?.userName}`}>
+                            <Tooltip
+                                TransitionComponent={Zoom}
+                                TransitionProps={{ timeout: 400 }}
+                                title="Person">
+                                <div className='cursor-pointer p-1.5 hover:bg-navbar_hover_highlight transition-all duration-300 ease-out rounded-lg'>
+                                    <Person className='h-4' />
+                                </div>
+                            </Tooltip>
+                        </Link>
 
                         <Tooltip
                             TransitionComponent={Zoom}
@@ -130,6 +132,7 @@ const TopBar: React.FC = () => {
                         </Tooltip> */}
 
                         <DropDown
+                            email={currUser?.email}
                             logOut={() => logout()}
                             userName={currUser?.userName ? currUser.userName : "Account"}
                             profileImage={currUser?.profilePicture === "" ? `https://avatars.dicebear.com/api/initials/${currUser?.userName}.svg` : currUser?.profilePicture}

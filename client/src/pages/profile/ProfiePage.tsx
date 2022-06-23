@@ -3,6 +3,8 @@ import { getCurrentUserData } from '../../api/userAPI'
 import { TopBar, SideBar, Feed, RightBar } from '../../components'
 import { userProp } from '../../components/interfaces/userProps'
 import { useParams } from 'react-router'
+// import { useSelector } from 'react-redux'
+// import { getUserData } from '../../features/authSlice'
 
 const ProfiePage: React.FC = () => {
     const [user, setUser] = useState<userProp>()
