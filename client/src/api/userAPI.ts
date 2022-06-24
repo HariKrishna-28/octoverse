@@ -49,3 +49,13 @@ export function followOrUnfollowUser(
   console.log(config);
   return axios(config);
 }
+
+export function getFriendSuggestions(userId: string) {
+  const URL = `${userAPI}/suggestions/${userId}`;
+  const config: AxiosRequestConfig = {
+    method: "get",
+    url: URL,
+  };
+  console.log(config);
+  return axios(config);
+}

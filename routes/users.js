@@ -134,7 +134,6 @@ async function getUser(followerId, userId) {
   try {
     if (followerId !== userId) {
       const data = await User.findById(followerId);
-      console.log(data);
       const userInfo = {
         _id: data._id,
         userName: data.userName,

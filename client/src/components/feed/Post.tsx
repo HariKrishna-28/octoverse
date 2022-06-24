@@ -127,7 +127,7 @@ const Post: React.FC<Props> = ({ post, triggerReload }) => {
                             </div>
                         </div>
                         <div>
-                            {currentUser._id === post.userId &&
+                            {currentUser?._id === post?.userId &&
                                 <PostDropDown
                                     postId={post._id}
                                     userId={post.userId}

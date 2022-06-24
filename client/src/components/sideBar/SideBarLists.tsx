@@ -1,12 +1,13 @@
 import React from 'react'
 
 interface Props {
-    id: number,
+    id: string,
     profilePicture: string,
     username: string,
+    email: string
 }
 
-const SideBarLists: React.FC<Props> = ({ id, profilePicture, username }) => {
+const SideBarLists: React.FC<Props> = ({ id, profilePicture, username, email }) => {
     const listStyling = 'dark:list__cards__dark list__cards__light transition-all duration-200 ease-out my-1'
 
     return (
