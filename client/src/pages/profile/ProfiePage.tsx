@@ -3,6 +3,7 @@ import { getCurrentUserData } from '../../api/userAPI'
 import { TopBar, SideBar, Feed, RightBar } from '../../components'
 import { userProp } from '../../components/interfaces/userProps'
 import { useParams } from 'react-router'
+import { Verified } from '@mui/icons-material'
 // import { useSelector } from 'react-redux'
 // import { getUserData } from '../../features/authSlice'
 
@@ -54,7 +55,14 @@ const ProfiePage: React.FC = () => {
                                 src={user?.coverPicture === "" ? "https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__480.jpg" : user?.coverPicture} />
                         </div>
                         <div>
-                            <div className='font-bold text-2xl'>{user?.userName}</div>
+                            <div className='flex items-center justify center'>
+                                <div className='font-bold text-2xl'>{user?.userName}</div>
+                                {user?.isAdmin &&
+                                    <div className='text-blue-600'>
+                                        <Verified />
+                                    </div>
+                                }
+                            </div>
                             <div className='font-sm'>{user?.description}</div>
                         </div>
                     </div>

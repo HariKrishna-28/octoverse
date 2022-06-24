@@ -12,6 +12,7 @@ import { getUserData } from '../../features/authSlice'
 import PostDropDown from '../dropdown/PostDropDown'
 import PostDeleteModal from '../modals/PostDeleteModal'
 import UpdatePostModal from '../modals/UpdatePostModal'
+import { Verified } from '@mui/icons-material'
 
 interface Props {
     post: {
@@ -103,7 +104,7 @@ const Post: React.FC<Props> = ({ post, triggerReload }) => {
                 <div className='p-3'>
                     {/* top */}
                     <div className='flex items-center justify-between'>
-                        <div className='flex items-center gap-1'>
+                        <div className='flex items-center w-full gap-1'>
                             <Link to={`profile/${user?.email}`}>
                                 <img
                                     src={!user?.profilePicture ? `https://avatars.dicebear.com/api/initials/${user?.userName}.svg` : user?.profilePicture}
@@ -111,9 +112,19 @@ const Post: React.FC<Props> = ({ post, triggerReload }) => {
                                     className='object-cover rounded-full h-10'
                                     draggable="false" />
                             </Link>
-                            <span className='font-bold'>{user?.userName}</span>
-                            {/* <span className='text-sm'>{format(post?.createdAt)}</span> */}
-                            <span className='text-sm'>{moment(post?.createdAt).fromNow()}</span>
+                            <div className='flex w-full items-center justify-between'>
+                                <div className='flex items-center gap-2'>
+                                    <span className='font-bold'>{user?.userName}</span>
+                                    <div>
+                                        {user?.isAdmin &&
+                                            <div className='text-blue-600'>
+                                                <Verified />
+                                            </div>
+                                        }
+                                    </div>
+                                </div>
+                                {/* <span className='text-sm'>{format(post?.createdAt)}</span> */}
+                            </div>
                         </div>
                         <div>
                             {currentUser._id === post.userId &&
@@ -141,7 +152,7 @@ const Post: React.FC<Props> = ({ post, triggerReload }) => {
                         <div className='p-2 mt-2'>{post?.desc}</div>
                     </div >
                     {/* bottom */}
-                    <div className='flex items-center p-2 justify-between'>
+                    <div className='flex items-center p-2 w-full justify-between'>
                         <div className='flex gap-3 items-center'>
                             {/* <Favorite className='cursor-pointer' /> */}
                             <ThumbUp
@@ -150,6 +161,7 @@ const Post: React.FC<Props> = ({ post, triggerReload }) => {
                             <span className='text-sm'>{like} likes</span>
                         </div>
                         <div>
+                            <span className='text-sm'>{moment(post?.createdAt).fromNow()}</span>
                             {/* <span className='text-sm dark:hover:text-navbar_hover_highlight hover:text-blue-600'>{post.comment} comments</span> */}
                         </div>
                     </div >
