@@ -72,6 +72,10 @@ const ProfiePage: React.FC = () => {
                         <Feed userName={user?.email} />
                         <div className='hidden mt-6 rounded-lg md:block lg:block w-1/3'>
                             <RightBar
+                                triggerReload={() => {
+                                    setLoad(true)
+                                    getPostData()
+                                }}
                                 user={user} />
                         </div>
                     </div>

@@ -13,11 +13,12 @@ import { Tooltip, Zoom } from '@mui/material'
 
 
 interface Props {
-    user: userProp | undefined
+    user: userProp | undefined,
+    triggerReload: () => void
 }
 
 
-const RightBar: React.FC<Props> = ({ user }) => {
+const RightBar: React.FC<Props> = ({ user, triggerReload }) => {
     const [load, setLoad] = useState(false)
     const [openEdit, setOpenEdit] = useState(false)
     // const [friends, setFriends] = useState<userFriendsProp>(null!)
@@ -192,6 +193,7 @@ const RightBar: React.FC<Props> = ({ user }) => {
                     setOpenEdit(false)
                     if (flag) {
                         if (!user) return
+                        triggerReload()
                         // setLoad(true)
                         // getFriends(user._id)
                     }

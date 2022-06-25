@@ -54,6 +54,8 @@ const UpdateProfileModal: React.FC<Props> = ({ handleClose, open, user }) => {
         setFrom(user?.from)
         setCity(user?.city)
         setDescription(user?.description)
+        setUrl("")
+
     }
 
     const updateThisProfile = async (e: React.SyntheticEvent) => {
@@ -117,9 +119,10 @@ const UpdateProfileModal: React.FC<Props> = ({ handleClose, open, user }) => {
                         className={`cursor-pointer p-1.5  ${!themePreference ? "hover:bg-light_feed_primary text-black" : "hover:bg-navBar_BG text-navBar_Text"} transition-all duration-300 ease-out rounded-lg`}
                         onClick={() => {
                             // setDesc(description)
-                            setFrom(user?.from)
-                            setCity(user?.city)
-                            setDescription(user?.description)
+                            cleanUp()
+                            // setFrom(user?.from)
+                            // setCity(user?.city)
+                            // setDescription(user?.description)
                             handleClose(false)
                         }}
                     >
@@ -135,6 +138,7 @@ const UpdateProfileModal: React.FC<Props> = ({ handleClose, open, user }) => {
                                 alt=""
                                 className='h-10 rounded-full'
                                 draggable="false"
+
                             />
                             <div className='font-bold'>{user?.userName}</div>
 
@@ -233,7 +237,7 @@ const UpdateProfileModal: React.FC<Props> = ({ handleClose, open, user }) => {
                             {
                                 !load ?
                                     // @ts-ignore
-                                    city !== user?.city | from !== user?.from | description !== user?.description &&
+                                    city !== user?.city | from !== user?.from | description !== user?.description | url !== user?.coverPicture &&
                                     <button
                                         type='submit'
                                         // onClick={updateThisPost}
