@@ -19,7 +19,7 @@ export function getUserProfilePosts(userEmail: string) {
   return axios(config);
 }
 
-export function likePosts(postId: number, userId: string) {
+export function likePosts(postId: string, userId: string) {
   const data = {
     userId: userId,
   };
@@ -37,6 +37,34 @@ export function uploadPost(post: uploadPostProps) {
     url: postAPI,
     data: post,
   };
-  console.log(config);
+  return axios(config);
+}
+
+export function deletePost(postId: string, userId: string) {
+  const data = {
+    userId: userId,
+  };
+  const config: AxiosRequestConfig = {
+    method: "delete",
+    url: `${postAPI}/${postId}`,
+    data: data,
+  };
+  return axios(config);
+}
+
+export function updatePost(
+  postId: string,
+  userId: string,
+  description: string
+) {
+  const data = {
+    userId: userId,
+    description: description,
+  };
+  const config: AxiosRequestConfig = {
+    method: "put",
+    url: `${postAPI}/${postId}`,
+    data: data,
+  };
   return axios(config);
 }

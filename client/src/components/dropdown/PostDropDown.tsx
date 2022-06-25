@@ -1,28 +1,30 @@
 import * as React from 'react';
-import Box from '@mui/material/Box';
-import Avatar from '@mui/material/Avatar';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import ListItemIcon from '@mui/material/ListItemIcon';
-// import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
-// import Typography from '@mui/material/Typography';
 import Tooltip from '@mui/material/Tooltip';
+import { Edit, MoreVert, Settings } from '@mui/icons-material';
+import Box from '@mui/material/Box';
+// import Avatar from '@mui/material/Avatar';
+// import Divider from '@mui/material/Divider';
+// import Typography from '@mui/material/Typography';
 // import PersonAdd from '@mui/icons-material/PersonAdd';
 // import Settings from '@mui/icons-material/Settings';
-import Logout from '@mui/icons-material/Logout';
-import { Link } from 'react-router-dom';
+// import Logout from '@mui/icons-material/Logout';
+// import { Link } from 'react-router-dom';
 // import { useSelector } from 'react-redux';
 // import { selectTheme } from '../../features/themeSlice'
 
 interface Props {
-    email: string,
-    userName: string,
-    profileImage: string | undefined,
-    logOut: () => void
+    userId: string,
+    postId: string,
+    handleDelete: () => void
+    handleUpdate: () => void
+
 }
 
-const DropDown: React.FC<Props> = ({ userName, profileImage, logOut, email }) => {
+const PostDropDown: React.FC<Props> = ({ userId, postId, handleDelete, handleUpdate }) => {
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
     const open = Boolean(anchorEl);
     // const darkTheme = useSelector(selectTheme)
@@ -37,7 +39,7 @@ const DropDown: React.FC<Props> = ({ userName, profileImage, logOut, email }) =>
     return (
         <React.Fragment>
             <Box sx={{ display: 'flex', alignItems: 'center', textAlign: 'center' }}>
-                <Tooltip title={userName}>
+                <Tooltip title={"post settings"}>
                     <IconButton
                         onClick={handleClick}
                         size="small"
@@ -46,7 +48,9 @@ const DropDown: React.FC<Props> = ({ userName, profileImage, logOut, email }) =>
                         aria-haspopup="true"
                         aria-expanded={open ? 'true' : undefined}
                     >
-                        <Avatar sx={{ width: 35, height: 35 }} src={profileImage} />
+                        <div className='cursor-pointer p-1.5 dark:hover:bg-navBar_BG hover:bg-light_feed_primary transition-all duration-300 ease-out rounded-lg'>
+                            <MoreVert className='dark:text-navBar_Text text-black' />
+                        </div>
                     </IconButton>
                 </Tooltip>
             </Box>
@@ -88,43 +92,30 @@ const DropDown: React.FC<Props> = ({ userName, profileImage, logOut, email }) =>
                 transformOrigin={{ horizontal: 'right', vertical: 'top' }}
                 anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
             >
-                <MenuItem>
-                    <Link to={`profile/${email}`}>
-                        <span className='font-sans'>
-                            My Profile
-                        </span>
-                    </Link>
-                </MenuItem>
                 <MenuItem
-                    onClick={logOut}
+                    onClick={handleDelete}
                 >
                     <ListItemIcon>
-                        <Logout fontSize="small" className='text-navBar_Text' />
+                        <Settings fontSize="small" className='text-navBar_Text' />
                     </ListItemIcon>
                     <span className='font-sans'>
-                        Logout
+                        Delete
                     </span>
                 </MenuItem>
-                {/* <MenuItem>
-                    <Avatar /> My account
-                </MenuItem>
-                <Divider />
-                <MenuItem>
+                <MenuItem
+                    onClick={handleUpdate}
+                // onClick={logOut}
+                >
                     <ListItemIcon>
-                        <PersonAdd fontSize="small" />
+                        <Edit fontSize="small" className='text-navBar_Text' />
                     </ListItemIcon>
-                    Add another account
+                    <span className='font-sans'>
+                        Edit
+                    </span>
                 </MenuItem>
-                <MenuItem>
-                    <ListItemIcon>
-                        <Settings fontSize="small" />
-                    </ListItemIcon>
-                    Settings
-                </MenuItem> */}
-
             </Menu>
         </React.Fragment>
     );
 }
 
-export default DropDown
+export default PostDropDown

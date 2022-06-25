@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Add, Cake, Close } from '@mui/icons-material'
+import { Add, Cake, Close, Edit } from '@mui/icons-material'
 import { Users } from '../../dummyData'
 import ActiveUsers from './ActiveUsers'
 import UserFriends from './UserFriends'
@@ -8,15 +8,19 @@ import { followOrUnfollowUser, getCurrentUserData, getUserFriends } from '../../
 import LoadAnimation from '../load/LoadAnimation'
 import { useDispatch, useSelector } from 'react-redux'
 import { getUserData, setUserStatus } from '../../features/authSlice'
+import UpdateProfileModal from '../modals/UpdateProfileModal'
+import { Tooltip, Zoom } from '@mui/material'
 
 
 interface Props {
-    user: userProp | undefined
+    user: userProp | undefined,
+    triggerReload: () => void
 }
 
 
-const RightBar: React.FC<Props> = ({ user }) => {
+const RightBar: React.FC<Props> = ({ user, triggerReload }) => {
     const [load, setLoad] = useState(false)
+    const [openEdit, setOpenEdit] = useState(false)
     // const [friends, setFriends] = useState<userFriendsProp>(null!)
     const [friends, setFriends] = useState([])
     const currentUser = useSelector(getUserData)
@@ -106,8 +110,22 @@ const RightBar: React.FC<Props> = ({ user }) => {
         return (
             <>
                 <div className='p-3'>
-                    <div className='font-bold'>
-                        User Info
+                    <div className='flex items-center justify-between'>
+                        <div className='font-bold'>
+                            User Info
+                        </div>
+                        {user?.email == curr.email &&
+
+                            <Tooltip
+                                TransitionComponent={Zoom}
+                                TransitionProps={{ timeout: 400 }}
+                                title="Edit Profile">
+                                <div
+                                    className='cursor-pointer p-1.5 dark:hover:bg-navBar_BG hover:bg-light_feed_primary transition-all duration-300 ease-out rounded-lg'
+                                    onClick={() => setOpenEdit(true)}>
+                                    <Edit />
+                                </div>
+                            </Tooltip>}
                     </div>
                     <div>
                         <div>
@@ -157,15 +175,31 @@ const RightBar: React.FC<Props> = ({ user }) => {
     }
 
     return (
-        <div className={`h-full dark:bg-sideBar_dark_primary flex-grow overflow-y-auto scrollbar-hide bg-sideBar_light_primary dark:text-dark_Text text-black p-2 pt-4 ${user ? "rounded-lg" : ""}`}>
-            <div>
-                {
-                    !user ?
-                        <HomeRightBar /> :
-                        <ProfileRightBar />
-                }
+        <>
+            <div className={`h-full dark:bg-sideBar_dark_primary flex-grow overflow-y-auto scrollbar-hide bg-sideBar_light_primary dark:text-dark_Text text-black p-2 pt-4 ${user ? "rounded-lg" : ""}`}>
+                <div>
+                    {
+                        !user ?
+                            <HomeRightBar /> :
+                            <ProfileRightBar />
+                    }
+                </div>
             </div>
-        </div>
+
+            <UpdateProfileModal
+                open={openEdit}
+                user={curr}
+                handleClose={(flag) => {
+                    setOpenEdit(false)
+                    if (flag) {
+                        if (!user) return
+                        triggerReload()
+                        // setLoad(true)
+                        // getFriends(user._id)
+                    }
+                }}
+            />
+        </>
     )
 }
 

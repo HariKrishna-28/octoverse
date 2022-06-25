@@ -1,6 +1,7 @@
 const router = require("express").Router();
 const bcrypt = require("bcrypt");
 const User = require("../models/User");
+const shuffleArray = require("../components/helpers/Shuffler");
 
 // Update user
 router.put("/:id", async (req, res) => {
@@ -126,6 +127,45 @@ router.put("/:id/unfollow", async (req, res) => {
     }
   } else {
     res.status(403).json("You cant unfollow yourself");
+  }
+});
+
+async function getUser(followerId, userId) {
+  try {
+    if (followerId !== userId) {
+      const data = await User.findById(followerId);
+      const userInfo = {
+        _id: data._id,
+        userName: data.userName,
+        email: data.email,
+        profilePicture: data.profilePicture,
+      };
+      return userInfo;
+    }
+    return;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+// Get friends suggestions
+router.get("/suggestions/:id", async (req, res) => {
+  try {
+    const user = await User.findById(req.params.id);
+    const userFollowers = shuffleArray(user.followers);
+    const suggestions = await Promise.all(
+      userFollowers.map((follower) => {
+        const data = getUser(follower, req.params.id);
+        if (data) return data;
+        if (suggestions.length > 10) {
+          res.status(200).json(suggestions);
+        }
+      })
+    );
+    res.status(200).json(suggestions);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json(error);
   }
 });
 

@@ -27,7 +27,9 @@ const HomePage: React.FC = () => {
                     <Feed userName={undefined} />
                 </div>
                 <div className='hidden md:block lg:block w-1/3'>
-                    <RightBar user={undefined} />
+                    <RightBar
+                        triggerReload={() => console.log("hi")}
+                        user={undefined} />
                 </div>
             </div>
         </>
