@@ -59,3 +59,14 @@ export function getFriendSuggestions(userId: string) {
   console.log(config);
   return axios(config);
 }
+
+export function updateUser(data: any, id: String) {
+  const URL = `${userAPI}/${id}`;
+  const config: AxiosRequestConfig = {
+    method: "put",
+    url: URL,
+    data: data,
+  };
+  console.log(config);
+  return axios(config);
+}

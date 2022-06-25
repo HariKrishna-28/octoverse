@@ -67,7 +67,7 @@ const UpdatePostModal: React.FC<Props> = ({ handleClose, open, userId, postId, i
                         Update Post
                     </div>
                     <button
-                        className={`cursor-pointer p-1.5  ${!themePreference ? "hover:bg-light_feed_primary text-black" : "hover:bg-dark_feed_primary text-navBar_Text"} transition-all duration-300 ease-out rounded-lg`}
+                        className={`cursor-pointer p-1.5  ${!themePreference ? "hover:bg-light_feed_primary text-black" : "hover:bg-navBar_BG text-navBar_Text"} transition-all duration-300 ease-out rounded-lg`}
                         onClick={() => {
                             setDesc(description)
                             handleClose(false)

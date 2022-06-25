@@ -9,22 +9,22 @@ import { Verified } from '@mui/icons-material'
 
 const ProfiePage: React.FC = () => {
     const [user, setUser] = useState<userProp>()
-    // const [load, setLoad] = useState(false)
+    const [load, setLoad] = useState(false)
     const params = useParams()
 
-    useEffect(() => {
-        async function getPostData() {
-            try {
-                // @ts-ignore
-                const res = await getCurrentUserData(params.useremail)
-                setUser(res.data)
-                // console.log(res)
-            } catch (error) {
-                console.log(error)
-            }
-            // setLoad(false)
+    async function getPostData() {
+        try {
+            // @ts-ignore
+            const res = await getCurrentUserData(params.useremail)
+            setUser(res.data)
+            // console.log(res)
+        } catch (error) {
+            console.log(error)
         }
-        // setLoad(true)
+        setLoad(false)
+    }
+    useEffect(() => {
+        setLoad(true)
         getPostData()
     }, [params.useremail])
 
@@ -46,12 +46,14 @@ const ProfiePage: React.FC = () => {
                             <div className='flex items-center justify-end'>
                                 <img
                                     alt=''
+                                    draggable='false'
                                     className='h-20 w-auto absolute mt-52 rounded border-2 border-transparent'
                                     src={user?.profilePicture !== "" ? user?.profilePicture : `https://avatars.dicebear.com/api/initials/${user?.userName}.svg`} />
                             </div>
                             <img
-                                className='h-64 w-full object-fill rounded-lg'
                                 alt=''
+                                className='h-64 w-full object-fill rounded-lg'
+                                draggable='false'
                                 src={user?.coverPicture === "" ? "https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__480.jpg" : user?.coverPicture} />
                         </div>
                         <div>
@@ -69,7 +71,8 @@ const ProfiePage: React.FC = () => {
                     <div className='flex w-full h-screen'>
                         <Feed userName={user?.email} />
                         <div className='hidden mt-6 rounded-lg md:block lg:block w-1/3'>
-                            <RightBar user={user} />
+                            <RightBar
+                                user={user} />
                         </div>
                     </div>
                 </div>

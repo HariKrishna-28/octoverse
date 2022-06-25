@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { RssFeed, Person } from '@mui/icons-material'
-import { Users } from '../../dummyData'
-import SideBarLists from './SideBarLists'
+// import { Users } from '../../dummyData'
+// import SideBarLists from './SideBarLists'
 import { Link } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { getUserData } from '../../features/authSlice'
@@ -32,7 +32,8 @@ const Sidebar: React.FC = () => {
         setLoad(true)
         if (currUser?._id)
             getFriend()
-    }, [User])
+        // eslint-disable-next-line
+    }, [currUser])
 
     return (
         <div className='h-full dark:bg-sideBar_dark_primary flex-grow overflow-y-auto scrollbar-hide bg-sideBar_light_primary dark:text-dark_Text text-black'>
@@ -57,26 +58,6 @@ const Sidebar: React.FC = () => {
                             </li>
                         </Link>
                     }
-                    {/* <li className={`${listStyling} flex items-center`}>
-                        <RssFeed />
-                        <span>Videos</span>
-                    </li>
-                    <li className={`${listStyling} flex items-center`}>
-                        <RssFeed />
-                        <span>Groups</span>
-                    </li>
-                    <li className={`${listStyling} flex items-center`}>
-                        <RssFeed />
-                        <span>Bookmarks</span>
-                    </li>
-                    <li className={`${listStyling} flex items-center`}>
-                        <RssFeed />
-                        <span>Questions</span>
-                    </li>
-                    <li className={`${listStyling} flex items-center`}>
-                        <RssFeed />
-                        <span>Jobs</span>
-                    </li> */}
                 </ul>
                 {/* <div className='text-center mb-2'>
                     <button className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-3 rounded'>show more</button>
@@ -86,7 +67,7 @@ const Sidebar: React.FC = () => {
                     <Person className='text-blue-600' />
                     <span className='font-bold'>People you may know</span>
                 </div>
-                <div className='flex flex-wrap items-center justify-center gap-1'>
+                <div className='flex flex-wrap flex-col items-center justify-center gap-1'>
                     {!load && friends ?
                         // @ts-ignore
                         friends.map((user: userFriendsProp, index: number) => {
@@ -94,10 +75,6 @@ const Sidebar: React.FC = () => {
                                 <UserFriends
                                     user={user}
                                     key={index}
-                                // email={user.email}
-                                // username={user.userName}
-                                // profilePicture={user.profilePicture}
-                                // id={user._id} 
                                 />
                             )
                         })
