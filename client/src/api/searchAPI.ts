@@ -6,6 +6,5 @@ export function getSearchTerms(searchTerm: string) {
     method: "get",
     url: `${searchAPI}/?q=${searchTerm}`,
   };
-  console.log(config);
   return axios(config);
 }
