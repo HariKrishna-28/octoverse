@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react'
 import { PermMedia, Label, Room, EmojiEmotions } from "@mui/icons-material"
-import { Tooltip, Zoom } from '@mui/material'
+import { CircularProgress, Tooltip, Zoom } from '@mui/material'
 import { useSelector } from 'react-redux'
 import { getUserData } from '../../features/authSlice'
 import { userProp } from '../interfaces/userProps'
@@ -196,7 +196,7 @@ const Share: React.FC<Props> = ({ triggerReload }) => {
                                     <div>Uploaded</div>
                                     :
                                     <>
-                                        <LoadAnimation />
+                                        <CircularProgress />
                                     </>
                             }
                         </div>

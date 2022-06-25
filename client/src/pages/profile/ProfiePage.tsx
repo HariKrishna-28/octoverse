@@ -37,7 +37,7 @@ const ProfiePage: React.FC = () => {
             {/* <div className='flex h-[calc(100vh-56px)] w-full '> */}
             <div className='flex h-100vh w-full '>
                 <div
-                    className='hidden md:block lg:block w-1/3'>
+                    className='hidden md:block lg:block w-1/4'>
                     <SideBar />
                 </div>
                 <div className='flex flex-col w-full  dark:bg-dark_feed_primary bg-light_feed_primary dark:text-dark_Text text-black p-3'>

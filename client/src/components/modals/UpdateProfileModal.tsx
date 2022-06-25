@@ -36,6 +36,7 @@ const UpdateProfileModal: React.FC<Props> = ({ handleClose, open, user }) => {
     const [imageUp, setimageUp] = useState(false)
     const [load, setLoad] = useState(false)
     const [url, setUrl] = useState("")
+    const [updatedCover, setUpdatedCover] = useState(false)
 
     const style = {
         position: 'absolute',
@@ -55,7 +56,7 @@ const UpdateProfileModal: React.FC<Props> = ({ handleClose, open, user }) => {
         setCity(user?.city)
         setDescription(user?.description)
         setUrl("")
-
+        setUpdatedCover(false)
     }
 
     const updateThisProfile = async (e: React.SyntheticEvent) => {
@@ -89,6 +90,7 @@ const UpdateProfileModal: React.FC<Props> = ({ handleClose, open, user }) => {
                     getDownloadURL(imageRef)
                         .then((url) => {
                             setUrl(url)
+                            setUpdatedCover(true)
                         })
                 }).catch(err => {
                     // setError(err.message)
@@ -237,7 +239,7 @@ const UpdateProfileModal: React.FC<Props> = ({ handleClose, open, user }) => {
                             {
                                 !load ?
                                     // @ts-ignore
-                                    city !== user?.city | from !== user?.from | description !== user?.description | url !== user?.coverPicture &&
+                                    city !== user?.city | from !== user?.from | description !== user?.description | updatedCover &&
                                     <button
                                         type='submit'
                                         // onClick={updateThisPost}
