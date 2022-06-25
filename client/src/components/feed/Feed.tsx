@@ -32,6 +32,7 @@ const Feed: React.FC<Props> = ({ userName = undefined }) => {
         //     setLoad(false)
         //     return
         // }
+        console.log(userName)
         try {
             const res = !userName ? await getTimelinePosts(currUser.user?._id) : await getUserProfilePosts(userName)
             setPost(res.data)

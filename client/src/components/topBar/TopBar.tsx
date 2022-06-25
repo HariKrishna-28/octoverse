@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Person, Chat, Notifications, Lightbulb, NightlightRound } from '@mui/icons-material';
 import { Tooltip, Zoom } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
@@ -8,6 +8,7 @@ import { getUserData, setUserStatus } from '../../features/authSlice';
 // import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth } from '../../firebase';
 import DropDown from '../dropdown/DropDown';
+import SearchBar from './SearchBar';
 
 const TopBar: React.FC = () => {
     const dispatch = useDispatch()
@@ -15,9 +16,7 @@ const TopBar: React.FC = () => {
     const themePreference = useSelector(selectTheme)
     const user = useSelector(getUserData)
     const currUser = user.user
-    // @ts-ignore
-    // const [authUser, loading] = useAuthState(auth)
-
+    const [searchTerm, setSearchTerm] = useState("")
 
     const changeTheme = () => {
         dispatch(setTheme({
@@ -26,11 +25,6 @@ const TopBar: React.FC = () => {
     }
 
     const logout = async () => {
-        // const initialState = {
-        //     user: null,
-        //     isFetching: false,
-        //     error: { message: "" },
-        // };
         dispatch(setUserStatus({
             user: null,
             isFetching: false,
@@ -39,6 +33,8 @@ const TopBar: React.FC = () => {
         await auth.signOut()
         navigate("/")
     }
+
+
 
     return (
         <>
@@ -54,33 +50,18 @@ const TopBar: React.FC = () => {
 
                 {/* center section */}
                 <div className='flex'>
-                    <input
+                    <SearchBar />
+                    {/* <input
+                        onChange={(e) => handleInput(e)}
                         style={{ width: "350px" }}
                         type="text"
                         className='focus:outline-none rounded-md dark:bg-navBar_secondary text-black dark:text-navBar_Text p-1.5'
-                        placeholder='search for friend, post or video' />
-                    {/* <div className=' w-full'>
-                        <Tooltip
-                            TransitionComponent={Zoom}
-                            TransitionProps={{ timeout: 400 }}
-                            title="Search">
-                            <Search className='h-5 color-black' />
-                        </Tooltip>
-                    </div> */}
+                        placeholder='search for friend, post or video' /> */}
+
                 </div>
 
                 {/* Right section */}
                 <div className='flex justify-evenly items-center gap-6'>
-                    {/* Topbar links */}
-                    <div className='flex gap-2 mr-3'>
-                        {/* <span>Homepage</span>
-                        <span>Timeline</span> */}
-                        {/* <button
-                            onClick={() => changeTheme()}
-                            className="rounded">
-                            {themePreference ? '💡' : '🌙'}
-                        </button> */}
-                    </div>
                     <div className='flex space-x-1 items-center justify-center'>
                         <Link to={`profile/${currUser?.userName}`}>
                             <Tooltip
@@ -121,16 +102,6 @@ const TopBar: React.FC = () => {
                             </div>
                         </Tooltip>
 
-                        {/* <Tooltip
-                            onClick={logout}
-                            TransitionComponent={Zoom}
-                            TransitionProps={{ timeout: 400 }}
-                            title="Logout">
-                            <div className='cursor-pointer p-1.5 hover:bg-navbar_hover_highlight transition-all duration-300 ease-out rounded-lg'>
-                                <Logout className='h-4' />
-                            </div>
-                        </Tooltip> */}
-
                         <DropDown
                             email={currUser?.email}
                             logOut={() => logout()}
@@ -139,23 +110,6 @@ const TopBar: React.FC = () => {
                         />
                     </div>
 
-                    {/* profile image */}
-                    <div >
-                        {/* <Tooltip
-                            // onClick={logout}
-                            TransitionComponent={Zoom}
-                            TransitionProps={{ timeout: 400 }}
-                            title={currUser?.userName}>
-                            <Link to={`profile/${currUser?.userName}`}>
-                                <img
-                                    // src="https://mui.com/static/branding/companies/nasa-dark.svg"
-                                    src={currUser?.profilePicture === "" ? `https://avatars.dicebear.com/api/initials/${currUser?.userName}.svg` : currUser?.profilePicture}
-                                    alt="profile pic"
-                                    className='object-cover rounded-full cursor-pointer h-10'
-                                />
-                            </Link>
-                        </Tooltip> */}
-                    </div>
                 </div >
             </div >
         </>
