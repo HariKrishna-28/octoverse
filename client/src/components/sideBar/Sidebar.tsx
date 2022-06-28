@@ -25,7 +25,6 @@ const Sidebar: React.FC = () => {
         try {
             const res = await getNewsData()
             setNews(res.data)
-            console.log(res.data)
         } catch (error) {
             console.log(error)
         }
@@ -70,6 +69,7 @@ const Sidebar: React.FC = () => {
                         news.map((news: newsProps, index: number) => {
                             return (
                                 <NewsBlock
+                                    key={index}
                                     news={news}
                                 />
                             )

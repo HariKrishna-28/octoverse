@@ -105,7 +105,7 @@ const Post: React.FC<Props> = ({ post, triggerReload }) => {
                     {/* top */}
                     <div className='flex items-center justify-between'>
                         <div className='flex items-center w-full gap-1'>
-                            <Link to={`profile/${user?.email}`}>
+                            <Link to={`/profile/${user?.email}`}>
                                 <img
                                     src={!user?.profilePicture ? `https://avatars.dicebear.com/api/initials/${user?.userName}.svg` : user?.profilePicture}
                                     alt="profile pic"
