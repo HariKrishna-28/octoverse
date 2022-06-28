@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react'
-import { Add, Cake, Close, Edit } from '@mui/icons-material'
+import { Add, Cake, Close, Edit, Person } from '@mui/icons-material'
 import { Users } from '../../dummyData'
 import ActiveUsers from './ActiveUsers'
 import UserFriends from './UserFriends'
-import { userProp } from '../interfaces/userProps'
-import { followOrUnfollowUser, getCurrentUserData, getUserFriends } from '../../api/userAPI'
+import { userFriendsProp, userProp } from '../interfaces/userProps'
+import { followOrUnfollowUser, getCurrentUserData, getFriendSuggestions, getUserFriends } from '../../api/userAPI'
 import LoadAnimation from '../load/LoadAnimation'
 import { useDispatch, useSelector } from 'react-redux'
 import { getUserData, setUserStatus } from '../../features/authSlice'
@@ -26,16 +26,30 @@ const RightBar: React.FC<Props> = ({ user, triggerReload }) => {
     const currentUser = useSelector(getUserData)
     const curr = currentUser.user
     const dispatch = useDispatch()
+    const [suggestions, setSuggestions] = useState<userFriendsProp>(null!)
+
     const [following, setFollowing] = useState(false)
 
     const getFriends = async (userId: string) => {
         try {
             const res = await getUserFriends(userId)
             setFriends(res.data)
-            setLoad(false)
+            console.log(res.data)
         } catch (error) {
             console.log(error)
         }
+        setLoad(false)
+    }
+
+    const getSuggestions = async () => {
+        try {
+            const res = await getFriendSuggestions(curr._id)
+            setSuggestions(res.data)
+            console.log(res.data)
+        } catch (error) {
+            console.log(error)
+        }
+        setLoad(false)
     }
 
     const updateUser = async () => {
@@ -69,21 +83,41 @@ const RightBar: React.FC<Props> = ({ user, triggerReload }) => {
         }
     }, [curr, user?._id])
 
+
     useEffect(() => {
-        if (!user) return
         setLoad(true)
-        getFriends(user._id)
+        if (!user) {
+            if (curr?._id) {
+                getSuggestions()
+            }
+        } else {
+            getFriends(user._id)
+        }
     }, [user])
+
+
 
     const HomeRightBar = () => {
         return (
             <>
-                <div className='flex items-center mb-2 gap-2'>
-                    <Cake className='text-blue-600' />
-                    <h4 className='font-bold'>Birthdays</h4>
+                <div className='flex items-center gap-1 mt-4 mb-2'>
+                    <Person className='text-blue-600' />
+                    <span className='font-bold'>People you may know</span>
                 </div>
-                <div>
-                    Harioo and three  others have their birthday
+                <div className='flex flex-wrap flex-col items-center justify-center gap-1'>
+                    {!load && suggestions ?
+                        // @ts-ignore
+                        suggestions.map((user: userFriendsProp, index: number) => {
+                            return (
+                                <UserFriends
+                                    user={user}
+                                    key={index}
+                                />
+                            )
+                        })
+                        :
+                        <LoadAnimation />
+                    }
                 </div>
                 <hr className='mt-2 mb-2' />
                 <div>
@@ -114,7 +148,7 @@ const RightBar: React.FC<Props> = ({ user, triggerReload }) => {
                         <div className='font-bold'>
                             User Info
                         </div>
-                        {user?.email == curr.email &&
+                        {user?.email === curr.email &&
 
                             <Tooltip
                                 TransitionComponent={Zoom}

@@ -46,7 +46,6 @@ export function followOrUnfollowUser(
       userId: currentId,
     },
   };
-  console.log(config);
   return axios(config);
 }
 
@@ -56,7 +55,6 @@ export function getFriendSuggestions(userId: string) {
     method: "get",
     url: URL,
   };
-  console.log(config);
   return axios(config);
 }
 
@@ -67,6 +65,5 @@ export function updateUser(data: any, id: String) {
     url: URL,
     data: data,
   };
-  console.log(config);
   return axios(config);
 }
