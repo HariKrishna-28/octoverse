@@ -22,7 +22,15 @@ router.get("/", async (req, res) => {
   axios
     .request(options)
     .then(function (response) {
-      res.status(200).json(response.data.articles);
+      const data = response.data.articles.map((article) => {
+        const { title, published_date, summary, _id, link } = article;
+        return { title, published_date, summary, _id, link };
+      });
+      res.status(200).json(
+        data.sort((p1, p2) => {
+          return new Date(p2.published_date) - new Date(p1.published_date);
+        })
+      );
     })
     .catch(function (error) {
       res.status(500).json(error);

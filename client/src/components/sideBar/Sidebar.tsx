@@ -9,19 +9,23 @@ import { getFriendSuggestions } from '../../api/userAPI'
 import { userFriendsProp } from '../interfaces/userProps'
 import LoadAnimation from '../load/LoadAnimation'
 import UserFriends from '../rightBar/UserFriends'
+import { newsProps } from '../interfaces/newsProps'
+import { getNewsData } from '../../api/newsAPI'
+import NewsBlock from './NewsBlock'
 
 
 const Sidebar: React.FC = () => {
     const User = useSelector(getUserData)
     const currUser = User.user
     const [load, setLoad] = useState(false)
-    const [friends, setFriends] = useState<userFriendsProp>(null!)
+    const [news, setNews] = useState<newsProps>(null!)
     const listStyling = 'dark:list__cards__dark list__cards__light transition-all duration-200 ease-out my-1'
 
-    const getFriend = async () => {
+    const getNews = async () => {
         try {
-            const res = await getFriendSuggestions(currUser._id)
-            setFriends(res.data)
+            const res = await getNewsData()
+            setNews(res.data)
+            console.log(res.data)
         } catch (error) {
             console.log(error)
         }
@@ -31,7 +35,7 @@ const Sidebar: React.FC = () => {
     useEffect(() => {
         setLoad(true)
         if (currUser?._id)
-            getFriend()
+            getNews()
         // eslint-disable-next-line
     }, [currUser])
 
@@ -39,10 +43,6 @@ const Sidebar: React.FC = () => {
         <div className='h-full dark:bg-sideBar_dark_primary flex-grow overflow-y-auto scrollbar-hide bg-sideBar_light_primary dark:text-dark_Text text-black'>
             <div className='p-5'>
                 <ul className='mb-2'>
-                    {/* <div> */}
-                    {/* <span className="font-bold text-sm">{currUser.userName}</span>
-                    <span className="font-bold text-sm">{currUser.email}</span> */}
-                    {/* </div> */}
                     <Link to="/">
                         <li className={`${listStyling} flex items-center`}>
                             <RssFeed />
@@ -59,22 +59,18 @@ const Sidebar: React.FC = () => {
                         </Link>
                     }
                 </ul>
-                {/* <div className='text-center mb-2'>
-                    <button className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-3 rounded'>show more</button>
-                </div> */}
                 <hr className='bg-black' />
                 <div className='flex items-center gap-1 mt-4 mb-2'>
                     <Person className='text-blue-600' />
-                    <span className='font-bold'>People you may know</span>
+                    <span className='font-bold'>Trending</span>
                 </div>
                 <div className='flex flex-wrap flex-col items-center justify-center gap-1'>
-                    {!load && friends ?
+                    {!load && news ?
                         // @ts-ignore
-                        friends.map((user: userFriendsProp, index: number) => {
+                        news.map((news: newsProps, index: number) => {
                             return (
-                                <UserFriends
-                                    user={user}
-                                    key={index}
+                                <NewsBlock
+                                    news={news}
                                 />
                             )
                         })
