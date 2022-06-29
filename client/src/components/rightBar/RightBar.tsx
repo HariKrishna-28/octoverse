@@ -12,6 +12,7 @@ import UpdateProfileModal from '../modals/UpdateProfileModal'
 import { Tooltip, Zoom } from '@mui/material'
 import SideBarLists from '../sideBar/SideBarLists'
 import { Link } from 'react-router-dom'
+import OnlineFriends from './OnlineFriends'
 
 
 interface Props {
@@ -127,9 +128,10 @@ const RightBar: React.FC<Props> = ({ user, triggerReload, profile = false }) => 
 
                 <hr className='mt-2 mb-2' />
                 <div>
-                    <div className='font-bold my-2'>
+                    {/* <div className='font-bold my-2'>
                         Online Friends
                     </div>
+                    <OnlineFriends /> */}
                     {/* <div className='flex flex-col'>
                         {Users.map((user, index) => {
                             return (

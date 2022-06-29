@@ -161,7 +161,7 @@ const Post: React.FC<Props> = ({ post, triggerReload }) => {
                             <span className='text-sm'>{like} likes</span>
                         </div>
                         <div>
-                            <span className='text-sm'>{moment(post?.createdAt).fromNow()}</span>
+                            <span className='text-sm text-blue-600'>{moment(post?.createdAt).fromNow()}</span>
                             {/* <span className='text-sm dark:hover:text-navbar_hover_highlight hover:text-blue-600'>{post.comment} comments</span> */}
                         </div>
                     </div >

@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react'
-import { PermMedia, Label, Room, EmojiEmotions } from "@mui/icons-material"
+import { PermMedia } from "@mui/icons-material"
 import { CircularProgress, Tooltip, Zoom } from '@mui/material'
 import { useSelector } from 'react-redux'
 import { getUserData } from '../../features/authSlice'
@@ -8,7 +8,7 @@ import { uploadPost } from '../../api/postAPI'
 import { v4 as uuid } from 'uuid'
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage'
 import { storage } from '../../firebase'
-import LoadAnimation from '../load/LoadAnimation'
+// import LoadAnimation from '../load/LoadAnimation'
 
 interface Props {
     triggerReload: () => void
@@ -95,17 +95,52 @@ const Share: React.FC<Props> = ({ triggerReload }) => {
                         draggable="false"
                         className='object-cover rounded-full cursor-pointer w-12 h-12 mr-2'
                     />
-                    <input
-                        ref={desc}
-                        type="text"
-                        placeholder={"What's in your mind " + currUser?.userName + "?"}
-                        className='w-full focus:outline-none rounded-md dark:bg-navBar_secondary text-black dark:text-navBar_Text p-1.5' />
+                    <div className='flex justify-between w-full'>
+                        <input
+                            ref={desc}
+                            type="text"
+                            placeholder={"What's in your mind " + currUser?.userName + "?"}
+                            className='w-full focus:outline-none rounded-md dark:bg-navBar_secondary text-black dark:text-navBar_Text p-1.5' />
+                        <Tooltip
+                            TransitionComponent={Zoom}
+                            TransitionProps={{ timeout: 400 }}
+                            title="Photo/Video">
+                            <label
+                                htmlFor='image-upload'
+                                className='cursor-pointer p-1.5 hover:bg-red-600 transition-all duration-300 ease-out rounded-lg'>
+                                <PermMedia />
+                            </label>
+                        </Tooltip>
+                        <input
+                            // hidden input for image upload
+                            className='hidden'
+                            id='image-upload'
+                            type="file"
+                            onChange={(e) => {
+                                // @ts-ignore
+                                setFile(e.target?.files ? e.target.files[0] : undefined)
+                                // @ts-ignore
+                                const filee = e.target.files[0]
+                                if (filee !== undefined) {
+                                    console.log("hi")
+                                    if (filee.size > 3000000) {
+                                        alert("File can only be below 3 mb")
+                                        setFile(undefined)
+                                    }
+                                    else {
+                                        // @ts-ignore
+                                        uploadImage(filee)
+                                    }
+                                }
+                            }}
+                            accept='.png, .jpeg, .jpg' />
+                    </div>
                 </div>
                 <hr className='my-4' />
                 <div className='mt-4'>
                     <div className='flex justify-evenly'>
                         <div className='flex flex-wrap gap-2 items-center'>
-                            <Tooltip
+                            {/* <Tooltip
                                 TransitionComponent={Zoom}
                                 TransitionProps={{ timeout: 400 }}
                                 title="Photo/Video">
@@ -114,8 +149,8 @@ const Share: React.FC<Props> = ({ triggerReload }) => {
                                     className='cursor-pointer p-1.5 hover:bg-red-600 transition-all duration-300 ease-out rounded-lg'>
                                     <PermMedia />
                                 </label>
-                            </Tooltip>
-                            <input
+                            </Tooltip> */}
+                            {/* <input
                                 // hidden input for image upload
                                 className='hidden'
                                 id='image-upload'
@@ -137,9 +172,9 @@ const Share: React.FC<Props> = ({ triggerReload }) => {
                                         }
                                     }
                                 }}
-                                accept='.png, .jpeg, .jpg' />
+                                accept='.png, .jpeg, .jpg' /> */}
                             {/* <span>Photo or Video</span> */}
-                            <Tooltip
+                            {/* <Tooltip
                                 TransitionComponent={Zoom}
                                 TransitionProps={{ timeout: 400 }}
                                 title="Tag">
@@ -164,13 +199,25 @@ const Share: React.FC<Props> = ({ triggerReload }) => {
                                 <div className='cursor-pointer p-1.5 hover:bg-yellow-600 transition-all duration-300 ease-out rounded-lg'>
                                     <EmojiEmotions />
                                 </div>
-                            </Tooltip>
+                            </Tooltip> */}
 
 
                             {/* <Tooltip
                                 TransitionComponent={Zoom}
                                 TransitionProps={{ timeout: 400 }}
                                 title="Share"> */}
+                            {
+                                !upload ?
+                                    imageURL !== "" &&
+                                    // <img src={imageURL} />
+                                    <img src={imageURL} alt="" className='h-10 w-auto' />
+                                    :
+                                    <>
+                                        <CircularProgress />
+                                    </>
+                            }
+
+
                             {!upload ?
                                 <button
                                     onClick={(e) => handleSubmit(e)}
@@ -185,32 +232,11 @@ const Share: React.FC<Props> = ({ triggerReload }) => {
                             }
                             {/* </Tooltip> */}
 
-                            {
-                                // file &&
-                                // <div>
-                                //     {file.name}
-                                // </div>
-                                !upload ?
-                                    imageURL !== "" &&
-                                    // <img src={imageURL} />
-                                    <div>Uploaded</div>
-                                    :
-                                    <>
-                                        <CircularProgress />
-                                    </>
-                            }
+
                         </div>
 
 
-                        {/* <div className='flex gap-2 items-center'>
-                            <Room className='text-purple-600' />
-                            <span>Location</span>
-                        </div>
-                        <div className='flex gap-2 items-center'>
-                            <EmojiEmotions className='text-yellow-600' />
-                            <span>Feeling</span>
-                        </div>
-                        <button className='bg-green-500 hover:bg-green-700 text-white font-bold py-1 px-3 rounded'>Share</button> */}
+
                     </div>
                 </div>
             </div>

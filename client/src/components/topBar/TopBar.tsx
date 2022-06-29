@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Person, Chat, Notifications, Lightbulb, NightlightRound } from '@mui/icons-material';
+import { Notifications, Lightbulb, NightlightRound } from '@mui/icons-material';
 import { Tooltip, Zoom } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectTheme, setTheme } from '../../features/themeSlice';
@@ -63,7 +63,7 @@ const TopBar: React.FC = () => {
                 {/* Right section */}
                 <div className='flex justify-evenly items-center gap-6'>
                     <div className='flex space-x-1 items-center justify-center'>
-                        <Link to={`profile/${currUser?.userName}`}>
+                        {/* <Link to={`profile/${currUser?.userName}`}>
                             <Tooltip
                                 TransitionComponent={Zoom}
                                 TransitionProps={{ timeout: 400 }}
@@ -72,16 +72,16 @@ const TopBar: React.FC = () => {
                                     <Person className='h-4' />
                                 </div>
                             </Tooltip>
-                        </Link>
+                        </Link> */}
 
-                        <Tooltip
+                        {/* <Tooltip
                             TransitionComponent={Zoom}
                             TransitionProps={{ timeout: 400 }}
                             title="Chat">
                             <div className='cursor-pointer p-1.5 hover:bg-navbar_hover_highlight transition-all duration-300 ease-out rounded-lg'>
                                 <Chat className='h-4' />
                             </div>
-                        </Tooltip>
+                        </Tooltip> */}
 
                         <Tooltip
                             TransitionComponent={Zoom}
