@@ -10,6 +10,8 @@ const userRoute = require("./routes/users");
 const authRoute = require("./routes/auth");
 const postRoute = require("./routes/posts");
 const searchRoute = require("./routes/search");
+const newsRoute = require("./routes/news");
+const activityRoute = require("./routes/activity");
 
 // Middleware
 app.use(express.json());
@@ -20,6 +22,8 @@ app.use("/api/users", userRoute);
 app.use("/api/auth", authRoute);
 app.use("/api/post", postRoute);
 app.use("/api/search", searchRoute);
+app.use("/api/news", newsRoute);
+app.use("/api/activity", activityRoute);
 
 // Database connection
 connectDb();

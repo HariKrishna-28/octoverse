@@ -13,6 +13,7 @@ import PostDropDown from '../dropdown/PostDropDown'
 import PostDeleteModal from '../modals/PostDeleteModal'
 import UpdatePostModal from '../modals/UpdatePostModal'
 import { Verified } from '@mui/icons-material'
+import { createNewActivity } from '../../api/activityAPI'
 
 interface Props {
     post: {
@@ -23,6 +24,7 @@ interface Props {
         likes: [],
         updatedAt: string,
         createdAt: string,
+        userEmail: string
         // photo: string,
         // date: string,
         // comment: number,
@@ -48,7 +50,6 @@ interface Props {
 
 const Post: React.FC<Props> = ({ post, triggerReload }) => {
     const [like, setLike] = useState<number>(post.likes.length)
-    const [isLiked, setIsLiked] = useState(false)
     const [user, setUser] = useState<userProp>()
     // eslint-disable-next-line
     const [load, setLoad] = useState(false)
@@ -56,14 +57,17 @@ const Post: React.FC<Props> = ({ post, triggerReload }) => {
     const [openUpdate, setOpenUpdate] = useState(false)
     const userData = useSelector(getUserData)
     const currentUser: userProp = userData.user
+    // @ts-ignore
+    const [isLiked, setIsLiked] = useState(false);
 
 
 
     const handleLike = async () => {
         try {
             if (currentUser?._id) {
-                const response = await likePosts(post._id, currentUser._id)
-                console.log(response.data)
+                const res = await likePosts(post._id, currentUser._id)
+                console.log(res.data)
+                // addActivity()
             }
             // if (currentUser?._id)  {
             //     const res = await likePosts(post._id, currentUser._id)
@@ -71,9 +75,34 @@ const Post: React.FC<Props> = ({ post, triggerReload }) => {
         } catch (error) {
             console.error(error)
         }
-
         setLike(isLiked ? like - 1 : like + 1)
         setIsLiked(!isLiked)
+        if (isLiked) {
+        }
+
+    }
+
+    const addActivity = async () => {
+        try {
+            const newActivity = {
+                userEmail: post.userEmail,
+                type: "like",
+                followerId: currentUser._id,
+                followerEmail: currentUser.email,
+                profilePic: currentUser.profilePicture,
+                hasSeen: false,
+                post: {
+                    img: post.img,
+                    id: post._id,
+                    desc: post.desc
+                }
+            }
+            console.log(newActivity)
+            const res = await createNewActivity(newActivity)
+            console.log(res.data)
+        } catch (error) {
+            console.log(error)
+        }
     }
 
     useEffect(() => {
@@ -96,7 +125,8 @@ const Post: React.FC<Props> = ({ post, triggerReload }) => {
             setIsLiked(post.likes.includes(currentUser._id))
         }
         // eslint-disable-next-line
-    }, [currentUser])
+    }, [currentUser, post.likes])
+
 
     return (
         <>
@@ -105,7 +135,7 @@ const Post: React.FC<Props> = ({ post, triggerReload }) => {
                     {/* top */}
                     <div className='flex items-center justify-between'>
                         <div className='flex items-center w-full gap-1'>
-                            <Link to={`profile/${user?.email}`}>
+                            <Link to={`/profile/${user?.email}`}>
                                 <img
                                     src={!user?.profilePicture ? `https://avatars.dicebear.com/api/initials/${user?.userName}.svg` : user?.profilePicture}
                                     alt="profile pic"
@@ -161,7 +191,7 @@ const Post: React.FC<Props> = ({ post, triggerReload }) => {
                             <span className='text-sm'>{like} likes</span>
                         </div>
                         <div>
-                            <span className='text-sm'>{moment(post?.createdAt).fromNow()}</span>
+                            <span className='text-sm text-blue-600'>{moment(post?.createdAt).fromNow()}</span>
                             {/* <span className='text-sm dark:hover:text-navbar_hover_highlight hover:text-blue-600'>{post.comment} comments</span> */}
                         </div>
                     </div >

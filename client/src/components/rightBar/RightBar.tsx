@@ -1,30 +1,35 @@
 import React, { useEffect, useState } from 'react'
-import { Add, Cake, Close, Edit } from '@mui/icons-material'
+import { Add, Cake, Close, Edit, Person } from '@mui/icons-material'
 import { Users } from '../../dummyData'
 import ActiveUsers from './ActiveUsers'
 import UserFriends from './UserFriends'
-import { userProp } from '../interfaces/userProps'
-import { followOrUnfollowUser, getCurrentUserData, getUserFriends } from '../../api/userAPI'
+import { userFriendsProp, userProp } from '../interfaces/userProps'
+import { followOrUnfollowUser, getCurrentUserData, getFriendSuggestions, getUserFriends } from '../../api/userAPI'
 import LoadAnimation from '../load/LoadAnimation'
 import { useDispatch, useSelector } from 'react-redux'
 import { getUserData, setUserStatus } from '../../features/authSlice'
 import UpdateProfileModal from '../modals/UpdateProfileModal'
 import { Tooltip, Zoom } from '@mui/material'
+import SideBarLists from '../sideBar/SideBarLists'
+import { Link } from 'react-router-dom'
+import OnlineFriends from './OnlineFriends'
 
 
 interface Props {
     user: userProp | undefined,
-    triggerReload: () => void
+    triggerReload: () => void,
+    profile: boolean
 }
 
 
-const RightBar: React.FC<Props> = ({ user, triggerReload }) => {
+const RightBar: React.FC<Props> = ({ user, triggerReload, profile = false }) => {
     const [load, setLoad] = useState(false)
     const [openEdit, setOpenEdit] = useState(false)
     // const [friends, setFriends] = useState<userFriendsProp>(null!)
     const [friends, setFriends] = useState([])
     const currentUser = useSelector(getUserData)
     const curr = currentUser.user
+    const [friendSuggestions, setFriendSuggestions] = useState<userFriendsProp>(null!)
     const dispatch = useDispatch()
     const [following, setFollowing] = useState(false)
 
@@ -63,6 +68,17 @@ const RightBar: React.FC<Props> = ({ user, triggerReload }) => {
         }
     }
 
+    const getUserFriendSuggestions = async (userId: string) => {
+        try {
+            const response = await getFriendSuggestions(userId)
+            setFriendSuggestions(response.data)
+            setLoad(false)
+        } catch (error) {
+            setLoad(false)
+            console.log(error)
+        }
+    }
+
     useEffect(() => {
         if (curr?.following) {
             setFollowing(curr.following.includes(user?._id))
@@ -70,27 +86,53 @@ const RightBar: React.FC<Props> = ({ user, triggerReload }) => {
     }, [curr, user?._id])
 
     useEffect(() => {
-        if (!user) return
-        setLoad(true)
-        getFriends(user._id)
-    }, [user])
+        if (profile) {
+            if (!user) return
+            setLoad(true)
+            getFriends(user._id)
+        } else {
+            if (!curr?._id) return
+            setLoad(true)
+            getUserFriendSuggestions(curr._id)
+        }
+    }, [user, profile, curr])
 
     const HomeRightBar = () => {
         return (
             <>
                 <div className='flex items-center mb-2 gap-2'>
-                    <Cake className='text-blue-600' />
-                    <h4 className='font-bold'>Birthdays</h4>
+                    <Person className='text-blue-600' />
+                    <h4 className='font-bold'>People you may know</h4>
                 </div>
                 <div>
-                    Harioo and three  others have their birthday
+                    {/* @ts-ignore */}
+                    {!load ? friendSuggestions && friendSuggestions.map((friends: userFriendsProp, index: number) => {
+                        return (
+                            <div
+                                key={index}
+                            >
+                                <Link to={`/profile/${friends.email}`}>
+                                    <SideBarLists
+                                        email={friends.email}
+                                        id={friends._id}
+                                        profilePicture={friends.profilePicture}
+                                        username={friends.userName}
+                                    />
+                                </Link>
+                            </div>
+                        )
+                    }) :
+                        <LoadAnimation />
+                    }
                 </div>
+
                 <hr className='mt-2 mb-2' />
                 <div>
-                    <div className='font-bold my-2'>
+                    {/* <div className='font-bold my-2'>
                         Online Friends
                     </div>
-                    <div className='flex flex-col'>
+                    <OnlineFriends /> */}
+                    {/* <div className='flex flex-col'>
                         {Users.map((user, index) => {
                             return (
                                 <ActiveUsers
@@ -100,7 +142,7 @@ const RightBar: React.FC<Props> = ({ user, triggerReload }) => {
                                     id={user.id} />
                             )
                         })}
-                    </div>
+                    </div> */}
                 </div>
             </>
         )

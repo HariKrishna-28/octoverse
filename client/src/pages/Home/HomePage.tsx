@@ -28,6 +28,7 @@ const HomePage: React.FC = () => {
                 </div>
                 <div className='hidden md:block lg:block w-1/3'>
                     <RightBar
+                        profile={false}
                         triggerReload={() => console.log("hi")}
                         user={undefined} />
                 </div>
