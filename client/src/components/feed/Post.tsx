@@ -58,7 +58,8 @@ const Post: React.FC<Props> = ({ post, triggerReload }) => {
     const userData = useSelector(getUserData)
     const currentUser: userProp = userData.user
     // @ts-ignore
-    const [isLiked, setIsLiked] = useState(false);
+    const [isLiked, setIsLiked] = useState(post.likes.includes(currentUser._id));
+    const [alreadyLiked, setAlreadyLiked] = useState(isLiked)
 
 
 
@@ -67,19 +68,16 @@ const Post: React.FC<Props> = ({ post, triggerReload }) => {
             if (currentUser?._id) {
                 const res = await likePosts(post._id, currentUser._id)
                 console.log(res.data)
-                // addActivity()
             }
-            // if (currentUser?._id)  {
-            //     const res = await likePosts(post._id, currentUser._id)
-            // }
         } catch (error) {
             console.error(error)
         }
         setLike(isLiked ? like - 1 : like + 1)
         setIsLiked(!isLiked)
-        if (isLiked) {
+        if (isLiked) setAlreadyLiked(true)
+        if (!isLiked && !alreadyLiked) {
+            addActivity()
         }
-
     }
 
     const addActivity = async () => {
@@ -97,7 +95,6 @@ const Post: React.FC<Props> = ({ post, triggerReload }) => {
                     desc: post.desc
                 }
             }
-            console.log(newActivity)
             const res = await createNewActivity(newActivity)
             console.log(res.data)
         } catch (error) {
@@ -119,13 +116,14 @@ const Post: React.FC<Props> = ({ post, triggerReload }) => {
         getPostData()
     }, [post.userId])
 
-    useEffect(() => {
-        if (currentUser?._id) {
-            // @ts-ignore
-            setIsLiked(post.likes.includes(currentUser._id))
-        }
-        // eslint-disable-next-line
-    }, [currentUser, post.likes])
+
+    // useEffect(() => {
+    //     if (currentUser?._id) {
+    //         // @ts-ignore
+    //         setIsLiked(post.likes.includes(currentUser._id))
+    //     }
+    //     // eslint-disable-next-line
+    // }, [currentUser, post.likes])
 
 
     return (
