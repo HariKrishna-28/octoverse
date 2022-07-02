@@ -10,6 +10,7 @@ import { auth } from '../../firebase';
 import DropDown from '../dropdown/DropDown';
 import SearchBar from './SearchBar';
 import { getActivity } from '../../api/activityAPI';
+import NotificationModal from '../modals/NotificationModal';
 
 const TopBar: React.FC = () => {
     const dispatch = useDispatch()
@@ -20,6 +21,7 @@ const TopBar: React.FC = () => {
     const [load, setLoad] = useState(false)
     const [notif, setNotif] = useState([])
     const [newNotif, setNewNotif] = useState(0)
+    const [open, setOpen] = useState(false)
 
     const changeTheme = () => {
         dispatch(setTheme({
@@ -77,6 +79,7 @@ const TopBar: React.FC = () => {
                     <div className='flex space-x-1 items-center justify-center'>
 
                         <Tooltip
+                            onClick={() => setOpen(true)}
                             TransitionComponent={Zoom}
                             TransitionProps={{ timeout: 400 }}
                             title="Notifications">
@@ -107,6 +110,11 @@ const TopBar: React.FC = () => {
 
                 </div >
             </div >
+            <NotificationModal
+                open={open}
+                notification={notif}
+                handleClose={() => setOpen(false)}
+            />
         </>
     )
 }
