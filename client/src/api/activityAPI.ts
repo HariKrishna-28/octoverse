@@ -17,3 +17,11 @@ export function getActivity(userEmail: string) {
   };
   return axios(config);
 }
+
+export function getActivityCount(userEmail: string) {
+  const config: AxiosRequestConfig = {
+    method: "get",
+    url: `${act}/notifications?id=${userEmail}`,
+  };
+  return axios(config);
+}

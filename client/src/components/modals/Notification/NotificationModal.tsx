@@ -3,7 +3,7 @@ import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 import CloseIcon from '@mui/icons-material/Close';
 import { useSelector } from 'react-redux';
-import { selectTheme } from '../../features/themeSlice';
+import { selectTheme } from '../../../features/themeSlice';
 
 
 interface Props {
@@ -29,7 +29,6 @@ const NotificationModal: React.FC<Props> = ({ notification, open, handleClose })
         color: themePreference ? "#F0F6FC" : "black",
     };
     console.log(notification)
-
     return (
         <Modal
             open={open}
@@ -54,9 +53,14 @@ const NotificationModal: React.FC<Props> = ({ notification, open, handleClose })
 
                 </div>
                 <div className="flex flex-col">
-
-
-
+                    {/* @ts-ignore */}
+                    {notification.map((activity: any, index: number) => {
+                        if (activity.type === "like") {
+                            console.log("like")
+                        } else {
+                            console.log("follow")
+                        }
+                    })}
                 </div>
 
             </Box>

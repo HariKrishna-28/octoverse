@@ -14,15 +14,19 @@ router.post("/new", async (req, res) => {
 
 router.get("/", async (req, res) => {
   try {
-    const act = await activity.findOne({ userEmail: req.query.id });
+    const act = await activity.find({ userEmail: req.query.id });
+    res.status(200).send(act);
+  } catch (error) {
+    res.status(500).json(error);
+  }
+});
+
+router.get("/notifications", async (req, res) => {
+  try {
     const count = await activity
       .findOne({ userEmail: req.query.id })
       .count({ hasSeen: "false" });
-    const data = {
-      avtivity: act,
-      newNotifications: count,
-    };
-    res.status(200).send(data);
+    res.status(200).send({ count: count });
   } catch (error) {
     res.status(500).json(error);
   }
