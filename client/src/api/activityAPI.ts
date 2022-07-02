@@ -9,3 +9,11 @@ export function createNewActivity(activity: Object) {
   };
   return axios(config);
 }
+
+export function getActivity(userEmail: string) {
+  const config: AxiosRequestConfig = {
+    method: "get",
+    url: `${act}?id=${userEmail}`,
+  };
+  return axios(config);
+}

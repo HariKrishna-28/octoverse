@@ -11,7 +11,7 @@ const SearchBar: React.FC = () => {
     const handleInput = (e: React.SyntheticEvent) => {
         // @ts-ignore
         setSearchTerm(e.target.value)
-        if (searchTerm.length == 0) {
+        if (searchTerm.length === 0) {
             setSuggestions([])
         } else {
             getSuggestions()

@@ -12,7 +12,7 @@ router.get("/", async (req, res) => {
             query: query,
             path: "userName",
             fuzzy: {
-              maxEdits: 1,
+              maxEdits: 2,
             },
           },
         },
