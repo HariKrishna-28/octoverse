@@ -2,7 +2,7 @@ const activity = require("../models/Activity");
 
 const router = require("express").Router();
 
-router.get("/new", async (req, res) => {
+router.post("/new", async (req, res) => {
   try {
     const data = new activity(req.body);
     const userActivity = await data.save();

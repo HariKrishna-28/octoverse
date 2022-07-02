@@ -13,6 +13,7 @@ import { Tooltip, Zoom } from '@mui/material'
 import SideBarLists from '../sideBar/SideBarLists'
 import { Link } from 'react-router-dom'
 import OnlineFriends from './OnlineFriends'
+import { createNewActivity } from '../../api/activityAPI'
 
 
 interface Props {
@@ -31,7 +32,8 @@ const RightBar: React.FC<Props> = ({ user, triggerReload, profile = false }) => 
     const curr = currentUser.user
     const [friendSuggestions, setFriendSuggestions] = useState<userFriendsProp>(null!)
     const dispatch = useDispatch()
-    const [following, setFollowing] = useState(false)
+    const [following, setFollowing] = useState(curr?.following.includes(user?._id))
+    const [alreadyFollowed, setAlreadyFollowed] = useState(following)
 
     const getFriends = async (userId: string) => {
         try {
@@ -62,6 +64,8 @@ const RightBar: React.FC<Props> = ({ user, triggerReload, profile = false }) => 
             if (!user) return
             await followOrUnfollowUser(user._id, following, curr._id)
             setFollowing(!following)
+            if (following) setAlreadyFollowed(true)
+            if (!following && !alreadyFollowed) createFollowActivity()
             updateUser()
         } catch (error) {
             console.log(error)
@@ -79,11 +83,28 @@ const RightBar: React.FC<Props> = ({ user, triggerReload, profile = false }) => 
         }
     }
 
-    useEffect(() => {
-        if (curr?.following) {
-            setFollowing(curr.following.includes(user?._id))
+    const createFollowActivity = async () => {
+        try {
+            const newActivity = {
+                userEmail: user?.email,
+                type: "follow",
+                followerId: curr._id,
+                followerEmail: curr.email,
+                profilePic: curr.profilePicture,
+                hasSeen: false
+            }
+            const res = await createNewActivity(newActivity)
+            console.log(res.data)
+        } catch (error) {
+            console.log(error)
         }
-    }, [curr, user?._id])
+    }
+
+    // useEffect(() => {
+    //     if (curr?.following) {
+    //         setFollowing(curr.following.includes(user?._id))
+    //     }
+    // }, [curr, user?._id])
 
     useEffect(() => {
         if (profile) {
