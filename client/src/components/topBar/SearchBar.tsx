@@ -48,11 +48,11 @@ const SearchBar: React.FC = () => {
                     return (
                         <>
                             {/* @ts-ignore  */}
-                            <Link to={`/profile/${search?.email}`}>
+                            <Link key={index} to={`/profile/${search?.email}`}>
                                 <div
                                     style={{ width: "350px" }}
                                     className='flex items-center p-1 gap-2'
-                                    key={index}>
+                                >
                                     {/* @ts-ignore  */}
                                     <img src={search?.profilePicture} alt="" className='rounded-full h-8' draggable="false" />
                                     <span className='font-bold'>
