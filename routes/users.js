@@ -152,7 +152,7 @@ async function getUser(followerId, userId) {
 router.get("/suggestions/:id", async (req, res) => {
   try {
     const user = await User.findById(req.params.id);
-    const userFollowers = shuffleArray(user.followers);
+    const userFollowers = shuffleArray(user.following);
     const suggestions = await Promise.all(
       userFollowers.map((follower) => {
         const data = getUser(follower, req.params.id);

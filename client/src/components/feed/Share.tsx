@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react'
 import { PermMedia } from "@mui/icons-material"
-import { CircularProgress, Tooltip, Zoom } from '@mui/material'
+import { Avatar, CircularProgress, Tooltip, Zoom } from '@mui/material'
 import { useSelector } from 'react-redux'
 import { getUserData } from '../../features/authSlice'
 import { userProp } from '../interfaces/userProps'
@@ -88,12 +88,12 @@ const Share: React.FC<Props> = ({ triggerReload }) => {
             <div className='p-3'>
                 <div className='flex items-center'
                 >
-                    <img
+                    <Avatar
                         // src="https://mui.com/static/branding/companies/nasa-dark.svg"
                         src={currUser?.profilePicture === "" ? `https://avatars.dicebear.com/api/initials/${currUser?.userName}.svg` : currUser?.profilePicture}
-                        alt="profile pic"
-                        draggable="false"
-                        className='object-cover rounded-full cursor-pointer w-12 h-12 mr-2'
+                        alt=""
+                    // draggable="false"
+                    // className='object-cover rounded-full cursor-pointer w-12 h-12 mr-2'
                     />
                     <div className='flex justify-between w-full'>
                         <input

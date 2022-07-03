@@ -1,3 +1,4 @@
+import { Avatar } from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { getSearchTerms } from '../../api/searchAPI'
@@ -11,7 +12,7 @@ const SearchBar: React.FC = () => {
     const handleInput = (e: React.SyntheticEvent) => {
         // @ts-ignore
         setSearchTerm(e.target.value)
-        if (searchTerm.length == 0) {
+        if (searchTerm.length === 0) {
             setSuggestions([])
         } else {
             getSuggestions()
@@ -41,7 +42,7 @@ const SearchBar: React.FC = () => {
                 style={{ width: "350px" }}
                 type="text"
                 className='focus:outline-none rounded-md dark:bg-navBar_secondary text-black dark:text-navBar_Text p-1.5'
-                placeholder='search for friend, post or video' />
+                placeholder='Search for a friend' />
 
             {searchTerm !== "" && <div className='absolute overflow-y-auto scrollbar-hide rounded-lg bg-navBar_BG text-navBar_Text max-h-36' >
                 {suggestions.map((search, index) => {
@@ -51,10 +52,13 @@ const SearchBar: React.FC = () => {
                             <Link key={index} to={`/profile/${search?.email}`}>
                                 <div
                                     style={{ width: "350px" }}
-                                    className='flex items-center p-1 gap-2'
+                                    className='flex items-center p-1 gap-2 hover:bg-dark_feed_secondary transition-all duration-300 ease-out'
                                 >
-                                    {/* @ts-ignore  */}
-                                    <img src={search?.profilePicture} alt="" className='rounded-full h-8' draggable="false" />
+                                    <Avatar
+                                        // @ts-ignore
+                                        src={search?.profilePicture}
+                                        alt=""
+                                    />
                                     <span className='font-bold'>
                                         {/* @ts-ignore  */}
                                         {search?.userName}

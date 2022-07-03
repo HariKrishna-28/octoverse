@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
-import { Add, Cake, Close, Edit, Person } from '@mui/icons-material'
-import { Users } from '../../dummyData'
-import ActiveUsers from './ActiveUsers'
+import { Add, Close, Edit, Person, RssFeed } from '@mui/icons-material'
+// import { Users } from '../../dummyData'
+// import ActiveUsers from './ActiveUsers'
 import UserFriends from './UserFriends'
 import { userFriendsProp, userProp } from '../interfaces/userProps'
 import { followOrUnfollowUser, getCurrentUserData, getFriendSuggestions, getUserFriends } from '../../api/userAPI'
@@ -12,7 +12,7 @@ import UpdateProfileModal from '../modals/UpdateProfileModal'
 import { Tooltip, Zoom } from '@mui/material'
 import SideBarLists from '../sideBar/SideBarLists'
 import { Link } from 'react-router-dom'
-import OnlineFriends from './OnlineFriends'
+// import OnlineFriends from './OnlineFriends'
 import { createNewActivity } from '../../api/activityAPI'
 
 
@@ -62,6 +62,7 @@ const RightBar: React.FC<Props> = ({ user, triggerReload, profile = false }) => 
     const handleClick = async () => {
         try {
             if (!user) return
+            console.log("hi")
             await followOrUnfollowUser(user._id, following, curr._id)
             setFollowing(!following)
             if (following) setAlreadyFollowed(true)
@@ -91,7 +92,8 @@ const RightBar: React.FC<Props> = ({ user, triggerReload, profile = false }) => 
                 followerId: curr._id,
                 followerEmail: curr.email,
                 profilePic: curr.profilePicture,
-                hasSeen: false
+                hasSeen: false,
+                followerName: curr.userName
             }
             const res = await createNewActivity(newActivity)
             console.log(res.data)
@@ -119,8 +121,29 @@ const RightBar: React.FC<Props> = ({ user, triggerReload, profile = false }) => 
     }, [user, profile, curr])
 
     const HomeRightBar = () => {
+        const listStyling = 'dark:list__cards__dark list__cards__light transition-all duration-200 ease-out my-1'
         return (
             <>
+                <div>
+                    <ul className='mb-2'>
+                        <Link to="/">
+                            <li className={`${listStyling} flex items-center`}>
+                                <RssFeed />
+                                <span>Feed</span>
+                            </li>
+                        </Link>
+                        {
+                            curr?.email &&
+                            <Link to={`/profile/${curr?.email}`}>
+                                <li className={`${listStyling} flex items-center`}>
+                                    <Person />
+                                    <span>Profile</span>
+                                </li>
+                            </Link>
+                        }
+                    </ul>
+                </div>
+                <hr className='mt-2 mb-2' />
                 <div className='flex items-center mb-2 gap-2'>
                     <Person className='text-blue-600' />
                     <h4 className='font-bold'>People you may know</h4>
@@ -147,7 +170,7 @@ const RightBar: React.FC<Props> = ({ user, triggerReload, profile = false }) => 
                     }
                 </div>
 
-                <hr className='mt-2 mb-2' />
+                {/* <hr className='mt-2 mb-2' /> */}
                 <div>
                     {/* <div className='font-bold my-2'>
                         Online Friends
@@ -177,7 +200,7 @@ const RightBar: React.FC<Props> = ({ user, triggerReload, profile = false }) => 
                         <div className='font-bold'>
                             User Info
                         </div>
-                        {user?.email == curr.email &&
+                        {user?.email === curr.email &&
 
                             <Tooltip
                                 TransitionComponent={Zoom}
@@ -206,8 +229,8 @@ const RightBar: React.FC<Props> = ({ user, triggerReload, profile = false }) => 
                     <div className='flex justify-center'>
                         <button
                             onClick={handleClick}
-                            className={`flex items-center gap-1 ${!following ? "bg-blue-500 hover:bg-blue-700" : "bg-red-500 hover:bg-red-700"} text-white font-bold py-1 px-3 rounded`}>
-                            {!following ? <div className='flex items-center'>Follow<Add /></div> : <div className='flex items-center'>UnFollow<Close /></div>}
+                            className={`flex items-center gap-1 ${following ? "bg-blue-500 hover:bg-blue-700" : "bg-red-500 hover:bg-red-700"} text-white font-bold py-1 px-3 rounded`}>
+                            {following ? <div className='flex items-center'>Follow<Add /></div> : <div className='flex items-center'>UnFollow<Close /></div>}
                         </button>
                     </div>
                 }

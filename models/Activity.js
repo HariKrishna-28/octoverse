@@ -18,6 +18,10 @@ const ActivitySchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    followerName: {
+      type: String,
+      required: true,
+    },
     profilePic: {
       type: String,
       required: true,
@@ -41,7 +45,7 @@ const ActivitySchema = new mongoose.Schema(
   },
   { timestamps: true }
 );
-ActivitySchema.index({ createdAt: 1 }, { expireAfterSeconds: 2592000 });
+ActivitySchema.index({ createdAt: 1 }, { expireAfterSeconds: 432000 });
 
 module.exports = mongoose.model("Activity", ActivitySchema);
 

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { RssFeed, Person } from '@mui/icons-material'
+import { RssFeed, Person, Whatshot } from '@mui/icons-material'
 // import { Users } from '../../dummyData'
 // import SideBarLists from './SideBarLists'
 import { Link } from 'react-router-dom'
@@ -41,7 +41,7 @@ const Sidebar: React.FC = () => {
     return (
         <div className='h-full dark:bg-sideBar_dark_primary flex-grow overflow-y-auto scrollbar-hide bg-sideBar_light_primary dark:text-dark_Text text-black'>
             <div className='p-5'>
-                <ul className='mb-2'>
+                {/* <ul className='mb-2'>
                     <Link to="/">
                         <li className={`${listStyling} flex items-center`}>
                             <RssFeed />
@@ -58,9 +58,9 @@ const Sidebar: React.FC = () => {
                         </Link>
                     }
                 </ul>
-                <hr className='bg-black' />
-                <div className='flex items-center gap-1 mt-4 mb-2'>
-                    <Person className='text-blue-600' />
+                <hr className='bg-black' /> */}
+                <div className='flex items-center gap-1 mb-2'>
+                    <Whatshot className='text-red-600' />
                     <span className='font-bold'>Trending</span>
                 </div>
                 <div className='flex flex-wrap flex-col items-center justify-center gap-1'>
