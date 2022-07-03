@@ -91,7 +91,8 @@ const RightBar: React.FC<Props> = ({ user, triggerReload, profile = false }) => 
                 followerId: curr._id,
                 followerEmail: curr.email,
                 profilePic: curr.profilePicture,
-                hasSeen: false
+                hasSeen: false,
+                followerName: curr.userName
             }
             const res = await createNewActivity(newActivity)
             console.log(res.data)

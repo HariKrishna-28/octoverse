@@ -1,3 +1,4 @@
+import { Avatar } from '@mui/material'
 import React from 'react'
 
 interface Props {
@@ -12,7 +13,9 @@ const SideBarLists: React.FC<Props> = ({ id, profilePicture, username, email }) 
 
     return (
         <div className={`${listStyling} flex items-center`}>
-            <img src={profilePicture} alt={username} className='object-cover rounded-full cursor-pointer h-6' />
+            <Avatar src={profilePicture} alt=""
+            // className='object-cover rounded-full cursor-pointer h-6' 
+            />
             <span>{username}</span>
         </div>
     )

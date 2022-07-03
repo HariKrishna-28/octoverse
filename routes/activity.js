@@ -14,7 +14,9 @@ router.post("/new", async (req, res) => {
 
 router.get("/", async (req, res) => {
   try {
-    const act = await activity.find({ userEmail: req.query.id });
+    const act = await activity
+      .find({ userEmail: req.query.id })
+      .sort({ createdAt: -1 });
     res.status(200).send(act);
   } catch (error) {
     res.status(500).json(error);

@@ -4,6 +4,9 @@ import Modal from '@mui/material/Modal';
 import CloseIcon from '@mui/icons-material/Close';
 import { useSelector } from 'react-redux';
 import { selectTheme } from '../../../features/themeSlice';
+import LikeNotification from './LikeNotification';
+import FollowNotification from './FollowNotification';
+import { getUserData } from '../../../features/authSlice';
 
 
 interface Props {
@@ -15,20 +18,22 @@ interface Props {
 const NotificationModal: React.FC<Props> = ({ notification, open, handleClose }) => {
     const themePreference = useSelector(selectTheme)
     const [load, setLoad] = useState(false)
+    const user = useSelector(getUserData)
+    const currentUser = user.user
 
     const style = {
         position: 'absolute',
         top: '50%',
         left: '50%',
         transform: 'translate(-50%, -50%)',
-        width: 600,
+        width: 750,
+        height: 500,
         bgcolor: themePreference ? "#0D1117" : "#FFFFFF",
         boxShadow: 24,
         borderRadius: 3,
         p: 3,
         color: themePreference ? "#F0F6FC" : "black",
     };
-    console.log(notification)
     return (
         <Modal
             open={open}
@@ -52,13 +57,24 @@ const NotificationModal: React.FC<Props> = ({ notification, open, handleClose })
                     </button>
 
                 </div>
-                <div className="flex flex-col">
+                <div className="flex flex-col gap-1 overflow-y-auto scrollbar-hide" style={{ height: "380px" }}>
                     {/* @ts-ignore */}
                     {notification.map((activity: any, index: number) => {
                         if (activity.type === "like") {
-                            console.log("like")
+                            return (
+                                <>
+                                    <LikeNotification
+                                        user={currentUser}
+                                        notification={activity}
+                                    />
+                                </>
+                            )
                         } else {
-                            console.log("follow")
+                            return (
+                                <FollowNotification
+                                    notification={activity}
+                                />
+                            )
                         }
                     })}
                 </div>

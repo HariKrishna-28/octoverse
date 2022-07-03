@@ -25,3 +25,14 @@ export function getActivityCount(userEmail: string) {
   };
   return axios(config);
 }
+
+export function updateSeen(activityId: string, userEmail: string) {
+  const config: AxiosRequestConfig = {
+    method: "put",
+    url: `${act}/update/${activityId}`,
+    data: {
+      userEmail: userEmail,
+    },
+  };
+  return axios(config);
+}

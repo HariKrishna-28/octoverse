@@ -18,6 +18,10 @@ const ActivitySchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    followerName: {
+      type: String,
+      required: true,
+    },
     profilePic: {
       type: String,
       required: true,

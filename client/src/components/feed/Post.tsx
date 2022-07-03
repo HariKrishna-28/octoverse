@@ -14,6 +14,7 @@ import PostDeleteModal from '../modals/PostDeleteModal'
 import UpdatePostModal from '../modals/UpdatePostModal'
 import { Verified } from '@mui/icons-material'
 import { createNewActivity } from '../../api/activityAPI'
+import { Avatar } from '@mui/material'
 
 interface Props {
     post: {
@@ -58,7 +59,7 @@ const Post: React.FC<Props> = ({ post, triggerReload }) => {
     const userData = useSelector(getUserData)
     const currentUser: userProp = userData.user
     // @ts-ignore
-    const [isLiked, setIsLiked] = useState(post.likes.includes(currentUser._id));
+    const [isLiked, setIsLiked] = useState(post.likes.includes(currentUser?._id));
     const [alreadyLiked, setAlreadyLiked] = useState(isLiked)
 
 
@@ -93,7 +94,8 @@ const Post: React.FC<Props> = ({ post, triggerReload }) => {
                     img: post.img,
                     id: post._id,
                     desc: post.desc
-                }
+                },
+                followerName: currentUser.userName,
             }
             const res = await createNewActivity(newActivity)
             console.log(res.data)
@@ -134,11 +136,11 @@ const Post: React.FC<Props> = ({ post, triggerReload }) => {
                     <div className='flex items-center justify-between'>
                         <div className='flex items-center w-full gap-1'>
                             <Link to={`/profile/${user?.email}`}>
-                                <img
+                                <Avatar
                                     src={!user?.profilePicture ? `https://avatars.dicebear.com/api/initials/${user?.userName}.svg` : user?.profilePicture}
-                                    alt="profile pic"
-                                    className='object-cover rounded-full h-10'
-                                    draggable="false" />
+                                    alt=""
+
+                                />
                             </Link>
                             <div className='flex w-full items-center justify-between'>
                                 <div className='flex items-center gap-2'>

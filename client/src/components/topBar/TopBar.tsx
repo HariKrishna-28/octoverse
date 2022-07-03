@@ -125,7 +125,12 @@ const TopBar: React.FC = () => {
             <NotificationModal
                 open={open}
                 notification={notif}
-                handleClose={() => setOpen(false)}
+                handleClose={() => {
+                    setOpen(false)
+                    setLoad(true)
+                    getNotificationCount()
+                    getUserActivity()
+                }}
             />
         </>
     )
