@@ -229,8 +229,8 @@ const RightBar: React.FC<Props> = ({ user, triggerReload, profile = false }) => 
                     <div className='flex justify-center'>
                         <button
                             onClick={handleClick}
-                            className={`flex items-center gap-1 ${!following ? "bg-blue-500 hover:bg-blue-700" : "bg-red-500 hover:bg-red-700"} text-white font-bold py-1 px-3 rounded`}>
-                            {!following ? <div className='flex items-center'>Follow<Add /></div> : <div className='flex items-center'>UnFollow<Close /></div>}
+                            className={`flex items-center gap-1 ${following ? "bg-blue-500 hover:bg-blue-700" : "bg-red-500 hover:bg-red-700"} text-white font-bold py-1 px-3 rounded`}>
+                            {following ? <div className='flex items-center'>Follow<Add /></div> : <div className='flex items-center'>UnFollow<Close /></div>}
                         </button>
                     </div>
                 }
