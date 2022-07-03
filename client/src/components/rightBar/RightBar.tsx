@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
-import { Add, Cake, Close, Edit, Person, RssFeed } from '@mui/icons-material'
-import { Users } from '../../dummyData'
-import ActiveUsers from './ActiveUsers'
+import { Add, Close, Edit, Person, RssFeed } from '@mui/icons-material'
+// import { Users } from '../../dummyData'
+// import ActiveUsers from './ActiveUsers'
 import UserFriends from './UserFriends'
 import { userFriendsProp, userProp } from '../interfaces/userProps'
 import { followOrUnfollowUser, getCurrentUserData, getFriendSuggestions, getUserFriends } from '../../api/userAPI'
@@ -12,7 +12,7 @@ import UpdateProfileModal from '../modals/UpdateProfileModal'
 import { Tooltip, Zoom } from '@mui/material'
 import SideBarLists from '../sideBar/SideBarLists'
 import { Link } from 'react-router-dom'
-import OnlineFriends from './OnlineFriends'
+// import OnlineFriends from './OnlineFriends'
 import { createNewActivity } from '../../api/activityAPI'
 
 
@@ -200,7 +200,7 @@ const RightBar: React.FC<Props> = ({ user, triggerReload, profile = false }) => 
                         <div className='font-bold'>
                             User Info
                         </div>
-                        {user?.email == curr.email &&
+                        {user?.email === curr.email &&
 
                             <Tooltip
                                 TransitionComponent={Zoom}

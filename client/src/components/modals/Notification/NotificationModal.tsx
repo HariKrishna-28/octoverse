@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 import CloseIcon from '@mui/icons-material/Close';
@@ -17,7 +17,7 @@ interface Props {
 
 const NotificationModal: React.FC<Props> = ({ notification, open, handleClose }) => {
     const themePreference = useSelector(selectTheme)
-    const [load, setLoad] = useState(false)
+    // const [load, setLoad] = useState(false)
     const user = useSelector(getUserData)
     const currentUser = user.user
 
