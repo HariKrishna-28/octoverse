@@ -62,6 +62,7 @@ const RightBar: React.FC<Props> = ({ user, triggerReload, profile = false }) => 
     const handleClick = async () => {
         try {
             if (!user) return
+            console.log("hi")
             await followOrUnfollowUser(user._id, following, curr._id)
             setFollowing(!following)
             if (following) setAlreadyFollowed(true)

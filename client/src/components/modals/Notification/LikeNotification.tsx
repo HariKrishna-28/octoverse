@@ -50,7 +50,17 @@ const LikeNotification: React.FC<Prop> = ({ notification, user }) => {
                         </div>
                     </div>
                     <div className='flex gap-1'>
-                        <img src={notification.post.img} alt="" className='h-10 rounded-lg' />
+                        <img
+                            draggable="false"
+                            src={notification.post.img}
+                            alt=""
+                            className='h-10 rounded-lg' />
+                        {
+                            notification.post.img === "" &&
+                            <div className={`overflow-y-auto scrollbar-hide ${themePreference ? "border-dark_Text" : "border-black"} p-1 rounded-lg`} style={{ width: "200px", height: "50px" }}>
+                                Lorem ipsum dolor, sit amet consectetur adipisicing elit. Distinctio, et.
+                            </div>
+                        }
                         {!seen &&
                             <Tooltip
                                 onClick={() => handleClick()}

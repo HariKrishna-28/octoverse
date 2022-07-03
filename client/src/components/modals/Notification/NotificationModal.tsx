@@ -62,18 +62,25 @@ const NotificationModal: React.FC<Props> = ({ notification, open, handleClose })
                     {notification.map((activity: any, index: number) => {
                         if (activity.type === "like") {
                             return (
-                                <>
+                                <div
+                                    key={index}
+                                >
                                     <LikeNotification
                                         user={currentUser}
                                         notification={activity}
                                     />
-                                </>
+                                </div>
                             )
                         } else {
                             return (
-                                <FollowNotification
-                                    notification={activity}
-                                />
+                                <div
+                                    key={index}
+                                >
+                                    <FollowNotification
+                                        notification={activity}
+                                        user={currentUser}
+                                    />
+                                </div>
                             )
                         }
                     })}

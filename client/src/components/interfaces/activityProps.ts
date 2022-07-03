@@ -26,4 +26,5 @@ export interface FollowNotificationProps {
   hasSeen: boolean;
   createdAt: string;
   updatedAt: string;
+  followerName: string;
 }
