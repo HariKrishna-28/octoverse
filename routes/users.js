@@ -2,6 +2,7 @@ const router = require("express").Router();
 const bcrypt = require("bcrypt");
 const User = require("../models/User");
 const shuffleArray = require("../components/helpers/Shuffler");
+const { getUserFollowers } = require("../components/helpers/suggestions");
 
 // Update user
 router.put("/:id", async (req, res) => {
@@ -161,6 +162,7 @@ async function getUser(followerId, userId) {
         email: data.email,
         profilePicture: data.profilePicture,
       };
+      console.log(userInfo);
       return userInfo;
     }
     return;
@@ -174,16 +176,28 @@ router.get("/suggestions/:id", async (req, res) => {
   try {
     const user = await User.findById(req.params.id);
     const userFollowers = shuffleArray(user.following);
-    const suggestions = await Promise.all(
+    const followingOfFollowers = await Promise.all(
       userFollowers.map((follower) => {
-        const data = getUser(follower, req.params.id);
-        if (data) return data;
-        if (suggestions.length > 10) {
-          res.status(200).json(suggestions);
-        }
+        return getUserFollowers(follower);
       })
     );
-    res.status(200).json(suggestions);
+    let sugg = [];
+    followingOfFollowers.map((element) => {
+      const suggestions = element.forEach((id) => {
+        const data = getUser(req.params.id, id);
+        if (!sugg.includes(data)) sugg.push(data);
+      });
+    });
+    // const suggestions = await Promise.all(
+    //   userFollowers.map((follower) => {
+    //     const data = getUser(follower, req.params.id);
+    //     if (data) return data;
+    //     if (suggestions.length > 10) {
+    //       res.status(200).json(suggestions);
+    //     }
+    //   })
+    // );
+    res.status(200).json(sugg);
   } catch (error) {
     console.log(error);
     res.status(500).json(error);
