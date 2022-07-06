@@ -15,6 +15,7 @@ import UpdatePostModal from '../modals/UpdatePostModal'
 import { Verified } from '@mui/icons-material'
 import { createNewActivity } from '../../api/activityAPI'
 import { Avatar } from '@mui/material'
+import LikesModal from '../modals/Notification/LikesModal'
 
 interface Props {
     post: {
@@ -56,6 +57,7 @@ const Post: React.FC<Props> = ({ post, triggerReload }) => {
     const [load, setLoad] = useState(false)
     const [openDelete, setOpenDelete] = useState(false)
     const [openUpdate, setOpenUpdate] = useState(false)
+    const [openLikes, setOpenLikes] = useState(false)
     const userData = useSelector(getUserData)
     const currentUser: userProp = userData.user
     // @ts-ignore
@@ -188,7 +190,7 @@ const Post: React.FC<Props> = ({ post, triggerReload }) => {
                             <ThumbUp
                                 className={`cursor-pointer ${isLiked ? "text-blue-600" : ""}`}
                                 onClick={handleLike} />
-                            <span className='text-sm'>{like} likes</span>
+                            <span className='text-sm hover:underline cursor-pointer' onClick={() => setOpenLikes(true)}>{like} likes</span>
                         </div>
                         <div>
                             <span className='text-sm text-blue-600'>{moment(post?.createdAt).fromNow()}</span>
@@ -217,6 +219,11 @@ const Post: React.FC<Props> = ({ post, triggerReload }) => {
                     if (flag) triggerReload()
                 }}
             />
+            {openLikes && <LikesModal
+                handleClose={() => setOpenLikes(false)}
+                open={openLikes}
+                postId={post._id}
+            />}
         </>
     )
 }

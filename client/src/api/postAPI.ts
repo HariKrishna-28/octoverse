@@ -31,6 +31,15 @@ export function likePosts(postId: string, userId: string) {
   return axios(config);
 }
 
+export function getLikes(postId: string) {
+  const config: AxiosRequestConfig = {
+    method: "get",
+    url: `${postAPI}/likes/${postId}`,
+  };
+  console.log(config);
+  return axios(config);
+}
+
 export function uploadPost(post: uploadPostProps) {
   const config: AxiosRequestConfig = {
     method: "post",

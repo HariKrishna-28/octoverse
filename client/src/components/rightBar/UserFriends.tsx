@@ -1,4 +1,4 @@
-import { Tooltip, Zoom } from '@mui/material'
+import { Avatar, Tooltip, Zoom } from '@mui/material'
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
 import { userFriendsProp } from '../interfaces/userProps'
@@ -25,10 +25,10 @@ const UserFriends: React.FC<Props> = ({ user }) => {
             <div
                 onClick={() => handleClick(user.email)}
                 className={`${tileStyling} items-center`}>
-                <img
-                    className='rounded-full h-12'
+                <Avatar
+                    // className='rounded-full h-12'
                     src={user.profilePicture}
-                    alt={user.userName} />
+                    alt="" />
             </div>
             {/* </Link> */}
         </Tooltip>
