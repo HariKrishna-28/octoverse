@@ -4,7 +4,7 @@ import { Add, Close, Edit, Person, RssFeed } from '@mui/icons-material'
 // import ActiveUsers from './ActiveUsers'
 import UserFriends from './UserFriends'
 import { userFriendsProp, userProp } from '../interfaces/userProps'
-import { followOrUnfollowUser, getCurrentUserData, getFriendSuggestions, getUserFriends } from '../../api/userAPI'
+import { followOrUnfollowUser, getCurrentUserData, getFriendSuggestions, getUserFollowing, getUserFriends } from '../../api/userAPI'
 import LoadAnimation from '../load/LoadAnimation'
 import { useDispatch, useSelector } from 'react-redux'
 import { getUserData, setUserStatus } from '../../features/authSlice'
@@ -34,12 +34,23 @@ const RightBar: React.FC<Props> = ({ user, triggerReload, profile = false }) => 
     const dispatch = useDispatch()
     const [following, setFollowing] = useState(curr?.following.includes(user?._id))
     const [alreadyFollowed, setAlreadyFollowed] = useState(following)
+    const [userFollowing, setUserFollowing] = useState([])
 
     const getFriends = async (userId: string) => {
         try {
             const res = await getUserFriends(userId)
             setFriends(res.data)
             setLoad(false)
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    const getFollowing = async (userId: string) => {
+        try {
+            const res = await getUserFollowing(userId)
+            setUserFollowing(res.data)
+
         } catch (error) {
             console.log(error)
         }
@@ -72,6 +83,8 @@ const RightBar: React.FC<Props> = ({ user, triggerReload, profile = false }) => 
             console.log(error)
         }
     }
+
+
 
     const getUserFriendSuggestions = async (userId: string) => {
         try {
@@ -112,6 +125,7 @@ const RightBar: React.FC<Props> = ({ user, triggerReload, profile = false }) => 
         if (profile) {
             if (!user) return
             setLoad(true)
+            getFollowing(user._id)
             getFriends(user._id)
         } else {
             if (!curr?._id) return
@@ -236,13 +250,34 @@ const RightBar: React.FC<Props> = ({ user, triggerReload, profile = false }) => 
                 }
 
                 <div className='font-bold p-3'>
-                    Friends
+                    Followers
                 </div>
                 <div>
                     <div className='flex flex-wrap items-center justify-center gap-1'>
                         {
                             !load ?
                                 friends.map((user, index) => {
+                                    return (
+                                        <div key={index}>
+                                            <UserFriends
+                                                user={user}
+                                            />
+                                        </div>
+                                    )
+                                })
+                                :
+                                <LoadAnimation />
+                        }
+                    </div>
+                </div>
+                <div className='font-bold p-3'>
+                    Following
+                </div>
+                <div>
+                    <div className='flex flex-wrap items-center justify-center gap-1'>
+                        {
+                            !load ?
+                                userFollowing.map((user, index) => {
                                     return (
                                         <div key={index}>
                                             <UserFriends
