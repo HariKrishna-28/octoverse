@@ -2,7 +2,7 @@
 
 # [OctoVerse](https://octo-verse.vercel.app/)
 
-> ### _Connect with friends around the world using OctoVerse. Share your thoughts as a post or a message and follow your friends to see what they are up to. Octoverse is a social media application built using reactjs and backed by mongodb_
+> ### _Connect with friends around the world using OctoVerse. Share your thoughts as a post or a message and follow your friends to see what they are up to. Octoverse is a social media application built using ReactJs, NodeJs and backed by mongodb_
 
 </div>
 <br>
@@ -28,7 +28,6 @@
 | **[React Router Dom](https://reactrouter.com/docs/en/v6)**                     | Declarative Routing for react apps                                           |
 | **[React Redux](https://react-redux.js.org/introduction/getting-started)**     | Library to Centralize and manage application state                           |
 | **[React Firebase Hooks](https://www.npmjs.com/package/react-firebase-hooks)** | React Hooks for Firebase                                                     |
-| **[Dice Bear Avatars](https://avatars.dicebear.com/docs)**                     | Open source avatar library                                                   |
 | **[UUID](https://github.com/uuidjs/uuid)**                                     | RFC-compliant UUID generator                                                 |
 | **[MomentJs](https://momentjs.com/docs/)**                                     | Date parsing and manipulating library                                        |
 

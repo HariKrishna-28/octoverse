@@ -74,6 +74,26 @@ router.get("/:id", async (req, res) => {
   }
 });
 
+// get post likes
+router.get("/likes/:id", async (req, res) => {
+  try {
+    const post = await Post.findById(req.params.id);
+    const postLikes = await Promise.all(
+      post.likes.map((userId) => {
+        return User.findById(userId);
+      })
+    );
+    let likes = [];
+    postLikes.map((users) => {
+      const { _id, userName, profilePicture, email } = users;
+      likes.push({ _id, userName, profilePicture, email });
+    });
+    res.status(200).json(likes);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
+
 // get timeline posts
 router.get("/timeline/:userId", async (req, res) => {
   try {

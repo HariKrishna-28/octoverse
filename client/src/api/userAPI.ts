@@ -25,7 +25,16 @@ export function getCurrentUserData(userEmail: string) {
 }
 
 export function getUserFriends(userId: string) {
-  const URL = `${userAPI}/friends/${userId}`;
+  const URL = `${userAPI}/followers/${userId}`;
+  const config: AxiosRequestConfig = {
+    method: "get",
+    url: URL,
+  };
+  return axios(config);
+}
+
+export function getUserFollowing(userId: string) {
+  const URL = `${userAPI}/following/${userId}`;
   const config: AxiosRequestConfig = {
     method: "get",
     url: URL,

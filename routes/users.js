@@ -2,6 +2,7 @@ const router = require("express").Router();
 const bcrypt = require("bcrypt");
 const User = require("../models/User");
 const shuffleArray = require("../components/helpers/Shuffler");
+const { getUserFollowers } = require("../components/helpers/suggestions");
 
 // Update user
 router.put("/:id", async (req, res) => {
@@ -60,8 +61,29 @@ router.get("/", async (req, res) => {
   }
 });
 
-// Get friends
-router.get("/friends/:userId", async (req, res) => {
+// Get followers
+router.get("/followers/:userId", async (req, res) => {
+  try {
+    const user = await User.findById(req.params.userId);
+    const friends = await Promise.all(
+      user.followers.map((friendId) => {
+        return User.findById(friendId);
+      })
+    );
+    let friendsList = [];
+    friends.map((friend) => {
+      const { _id, userName, profilePicture, email } = friend;
+      friendsList.push({ _id, userName, profilePicture, email });
+    });
+    res.status(200).json(friendsList);
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json(error);
+  }
+});
+
+// get following
+router.get("/following/:userId", async (req, res) => {
   try {
     const user = await User.findById(req.params.userId);
     const friends = await Promise.all(
@@ -140,6 +162,7 @@ async function getUser(followerId, userId) {
         email: data.email,
         profilePicture: data.profilePicture,
       };
+      console.log(userInfo);
       return userInfo;
     }
     return;
@@ -153,16 +176,35 @@ router.get("/suggestions/:id", async (req, res) => {
   try {
     const user = await User.findById(req.params.id);
     const userFollowers = shuffleArray(user.following);
-    const suggestions = await Promise.all(
+    const followingOfFollowers = await Promise.all(
       userFollowers.map((follower) => {
-        const data = getUser(follower, req.params.id);
-        if (data) return data;
-        if (suggestions.length > 10) {
-          res.status(200).json(suggestions);
-        }
+        return getUserFollowers(follower);
       })
     );
-    res.status(200).json(suggestions);
+    let sugg = [];
+    followingOfFollowers.map((element) => {
+      element.forEach((id) => {
+        if (
+          !sugg.includes(id) &&
+          id !== req.params.id &&
+          !user.following.includes(id)
+        )
+          sugg.push(id);
+      });
+    });
+
+    const shuffledSuggestions = shuffleArray(sugg.slice(0, 10));
+    const resp = await Promise.all(
+      shuffledSuggestions.map((userSuggestions) => {
+        const user = User.findById(userSuggestions);
+        return user;
+      })
+    );
+    const userFriendSuggestions = resp.map((user) => {
+      const { _id, userName, profilePicture, email } = user;
+      return { _id, userName, profilePicture, email };
+    });
+    res.status(200).json(userFriendSuggestions);
   } catch (error) {
     console.log(error);
     res.status(500).json(error);
