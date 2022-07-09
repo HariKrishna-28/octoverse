@@ -15,6 +15,9 @@ export interface userProp {
 }
 
 export interface userFriendsProp {
+  // map(
+  //   arg0: (user: userFriendsProp, index: number) => JSX.Element
+  // ): import("react").ReactNode;
   _id: string;
   email: string;
   profilePicture: string;

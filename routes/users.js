@@ -183,21 +183,28 @@ router.get("/suggestions/:id", async (req, res) => {
     );
     let sugg = [];
     followingOfFollowers.map((element) => {
-      const suggestions = element.forEach((id) => {
-        const data = getUser(req.params.id, id);
-        if (!sugg.includes(data)) sugg.push(data);
+      element.forEach((id) => {
+        if (
+          !sugg.includes(id) &&
+          id !== req.params.id &&
+          !user.following.includes(id)
+        )
+          sugg.push(id);
       });
     });
-    // const suggestions = await Promise.all(
-    //   userFollowers.map((follower) => {
-    //     const data = getUser(follower, req.params.id);
-    //     if (data) return data;
-    //     if (suggestions.length > 10) {
-    //       res.status(200).json(suggestions);
-    //     }
-    //   })
-    // );
-    res.status(200).json(sugg);
+
+    const shuffledSuggestions = shuffleArray(sugg.slice(0, 10));
+    const resp = await Promise.all(
+      shuffledSuggestions.map((userSuggestions) => {
+        const user = User.findById(userSuggestions);
+        return user;
+      })
+    );
+    const userFriendSuggestions = resp.map((user) => {
+      const { _id, userName, profilePicture, email } = user;
+      return { _id, userName, profilePicture, email };
+    });
+    res.status(200).json(userFriendSuggestions);
   } catch (error) {
     console.log(error);
     res.status(500).json(error);

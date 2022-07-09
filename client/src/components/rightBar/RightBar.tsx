@@ -127,9 +127,9 @@ const RightBar: React.FC<Props> = ({ user, triggerReload, profile = false }) => 
             getFollowing(user._id)
             getFriends(user._id)
         } else {
-            // if (!curr?._id) return
-            // setLoad(true)
-            // getUserFriendSuggestions(curr._id)
+            if (!curr?._id) return
+            setLoad(true)
+            getUserFriendSuggestions(curr._id)
         }
     }, [user, profile, curr])
 
@@ -157,10 +157,10 @@ const RightBar: React.FC<Props> = ({ user, triggerReload, profile = false }) => 
                     </ul>
                 </div>
                 <hr className='mt-2 mb-2' />
-                {/* <div className='flex items-center mb-2 gap-2'>
+                <div className='flex items-center mb-2 gap-2'>
                     <Person className='text-blue-600' />
                     <h4 className='font-bold'>People you may know</h4>
-                </div> */}
+                </div>
                 <div>
                     {/* @ts-ignore */}
                     {!load ? friendSuggestions && friendSuggestions.map((friends: userFriendsProp, index: number) => {
