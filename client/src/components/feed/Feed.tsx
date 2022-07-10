@@ -33,8 +33,9 @@ const Feed: React.FC<Props> = ({ userName = undefined }) => {
         //     return
         // }
         try {
-            const res = !userName ? await getTimelinePosts(currUser.user?._id) : await getUserProfilePosts(userName)
-            setPost(res.data)
+            const res = !userName ? currUser.user?._id && await getTimelinePosts(currUser.user?._id) : await getUserProfilePosts(userName)
+            if (currUser.user?._id || userName)
+                setPost(res.data)
         } catch (error) {
             console.log(error)
         }
