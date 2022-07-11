@@ -51,7 +51,7 @@ const SearchRoutes: React.FC = () => {
 
 
   return <>
-    {!loading && user.user !== null ?
+    {!loading ?
       <Routes>
         <Route path="/" element={!user.user && !currentUser ? <Login /> : <HomePage />} />
         {/* <Route path="/login" element={<Login />} /> */}
