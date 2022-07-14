@@ -4,14 +4,14 @@ import Modal from '@mui/material/Modal';
 import CloseIcon from '@mui/icons-material/Close';
 import { useSelector } from 'react-redux';
 import { selectTheme } from '../../../features/themeSlice';
-import LikeNotification from '../Notification/LikeNotification';
-import FollowNotification from '../Notification/FollowNotification';
-import { getUserData } from '../../../features/authSlice';
 import { userFriendsProp } from '../../interfaces/userProps';
 import { getLikes } from '../../../api/postAPI';
-import SideBarLists from '../../sideBar/SideBarLists';
 import LoadAnimation from '../../load/LoadAnimation';
 import LikesList from './LikesList';
+// import LikeNotification from './LikeNotification';
+// import FollowNotification from './FollowNotification';
+// import { getUserData } from '../../../features/authSlice';
+// import SideBarLists from '../../sideBar/SideBarLists';
 
 
 interface Props {
@@ -22,11 +22,11 @@ interface Props {
 
 const LikesModal: React.FC<Props> = ({ postId, open, handleClose }) => {
     const themePreference = useSelector(selectTheme)
-    // const [load, setLoad] = useState(false)
-    const user = useSelector(getUserData)
-    const currentUser = user.user
     const [load, setLoad] = useState(false)
     const [likesData, setLikesData] = useState<userFriendsProp>(null!)
+    // const [load, setLoad] = useState(false)
+    // const user = useSelector(getUserData)
+    // const currentUser = user.user
 
     const style = {
         position: 'absolute',

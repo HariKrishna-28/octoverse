@@ -4,17 +4,17 @@ import Modal from '@mui/material/Modal';
 import CloseIcon from '@mui/icons-material/Close';
 import { useSelector } from 'react-redux';
 import { selectTheme } from '../../features/themeSlice';
-import { updatePost } from '../../api/postAPI';
+// import { updatePost } from '../../api/postAPI';
 import LoadAnimation from '../load/LoadAnimation';
 import { userProp } from '../interfaces/userProps';
 import { CircularProgress, Tooltip, Zoom } from '@mui/material';
 import { PermMedia } from '@mui/icons-material';
 import { v4 as uuid } from 'uuid'
-import { uploadPost } from '../../api/postAPI';
+// import { uploadPost } from '../../api/postAPI';
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage'
 import { storage } from '../../firebase';
 import { updateUser } from '../../api/userAPI';
-import { cleanup } from '@testing-library/react';
+// import { cleanup } from '@testing-library/react';
 
 
 interface Props {
@@ -32,7 +32,7 @@ const UpdateProfileModal: React.FC<Props> = ({ handleClose, open, user }) => {
     const [description, setDescription] = useState(user?.description)
     const [from, setFrom] = useState(user?.from)
     const [city, setCity] = useState(user?.city)
-    const [coverPic, setCoverPic] = useState(user?.coverPicture)
+    // const [coverPic, setCoverPic] = useState(user?.coverPicture)
     const [imageUp, setimageUp] = useState(false)
     const [load, setLoad] = useState(false)
     const [url, setUrl] = useState("")

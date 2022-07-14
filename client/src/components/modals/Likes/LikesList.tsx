@@ -12,16 +12,16 @@ interface Props {
 
 const LikesList: React.FC<Props> = ({ id, profilePicture, username, email }) => {
     const themePreference = useSelector(selectTheme)
-    const listStyling = 'dark:list__cards__dark list__cards__light transition-all duration-200 ease-out my-1'
+    // const listStyling = `${themePreference ? "list__cards__dark" : "list__cards__light"} transition-all duration-200 ease-out my-1`
 
     return (
-        <div>
-
-            {/* <Avatar src={profilePicture} alt=""
-            // className='object-cover rounded-full cursor-pointer h-6' 
-            />
-            <span>{username}</span> */}
-        </div>
+        <>
+            <div className={`flex flex-row gap-1 items-center p-3 ${themePreference ? "hover:bg-sideBar_dark_hover" : "hover:bg-sideBar_light_hover"} rounded-lg transition-all duration-200 ease-out my-1`}>
+                <Avatar src={profilePicture} alt=""
+                />
+                <span>{username}</span>
+            </div>
+        </>
     )
 }
 

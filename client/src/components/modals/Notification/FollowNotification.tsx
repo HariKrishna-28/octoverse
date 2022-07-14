@@ -40,7 +40,7 @@ const FollowNotification: React.FC<Prop> = ({ notification, user }) => {
                     <div className='flex items-center gap-1'>
                         <Avatar alt="" src={notification.profilePic} />
                         <Link to={`/profile/${notification.followerEmail}`}>
-                            <span className='font-bold hover:underline cursor-pointer'>
+                            <span className='font-bold hover:underline hover:text-blue-600 cursor-pointer'>
                                 {notification.followerName}
                             </span>
                         </Link>

@@ -15,7 +15,7 @@ import UpdatePostModal from '../modals/UpdatePostModal'
 import { Verified } from '@mui/icons-material'
 import { createNewActivity } from '../../api/activityAPI'
 import { Avatar } from '@mui/material'
-import LikesModal from '../modals/Notification/LikesModal'
+import LikesModal from '../modals/Likes/LikesModal'
 
 interface Props {
     post: {

@@ -36,7 +36,6 @@ export function getLikes(postId: string) {
     method: "get",
     url: `${postAPI}/likes/${postId}`,
   };
-  console.log(config);
   return axios(config);
 }
 
