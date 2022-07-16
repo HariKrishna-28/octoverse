@@ -6,6 +6,9 @@ const PostSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    type: {
+      type: String,
+    },
     userEmail: {
       type: String,
       required: true,
