@@ -1,3 +1,4 @@
+// const Activity = require("../models/Activity");
 const Post = require("../models/Post");
 const User = require("../models/User");
 
@@ -39,11 +40,15 @@ router.delete("/:id", async (req, res) => {
     const post = await Post.findById(req.params.id);
     if (post.userId === req.body.userId) {
       await post.deleteOne();
+      // const postActivities = await Activity.find({
+      //   "post.id": req.params.id,
+      // }).deleteMany();
       res.status(200).json("the post has been deleted");
     } else {
       res.status(403).json("you can delete only your post");
     }
   } catch (err) {
+    // console.log(err);
     res.status(500).json(err);
   }
 });
