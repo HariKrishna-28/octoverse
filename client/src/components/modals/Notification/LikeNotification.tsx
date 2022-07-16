@@ -21,6 +21,7 @@ const LikeNotification: React.FC<Prop> = ({ notification, user }) => {
     const [seen, setSeen] = useState(notification.hasSeen)
     const hoverColour = !seen ? themePreference ? "#010409" : "#F6F8FA" : ""
     const [postType, setType] = useState("")
+    // eslint-disable-next-line
     const [load, setLoad] = useState(false)
 
     const handleClick = async () => {
@@ -55,6 +56,7 @@ const LikeNotification: React.FC<Prop> = ({ notification, user }) => {
     useEffect(() => {
         setLoad(true)
         getPostType()
+        // eslint-disable-next-line
     }, [])
 
     return (
@@ -78,7 +80,7 @@ const LikeNotification: React.FC<Prop> = ({ notification, user }) => {
                             {moment(notification.createdAt).fromNow()}
                         </div>
                     </div>
-                    <div className='flex gap-1'>
+                    <div className='flex gap-1 items-center'>
                         {
                             postType === "video" ?
                                 <ReactPlayer
