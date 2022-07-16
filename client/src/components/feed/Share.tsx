@@ -27,6 +27,7 @@ const Share: React.FC<Props> = ({ triggerReload }) => {
     const [imageURL, setImageURL] = useState("")
     // eslint-disable-next-line
     const [post, setPost] = useState(false)
+    const [videoURL, setVideoURL] = useState("")
 
     const uploadImage = async (image: File) => {
         try {
@@ -51,12 +52,36 @@ const Share: React.FC<Props> = ({ triggerReload }) => {
         setUpload(false)
     }
 
+    const uploadVideo = async (image: File) => {
+        try {
+            setUpload(true)
+            const id = `videos/${uuid().slice(0, 10)}`
+            const imageRef = ref(storage, id)
+            // @ts-ignore
+            await uploadBytes(imageRef, image)
+                .then(() => {
+                    getDownloadURL(imageRef)
+                        .then((url) => {
+                            console.log(url)
+                            setVideoURL(url)
+                        })
+                }).catch(err => {
+                    setError(err.message)
+                    // console.log(err.message)
+                })
+        } catch (error) {
+            console.error(error)
+        }
+        setUpload(false)
+    }
+
     const uploadCurrentPost = async () => {
         const newPost = {
             userId: currUser._id,
             desc: desc?.current?.value ? desc.current.value : "",
             userEmail: currUser.email,
-            img: imageURL,
+            img: imageURL !== "" ? imageURL : videoURL,
+            type: imageURL !== "" ? "image" : videoURL !== "" ? "video" : "status"
         }
         try {
             const res = await uploadPost(newPost)
@@ -125,18 +150,22 @@ const Share: React.FC<Props> = ({ triggerReload }) => {
                                         // @ts-ignore
                                         const filee = e.target.files[0]
                                         if (filee !== undefined) {
-                                            console.log("hi")
                                             if (filee.size > 3000000) {
                                                 alert("File can only be below 3 mb")
                                                 setFile(undefined)
                                             }
                                             else {
-                                                // @ts-ignore
-                                                uploadImage(filee)
+                                                if (filee.type === "video/mp4") {
+                                                    // @ts-ignore
+                                                    uploadVideo(filee)
+                                                } else {
+                                                    // @ts-ignore
+                                                    uploadImage(filee)
+                                                }
                                             }
                                         }
                                     }}
-                                    accept='.png, .jpeg, .jpg' />
+                                    accept='.png, .jpeg, .jpg, .gif, .mp4' />
                             </div>
                         </div>
                         <hr className='my-4' />

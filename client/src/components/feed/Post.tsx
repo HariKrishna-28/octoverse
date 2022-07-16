@@ -16,6 +16,8 @@ import { Verified } from '@mui/icons-material'
 import { createNewActivity } from '../../api/activityAPI'
 import { Avatar } from '@mui/material'
 import LikesModal from '../modals/Likes/LikesModal'
+import ReactPlayer from 'react-player'
+
 
 interface Props {
     post: {
@@ -26,7 +28,8 @@ interface Props {
         likes: [],
         updatedAt: string,
         createdAt: string,
-        userEmail: string
+        userEmail: string,
+        type: string
         // photo: string,
         // date: string,
         // comment: number,
@@ -170,7 +173,7 @@ const Post: React.FC<Props> = ({ post, triggerReload }) => {
                     </ div>
                     {/* center */}
                     <div>
-                        {post?.img &&
+                        {/* {post?.img &&
                             <div className='flex justify-center mt-2 mb-2'>
                                 <img
                                     // src="https://mui.com/static/branding/companies/nasa-dark.svg"
@@ -180,6 +183,27 @@ const Post: React.FC<Props> = ({ post, triggerReload }) => {
                                     draggable="false"
                                 />
                             </div>
+                        } */}
+                        {post?.type === "image" ?
+                            <div className='flex justify-center mt-2 mb-2'>
+                                <img
+                                    // src="https://mui.com/static/branding/companies/nasa-dark.svg"
+                                    className='object-contain rounded-lg cursor-pointer max-h-64 '
+                                    src={post?.img}
+                                    alt="post"
+                                    draggable="false"
+                                />
+                            </div>
+
+                            : post?.type === "video" ?
+                                <div className='flex justify-center mt-2 mb-2'>
+                                    <ReactPlayer
+                                        url={post?.img}
+                                        controls
+                                        loop
+                                    />
+                                </div>
+                                : null
                         }
                         <div className='p-2 mt-2'>{post?.desc}</div>
                     </div >
