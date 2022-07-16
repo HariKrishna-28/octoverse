@@ -76,3 +76,11 @@ export function updatePost(
   };
   return axios(config);
 }
+
+export function getaPost(id: string) {
+  const config: AxiosRequestConfig = {
+    method: "get",
+    url: `${postAPI}/${id}`,
+  };
+  return axios(config);
+}
