@@ -70,7 +70,7 @@ const ProfiePage: React.FC = () => {
                     </div>
                     <div className='flex flex-col-reverse lg:flex-row md:flex-row h-[calc(100vh-56px)] w-full '>
                         <Feed userName={user?.email} />
-                        <div className='w-full h-1/5 lg:h-full md:h-full lg:w-1/3 md:w-1/3 mt-6 rounded-lg '>
+                        <div className='w-full h-1/4 lg:h-full md:h-full lg:w-1/3 md:w-1/3 mt-6 rounded-lg '>
                             <RightBar
                                 triggerReload={() => {
                                     setLoad(true)
