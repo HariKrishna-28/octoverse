@@ -82,7 +82,7 @@ const TopBar: React.FC = () => {
                 </div>
 
                 {/* center section */}
-                <div className='flex'>
+                <div className='hidden lg:block md:block'>
                     <SearchBar />
                 </div>
 
@@ -119,8 +119,10 @@ const TopBar: React.FC = () => {
                             profileImage={currUser?.profilePicture === "" ? `https://avatars.dicebear.com/api/initials/${currUser?.userName}.svg` : currUser?.profilePicture}
                         />
                     </div>
-
                 </div >
+                <div className='flex lg:hidden md:hidden justify-center p-2'>
+                    <SearchBar />
+                </div>
             </div >
             <NotificationModal
                 open={open}

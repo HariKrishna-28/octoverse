@@ -4,7 +4,6 @@ import { TopBar, SideBar, Feed, RightBar } from '../../components'
 import { userProp } from '../../components/interfaces/userProps'
 import { useParams } from 'react-router'
 import { Verified } from '@mui/icons-material'
-import { profile } from 'console'
 // import { useSelector } from 'react-redux'
 // import { getUserData } from '../../features/authSlice'
 
@@ -69,9 +68,9 @@ const ProfiePage: React.FC = () => {
                             <div className='font-sm'>{user?.description}</div>
                         </div>
                     </div>
-                    <div className='flex w-full h-screen'>
+                    <div className='flex flex-col-reverse lg:flex-row md:flex-row h-[calc(100vh-56px)] w-full '>
                         <Feed userName={user?.email} />
-                        <div className='hidden mt-6 rounded-lg md:block lg:block w-1/3'>
+                        <div className='w-full h-1/4 lg:h-full md:h-full lg:w-1/3 md:w-1/3 mt-6 rounded-lg '>
                             <RightBar
                                 triggerReload={() => {
                                     setLoad(true)
