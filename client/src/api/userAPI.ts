@@ -47,7 +47,7 @@ export function followOrUnfollowUser(
   flag: boolean,
   currentId: string
 ) {
-  const URL = `${userAPI}/${userId}/${flag ? "follow" : "unfollow"}`;
+  const URL = `${userAPI}/${userId}/${!flag ? "follow" : "unfollow"}`;
   const config: AxiosRequestConfig = {
     method: "put",
     url: URL,
