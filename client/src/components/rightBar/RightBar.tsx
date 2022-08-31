@@ -114,11 +114,11 @@ const RightBar: React.FC<Props> = ({ user, triggerReload, profile = false }) => 
         }
     }
 
-    // useEffect(() => {
-    //     if (curr?.following) {
-    //         setFollowing(curr.following.includes(user?._id))
-    //     }
-    // }, [curr, user?._id])
+    useEffect(() => {
+        if (curr?.following) {
+            setFollowing(curr.following.includes(user?._id))
+        }
+    }, [curr, user?._id])
 
     useEffect(() => {
         if (profile) {
