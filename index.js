@@ -12,6 +12,7 @@ const postRoute = require("./routes/posts");
 const searchRoute = require("./routes/search");
 const newsRoute = require("./routes/news");
 const activityRoute = require("./routes/activity");
+const serviceAccount = require("./config/admin-config");
 
 // Middleware
 app.use(express.json());
@@ -27,7 +28,6 @@ app.use("/api/activity", activityRoute);
 
 // Database connection
 connectDb();
-
 app.get("/", (req, res) => {
   res.send("Octoverse up");
 });
