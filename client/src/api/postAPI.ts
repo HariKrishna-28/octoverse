@@ -10,7 +10,7 @@ export function getTimelinePosts(id: string) {
   const config: AxiosRequestConfig = {
     method: "get",
     url: `${postAPI}/timeline/${id}`,
-    // headers: AUTH_HEADER,
+    headers: AUTH_HEADER,
   };
   return axios(config);
 }
@@ -19,7 +19,7 @@ export function getUserProfilePosts(userEmail: string) {
   const config: AxiosRequestConfig = {
     method: "get",
     url: `${postAPI}/profile/${userEmail}`,
-    // headers: AUTH_HEADER,
+    headers: AUTH_HEADER,
   };
   return axios(config);
 }
@@ -32,7 +32,7 @@ export function likePosts(postId: string, userId: string) {
     method: "put",
     url: `${postAPI}/${postId}/like`,
     data: data,
-    // headers: AUTH_HEADER,
+    headers: AUTH_HEADER,
   };
   return axios(config);
 }
@@ -41,7 +41,7 @@ export function getLikes(postId: string) {
   const config: AxiosRequestConfig = {
     method: "get",
     url: `${postAPI}/likes/${postId}`,
-    // headers: AUTH_HEADER,
+    headers: AUTH_HEADER,
   };
   return axios(config);
 }
@@ -51,7 +51,7 @@ export function uploadPost(post: uploadPostProps) {
     method: "post",
     url: postAPI,
     data: post,
-    // headers: AUTH_HEADER,
+    headers: AUTH_HEADER,
   };
   return axios(config);
 }
@@ -64,7 +64,7 @@ export function deletePost(postId: string, userId: string) {
     method: "delete",
     url: `${postAPI}/${postId}`,
     data: data,
-    // headers: AUTH_HEADER,
+    headers: AUTH_HEADER,
   };
   return axios(config);
 }
@@ -82,7 +82,7 @@ export function updatePost(
     method: "put",
     url: `${postAPI}/${postId}`,
     data: data,
-    // headers: AUTH_HEADER,
+    headers: AUTH_HEADER,
   };
   return axios(config);
 }
@@ -91,7 +91,7 @@ export function getaPost(id: string) {
   const config: AxiosRequestConfig = {
     method: "get",
     url: `${postAPI}/${id}`,
-    // headers: AUTH_HEADER,
+    headers: AUTH_HEADER,
   };
   return axios(config);
 }

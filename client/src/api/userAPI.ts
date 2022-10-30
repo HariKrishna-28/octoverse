@@ -1,5 +1,7 @@
 import axios, { AxiosRequestConfig } from "axios";
+import { Header } from "./TokenExport";
 const userAPI = `${process.env.REACT_APP_API_URL}/users`;
+const AUTH_HEADER = Header();
 
 export function getUser(
   userId: string | undefined,
@@ -11,6 +13,7 @@ export function getUser(
   const config: AxiosRequestConfig = {
     method: "get",
     url: URL,
+    headers: AUTH_HEADER,
   };
   return axios(config);
 }
@@ -20,6 +23,7 @@ export function getCurrentUserData(userEmail: string) {
   const config: AxiosRequestConfig = {
     method: "get",
     url: URL,
+    headers: AUTH_HEADER,
   };
   return axios(config);
 }
@@ -29,6 +33,7 @@ export function getUserFriends(userId: string) {
   const config: AxiosRequestConfig = {
     method: "get",
     url: URL,
+    headers: AUTH_HEADER,
   };
   return axios(config);
 }
@@ -38,6 +43,7 @@ export function getUserFollowing(userId: string) {
   const config: AxiosRequestConfig = {
     method: "get",
     url: URL,
+    headers: AUTH_HEADER,
   };
   return axios(config);
 }
@@ -54,6 +60,7 @@ export function followOrUnfollowUser(
     data: {
       userId: currentId,
     },
+    headers: AUTH_HEADER,
   };
   return axios(config);
 }
@@ -63,6 +70,7 @@ export function getFriendSuggestions(userId: string) {
   const config: AxiosRequestConfig = {
     method: "get",
     url: URL,
+    headers: AUTH_HEADER,
   };
   return axios(config);
 }
@@ -73,6 +81,7 @@ export function updateUser(data: any, id: String) {
     method: "put",
     url: URL,
     data: data,
+    headers: AUTH_HEADER,
   };
   return axios(config);
 }

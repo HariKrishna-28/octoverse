@@ -45,11 +45,11 @@ const SearchRoutes: React.FC = () => {
     if (loading) return
     // setPrimaryLoad(true)
     if (currentUser?.email) {
-      getUserDtails(currentUser.email)
       currentUser.getIdToken()
         .then((token) => {
           Cookies.set("Auth", token)
         })
+      getUserDtails(currentUser.email)
     }
     // eslint-disable-next-line
   }, [currentUser, loading])

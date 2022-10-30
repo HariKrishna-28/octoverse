@@ -11,6 +11,7 @@ import { useNavigate } from 'react-router-dom'
 import { auth, provider } from '../../firebase'
 import LoadAnimation from '../../components/load/LoadAnimation';
 import { Google } from '@mui/icons-material';
+import Cookies from 'js-cookie'
 
 
 const Login: React.FC = () => {
@@ -38,6 +39,10 @@ const Login: React.FC = () => {
                     email: data?.email,
                     profilePicture: data?.photoURL
                 }
+                data?.getIdToken()
+                    .then((token) => {
+                        Cookies.set("Auth", token)
+                    })
                 // const data = {
                 //     userName: user.displayName,
                 //     email: user.email,

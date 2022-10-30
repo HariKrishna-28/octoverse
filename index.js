@@ -19,6 +19,7 @@ const { VerifyToken } = require("./middleware/Middleware");
 app.use(express.json());
 app.use(helmet());
 app.use(cors());
+
 app.use(VerifyToken);
 // app.use(morgan("common"));
 
