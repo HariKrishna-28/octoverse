@@ -13,12 +13,15 @@ const searchRoute = require("./routes/search");
 const newsRoute = require("./routes/news");
 const activityRoute = require("./routes/activity");
 const serviceAccount = require("./config/admin-config");
+const { VerifyToken } = require("./middleware/Middleware");
 
 // Middleware
 app.use(express.json());
 app.use(helmet());
 app.use(cors());
+app.use(VerifyToken);
 // app.use(morgan("common"));
+
 app.use("/api/users", userRoute);
 app.use("/api/auth", authRoute);
 app.use("/api/post", postRoute);
@@ -28,6 +31,7 @@ app.use("/api/activity", activityRoute);
 
 // Database connection
 connectDb();
+
 app.get("/", (req, res) => {
   res.send("Octoverse up");
 });

@@ -32,7 +32,7 @@ const RightBar: React.FC<Props> = ({ user, triggerReload, profile = false }) => 
     const curr = currentUser.user
     const [friendSuggestions, setFriendSuggestions] = useState<userFriendsProp>(null!)
     const dispatch = useDispatch()
-    const [following, setFollowing] = useState(curr?.following.includes(user?._id))
+    const [following, setFollowing] = useState(curr?.following?.includes(user?._id))
     const [alreadyFollowed, setAlreadyFollowed] = useState(following)
     const [userFollowing, setUserFollowing] = useState([])
 

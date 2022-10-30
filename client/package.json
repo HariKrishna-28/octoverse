@@ -17,6 +17,7 @@
     "@types/react-dom": "^18.0.5",
     "axios": "^0.27.2",
     "firebase": "^9.8.3",
+    "js-cookie": "^3.0.1",
     "moment": "^2.29.3",
     "react": "^18.1.0",
     "react-dom": "^18.1.0",
@@ -58,6 +59,7 @@
     ]
   },
   "devDependencies": {
+    "@types/js-cookie": "^3.0.2",
     "@types/uuid": "^8.3.4",
     "autoprefixer": "^10.4.7",
     "postcss": "^8.4.14",
