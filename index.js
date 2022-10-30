@@ -32,7 +32,7 @@ app.use("/api/activity", activityRoute);
 // Database connection
 connectDb();
 
-app.get("/", (req, res) => {
+app.get("/", (_, res) => {
   res.send("Octoverse up");
 });
 

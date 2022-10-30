@@ -12,7 +12,7 @@ module.exports.VerifyToken = async (req, res, next) => {
     return res.json({ message: "Unauthorised" });
   } catch (e) {
     // console.log(e.message);
-    return res.json({ message: "Internal Error" });
+    return res.json({ message: "Access denied" });
   }
 };
 

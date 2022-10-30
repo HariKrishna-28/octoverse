@@ -11,6 +11,7 @@ import HomePage from "../pages/Home/HomePage";
 import Login from "../pages/login/Login";
 // import Register from "../pages/login/register/Register";
 import ProfiePage from "../pages/profile/ProfiePage";
+import Cookies from 'js-cookie'
 
 const SearchRoutes: React.FC = () => {
   const user = useSelector(getUserData)
@@ -45,6 +46,10 @@ const SearchRoutes: React.FC = () => {
     // setPrimaryLoad(true)
     if (currentUser?.email) {
       getUserDtails(currentUser.email)
+      currentUser.getIdToken()
+        .then((token) => {
+          Cookies.set("Auth", token)
+        })
     }
     // eslint-disable-next-line
   }, [currentUser, loading])
