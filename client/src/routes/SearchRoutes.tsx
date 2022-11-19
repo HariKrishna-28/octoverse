@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useDispatch, useSelector } from "react-redux";
 import { Routes, Route, Navigate } from 'react-router-dom'
-import { getCurrentUserData, GET_CURRENT_USER_DATA } from "../api/userAPI";
+import { getCurrentUserData } from "../api/userAPI";
 import { userProp } from "../components/interfaces/userProps";
 import LoadingWIndow from "../components/load/LoadingWIndow";
 import { getUserData, setUserStatus } from "../features/authSlice";
@@ -11,22 +11,18 @@ import HomePage from "../pages/Home/HomePage";
 import Login from "../pages/login/Login";
 // import Register from "../pages/login/register/Register";
 import ProfiePage from "../pages/profile/ProfiePage";
-import Cookies from 'js-cookie'
-import { getToken, setToken } from "../features/tokenSlice";
 
 const SearchRoutes: React.FC = () => {
   const user = useSelector(getUserData)
   const dispatch = useDispatch()
   // @ts-ignore
   const [currentUser, loading] = useAuthState(auth)
-  const [token, setAuthToken] = useState("")
-  const authToken = useSelector(getToken)
   // const [primaryLoad, setPrimaryLoad] = useState(true)
 
 
-  const getUserDtails = async (userEmail: string, token: string) => {
+  const getUserDtails = async (userEmail: string) => {
     try {
-      const res = await GET_CURRENT_USER_DATA(userEmail, token)
+      const res = await getCurrentUserData(userEmail)
       // console.log(res.data)
       updateUser(res.data)
     } catch (error) {
@@ -48,14 +44,7 @@ const SearchRoutes: React.FC = () => {
     if (loading) return
     // setPrimaryLoad(true)
     if (currentUser?.email) {
-      currentUser.getIdToken()
-        .then((token) => {
-          dispatch(setToken({
-            token: token
-          }))
-          // @ts-ignore
-          getUserDtails(currentUser.email, token)
-        })
+      getUserDtails(currentUser.email)
     }
     // eslint-disable-next-line
   }, [currentUser, loading])

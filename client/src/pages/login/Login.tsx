@@ -11,8 +11,6 @@ import { useNavigate } from 'react-router-dom'
 import { auth, provider } from '../../firebase'
 import LoadAnimation from '../../components/load/LoadAnimation';
 import { Google } from '@mui/icons-material';
-import Cookies from 'js-cookie'
-import { setToken } from '../../features/tokenSlice';
 
 
 const Login: React.FC = () => {
@@ -40,13 +38,6 @@ const Login: React.FC = () => {
                     email: data?.email,
                     profilePicture: data?.photoURL
                 }
-                data?.getIdToken()
-                    .then((token) => {
-                        dispatch(setToken({
-                            token: token
-                        }
-                        ))
-                    })
                 // const data = {
                 //     userName: user.displayName,
                 //     email: user.email,
@@ -88,9 +79,6 @@ const Login: React.FC = () => {
             user: user,
             isFetching: false,
             error: { message: "" }
-        }))
-        dispatch(setToken({
-
         }))
     }
 

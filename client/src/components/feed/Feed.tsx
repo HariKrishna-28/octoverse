@@ -2,11 +2,10 @@ import React, { useEffect, useState } from 'react'
 import Post from './Post'
 import Share from './Share'
 // import { Posts } from '../../dummyData'
-import { getTimelinePosts, getUserProfilePosts, GET_TIMELINE_POSTS, GET_USER_PROFILE_POSTS } from '../../api/postAPI'
+import { getTimelinePosts, getUserProfilePosts } from '../../api/postAPI'
 import LoadAnimation from '../load/LoadAnimation'
 import { useSelector } from 'react-redux'
 import { getUserData } from '../../features/authSlice'
-import { getToken } from '../../features/tokenSlice'
 
 // interface userPosts {
 //     createdAt: string,
@@ -27,7 +26,6 @@ const Feed: React.FC<Props> = ({ userName = undefined }) => {
     const [post, setPost] = useState([])
     const [load, setLoad] = useState(false)
     const currUser = useSelector(getUserData)
-    const token = useSelector(getToken)
 
     async function getPostData() {
         // if (!currUser.user) {
@@ -35,7 +33,7 @@ const Feed: React.FC<Props> = ({ userName = undefined }) => {
         //     return
         // }
         try {
-            const res = !userName ? currUser.user?._id && await GET_TIMELINE_POSTS(currUser.user?._id, token) : await GET_USER_PROFILE_POSTS(userName, token)
+            const res = !userName ? currUser.user?._id && await getTimelinePosts(currUser.user?._id) : await getUserProfilePosts(userName)
             if (currUser.user?._id || userName)
                 setPost(res.data)
         } catch (error) {

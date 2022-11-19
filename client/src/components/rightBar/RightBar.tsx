@@ -4,7 +4,7 @@ import { Add, Close, Edit, Person, RssFeed } from '@mui/icons-material'
 // import ActiveUsers from './ActiveUsers'
 import UserFriends from './UserFriends'
 import { userFriendsProp, userProp } from '../interfaces/userProps'
-import { followOrUnfollowUser, FOLLOW_OR_UNFOLLOW_USER, getCurrentUserData, getFriendSuggestions, getUserFollowing, getUserFriends, GET_CURRENT_USER_DATA, GET_FRIEND_SUGGESTIONS, GET_USER_FOLLOWING, GET_USER_FRIENDS } from '../../api/userAPI'
+import { followOrUnfollowUser, getCurrentUserData, getFriendSuggestions, getUserFollowing, getUserFriends } from '../../api/userAPI'
 import LoadAnimation from '../load/LoadAnimation'
 import { useDispatch, useSelector } from 'react-redux'
 import { getUserData, setUserStatus } from '../../features/authSlice'
@@ -14,7 +14,6 @@ import SideBarLists from '../sideBar/SideBarLists'
 import { Link } from 'react-router-dom'
 // import OnlineFriends from './OnlineFriends'
 import { createNewActivity } from '../../api/activityAPI'
-import { getToken } from '../../features/tokenSlice'
 
 
 interface Props {
@@ -33,14 +32,13 @@ const RightBar: React.FC<Props> = ({ user, triggerReload, profile = false }) => 
     const curr = currentUser.user
     const [friendSuggestions, setFriendSuggestions] = useState<userFriendsProp>(null!)
     const dispatch = useDispatch()
-    const [following, setFollowing] = useState(curr?.following?.includes(user?._id))
+    const [following, setFollowing] = useState(curr?.following.includes(user?._id))
     const [alreadyFollowed, setAlreadyFollowed] = useState(following)
     const [userFollowing, setUserFollowing] = useState([])
-    const token = useSelector(getToken)
 
     const getFriends = async (userId: string) => {
         try {
-            const res = await GET_USER_FRIENDS(userId, token)
+            const res = await getUserFriends(userId)
             setFriends(res.data)
             setLoad(false)
         } catch (error) {
@@ -50,7 +48,7 @@ const RightBar: React.FC<Props> = ({ user, triggerReload, profile = false }) => 
 
     const getFollowing = async (userId: string) => {
         try {
-            const res = await GET_USER_FOLLOWING(userId, token)
+            const res = await getUserFollowing(userId)
             setUserFollowing(res.data)
 
         } catch (error) {
@@ -60,7 +58,7 @@ const RightBar: React.FC<Props> = ({ user, triggerReload, profile = false }) => 
 
     const updateUser = async () => {
         try {
-            const res = await GET_CURRENT_USER_DATA(curr.email, token)
+            const res = await getCurrentUserData(curr.email)
             dispatch(setUserStatus({
                 user: res.data,
                 isFetching: false,
@@ -75,7 +73,7 @@ const RightBar: React.FC<Props> = ({ user, triggerReload, profile = false }) => 
     const handleClick = async () => {
         try {
             if (!user) return
-            await FOLLOW_OR_UNFOLLOW_USER(user._id, following, curr._id, token)
+            await followOrUnfollowUser(user._id, following, curr._id)
             setFollowing(!following)
             if (following) setAlreadyFollowed(true)
             if (!following && !alreadyFollowed) createFollowActivity()
@@ -89,7 +87,7 @@ const RightBar: React.FC<Props> = ({ user, triggerReload, profile = false }) => 
 
     const getUserFriendSuggestions = async (userId: string) => {
         try {
-            const response = await GET_FRIEND_SUGGESTIONS(userId, token)
+            const response = await getFriendSuggestions(userId)
             setFriendSuggestions(response.data)
             setLoad(false)
         } catch (error) {
