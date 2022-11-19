@@ -9,13 +9,15 @@ import { getUserData, setUserStatus } from '../../features/authSlice';
 import { auth } from '../../firebase';
 import DropDown from '../dropdown/DropDown';
 import SearchBar from './SearchBar';
-import { getActivity, getActivityCount } from '../../api/activityAPI';
+import { getActivity, getActivityCount, GET_ACTIVITY, GET_ACTIVITY_COUNT } from '../../api/activityAPI';
 import NotificationModal from '../modals/Notification/NotificationModal';
+import { getToken } from '../../features/tokenSlice';
 
 const TopBar: React.FC = () => {
     const dispatch = useDispatch()
     const navigate = useNavigate()
     const themePreference = useSelector(selectTheme)
+    const token = useSelector(getToken)
     const user = useSelector(getUserData)
     const currUser = user.user
     const [load, setLoad] = useState(false)
@@ -42,8 +44,9 @@ const TopBar: React.FC = () => {
     const getUserActivity = async () => {
         try {
             if (currUser?.email) {
-                const res = await getActivity(currUser.email)
+                const res = await GET_ACTIVITY(currUser.email, token)
                 setNotif(res.data)
+                // console.log(res.data)
             }
         } catch (error) {
             console.log(error)
@@ -54,8 +57,9 @@ const TopBar: React.FC = () => {
     const getNotificationCount = async () => {
         try {
             if (currUser?.email) {
-                const res = await getActivityCount(currUser.email)
+                const res = await GET_ACTIVITY_COUNT(currUser.email, token)
                 setNewNotif(res.data.count)
+                // console.log(res.data.count)
             }
         } catch (error) {
             console.log(error)

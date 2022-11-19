@@ -10,8 +10,9 @@ import { userFriendsProp } from '../interfaces/userProps'
 import LoadAnimation from '../load/LoadAnimation'
 import UserFriends from '../rightBar/UserFriends'
 import { newsProps } from '../interfaces/newsProps'
-import { getNewsData } from '../../api/newsAPI'
+import { getNewsData, GET_NEWS_DATA } from '../../api/newsAPI'
 import NewsBlock from './NewsBlock'
+import { getToken } from '../../features/tokenSlice'
 
 
 const Sidebar: React.FC = () => {
@@ -19,11 +20,12 @@ const Sidebar: React.FC = () => {
     const currUser = User.user
     const [load, setLoad] = useState(false)
     const [news, setNews] = useState<newsProps>(null!)
+    const token = useSelector(getToken)
     const listStyling = 'dark:list__cards__dark list__cards__light transition-all duration-200 ease-out my-1'
 
     const getNews = async () => {
         try {
-            const res = await getNewsData()
+            const res = await GET_NEWS_DATA(token)
             setNews(res.data)
         } catch (error) {
             console.log(error)

@@ -12,6 +12,7 @@ import { auth, provider } from '../../firebase'
 import LoadAnimation from '../../components/load/LoadAnimation';
 import { Google } from '@mui/icons-material';
 import Cookies from 'js-cookie'
+import { setToken } from '../../features/tokenSlice';
 
 
 const Login: React.FC = () => {
@@ -41,7 +42,10 @@ const Login: React.FC = () => {
                 }
                 data?.getIdToken()
                     .then((token) => {
-                        Cookies.set("Auth", token)
+                        dispatch(setToken({
+                            token: token
+                        }
+                        ))
                     })
                 // const data = {
                 //     userName: user.displayName,
@@ -84,6 +88,9 @@ const Login: React.FC = () => {
             user: user,
             isFetching: false,
             error: { message: "" }
+        }))
+        dispatch(setToken({
+
         }))
     }
 

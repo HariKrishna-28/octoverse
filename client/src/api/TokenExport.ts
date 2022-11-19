@@ -10,3 +10,9 @@ export function Header() {
     Authorization: "Bearer" + token,
   };
 }
+
+export function HeaderGenerator(token: string) {
+  return {
+    Authorization: "Bearer" + token,
+  };
+}

@@ -1,5 +1,5 @@
 import axios, { AxiosRequestConfig } from "axios";
-import { Header } from "./TokenExport";
+import { Header, HeaderGenerator } from "./TokenExport";
 const act = `${process.env.REACT_APP_API_URL}/activity`;
 const authTokenHeader = Header();
 
@@ -22,11 +22,29 @@ export function getActivity(userEmail: string) {
   return axios(config);
 }
 
+export function GET_ACTIVITY(userEmail: string, token: string) {
+  const config: AxiosRequestConfig = {
+    method: "get",
+    url: `${act}?id=${userEmail}`,
+    headers: HeaderGenerator(token),
+  };
+  return axios(config);
+}
+
 export function getActivityCount(userEmail: string) {
   const config: AxiosRequestConfig = {
     method: "get",
     url: `${act}/notifications?id=${userEmail}`,
     headers: authTokenHeader,
+  };
+  return axios(config);
+}
+
+export function GET_ACTIVITY_COUNT(userEmail: string, token: string) {
+  const config: AxiosRequestConfig = {
+    method: "get",
+    url: `${act}/notifications?id=${userEmail}`,
+    headers: HeaderGenerator(token),
   };
   return axios(config);
 }
