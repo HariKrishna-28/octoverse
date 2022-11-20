@@ -1,11 +1,12 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useDispatch, useSelector } from "react-redux";
 import { Routes, Route, Navigate } from 'react-router-dom'
-import { getCurrentUserData } from "../api/userAPI";
+import { getCurrentUserData, GET_CURRENT_USER_DATA } from "../api/userAPI";
 import { userProp } from "../components/interfaces/userProps";
 import LoadingWIndow from "../components/load/LoadingWIndow";
 import { getUserData, setUserStatus } from "../features/authSlice";
+import { selectToken, setAuthToken } from "../features/tokenSlice";
 import { auth } from "../firebase";
 import HomePage from "../pages/Home/HomePage";
 import Login from "../pages/login/Login";
@@ -17,12 +18,15 @@ const SearchRoutes: React.FC = () => {
   const dispatch = useDispatch()
   // @ts-ignore
   const [currentUser, loading] = useAuthState(auth)
+  const token = useSelector(selectToken)
+  const [authToken, setToken] = useState("")
   // const [primaryLoad, setPrimaryLoad] = useState(true)
 
 
   const getUserDtails = async (userEmail: string) => {
     try {
-      const res = await getCurrentUserData(userEmail)
+      // const res = await getCurrentUserData(userEmail)
+      const res = await GET_CURRENT_USER_DATA(userEmail, authToken)
       // console.log(res.data)
       updateUser(res.data)
     } catch (error) {
@@ -40,14 +44,26 @@ const SearchRoutes: React.FC = () => {
     // setPrimaryLoad(false)
   }
 
+  const tokenSetter = async (currentUser: any) => {
+    await currentUser.getIdToken(true)
+      .then((token: string) => {
+        dispatch(setAuthToken({
+          token: token
+        }))
+        setToken(token)
+      })
+  }
+
   useEffect(() => {
     if (loading) return
     // setPrimaryLoad(true)
     if (currentUser?.email) {
-      getUserDtails(currentUser.email)
+      tokenSetter(currentUser)
+      authToken &&
+        getUserDtails(currentUser.email)
     }
     // eslint-disable-next-line
-  }, [currentUser, loading])
+  }, [currentUser, loading, authToken])
 
 
   return <>

@@ -24,6 +24,16 @@ export function getCurrentUserData(userEmail: string) {
   return axios(config);
 }
 
+export function GET_CURRENT_USER_DATA(userEmail: string, token: string) {
+  const URL = `${userAPI}?userEmail=${userEmail}`;
+  const config: AxiosRequestConfig = {
+    method: "get",
+    url: URL,
+  };
+  console.log({ ...config, token: token });
+  return axios(config);
+}
+
 export function getUserFriends(userId: string) {
   const URL = `${userAPI}/followers/${userId}`;
   const config: AxiosRequestConfig = {

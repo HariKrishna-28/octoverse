@@ -11,6 +11,7 @@ import { useNavigate } from 'react-router-dom'
 import { auth, provider } from '../../firebase'
 import LoadAnimation from '../../components/load/LoadAnimation';
 import { Google } from '@mui/icons-material';
+import { setAuthToken } from '../../features/tokenSlice';
 
 
 const Login: React.FC = () => {
@@ -31,20 +32,19 @@ const Login: React.FC = () => {
         e.preventDefault()
         await auth.signInWithPopup(provider)
             .then((res) => {
-                // if (user?.displayName && user.email && user.photoURL) {
                 const data = res.user
+                data?.getIdToken(true)
+                    .then(token => {
+                        dispatch(setAuthToken({
+                            token: token
+                        }))
+                    })
                 const cred = {
                     userName: data?.displayName,
                     email: data?.email,
                     profilePicture: data?.photoURL
                 }
-                // const data = {
-                //     userName: user.displayName,
-                //     email: user.email,
-                //     profilePicture: user.photoURL,
-                // }
                 initialiseUser(cred)
-                // }
             })
             .catch((err) => {
                 alert(err.message)
