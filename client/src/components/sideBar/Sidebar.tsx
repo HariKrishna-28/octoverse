@@ -34,9 +34,10 @@ const Sidebar: React.FC = () => {
     }
 
     useEffect(() => {
-        setLoad(true)
-        if (currUser?._id & authToken)
+        if (currUser?._id && authToken) {
+            setLoad(true)
             getNews()
+        }
         // eslint-disable-next-line
     }, [currUser, authToken])
 

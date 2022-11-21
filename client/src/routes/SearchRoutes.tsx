@@ -69,8 +69,10 @@ const SearchRoutes: React.FC = () => {
   return <>
     {!loading ?
       <Routes>
-        <Route path="/" element={!user.user && !currentUser ? <Login /> : <HomePage />} />
-        {/* <Route path="/login" element={<Login />} /> */}
+        <Route path="/" element={!user.user && !currentUser ? <Navigate replace to="/login" /> : <HomePage />} />
+        {!user.user && !currentUser &&
+          <Route path="/login" element={<Login />} />
+        }
         {currentUser && user.user && <Route path="/profile/:useremail" element={<ProfiePage />} />}
         {/* {currentUser && user.user && <Route path="/:searchQuery" element={<ProfiePage />} />} */}
         <Route path="*" element={<Navigate replace to="/" />} />

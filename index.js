@@ -20,7 +20,7 @@ app.use(express.json());
 app.use(helmet());
 app.use(cors());
 
-// app.use(VerifyToken);
+app.use(VerifyToken);
 // app.use(morgan("common"));
 
 app.use("/api/users", userRoute);

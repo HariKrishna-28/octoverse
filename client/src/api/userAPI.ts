@@ -29,7 +29,7 @@ export function GET_USER(
     url: URL,
     headers: tokenHeader(token),
   };
-  console.log(config);
+  //console.log(config;
   return axios(config);
 }
 
@@ -68,7 +68,7 @@ export function GET_USER_FRIENDS(userId: string, token: string) {
     url: URL,
     headers: tokenHeader(token),
   };
-  console.log(config);
+  //console.log(config;
   return axios(config);
 }
 
@@ -88,7 +88,7 @@ export function GET_USER_FOLLOWING(userId: string, token: string) {
     url: URL,
     headers: tokenHeader(token),
   };
-  console.log(config);
+  //console.log(config;
   return axios(config);
 }
 
@@ -123,7 +123,7 @@ export function FOLLOW_OR_UNFOLLOW_USER(
     },
     headers: tokenHeader(token),
   };
-  console.log(config);
+  //console.log(config;
   return axios(config);
 }
 

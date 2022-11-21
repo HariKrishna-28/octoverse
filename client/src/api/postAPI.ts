@@ -18,7 +18,7 @@ export function GET_TIMELINE_POSTS(id: string, token: string) {
     url: `${postAPI}/timeline/${id}`,
     headers: tokenHeader(token),
   };
-  console.log(config);
+  //console.log(config;
   return axios(config);
 }
 
@@ -62,7 +62,7 @@ export function LIKE_POSTS(postId: string, userId: string, token: string) {
     data: data,
     headers: tokenHeader(token),
   };
-  console.log(config);
+  //console.log(config;
   return axios(config);
 }
 
