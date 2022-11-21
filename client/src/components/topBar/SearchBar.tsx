@@ -1,13 +1,16 @@
 import { Avatar } from '@mui/material'
 import React, { useEffect, useState } from 'react'
+import { useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
-import { getSearchTerms } from '../../api/searchAPI'
+import { getSearchTerms, GET_SEARCH_TERMS } from '../../api/searchAPI'
+import { selectToken } from '../../features/tokenSlice'
 
 
 
 const SearchBar: React.FC = () => {
     const [suggestions, setSuggestions] = useState([])
     const [searchTerm, setSearchTerm] = useState("")
+    const authToken = useSelector(selectToken)
 
     const handleInput = (e: React.SyntheticEvent) => {
         // @ts-ignore
@@ -19,20 +22,20 @@ const SearchBar: React.FC = () => {
         }
     }
 
-    useEffect(() => {
-        if (searchTerm === "") {
-            setSuggestions([])
-        }
-    }, [searchTerm])
-
     const getSuggestions = async () => {
         try {
-            const res = await getSearchTerms(searchTerm)
+            const res = await GET_SEARCH_TERMS(searchTerm, authToken)
             setSuggestions(res.data)
         } catch (error) {
             console.log(error)
         }
     }
+
+    useEffect(() => {
+        if (searchTerm === "") {
+            setSuggestions([])
+        }
+    }, [searchTerm])
 
 
     return (

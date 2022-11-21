@@ -1,22 +1,23 @@
 import React, { useEffect, useState } from 'react'
 import { ThumbUp } from '@mui/icons-material'
 // import { Users } from '../../dummyData'
-import { getUser } from '../../api/userAPI'
+import { getUser, GET_USER } from '../../api/userAPI'
 import moment from 'moment'
 import { Link } from 'react-router-dom'
 // import { postInterface } from '.././interfaces/postProps'
 import { userProp } from '../interfaces/userProps'
-import { likePosts } from '../../api/postAPI'
+import { likePosts, LIKE_POSTS } from '../../api/postAPI'
 import { useSelector } from 'react-redux'
 import { getUserData } from '../../features/authSlice'
 import PostDropDown from '../dropdown/PostDropDown'
 import PostDeleteModal from '../modals/PostDeleteModal'
 import UpdatePostModal from '../modals/UpdatePostModal'
 import { Verified } from '@mui/icons-material'
-import { createNewActivity } from '../../api/activityAPI'
+import { createNewActivity, CREATE_NEW_ACTIVITY } from '../../api/activityAPI'
 import { Avatar } from '@mui/material'
 import LikesModal from '../modals/Likes/LikesModal'
 import ReactPlayer from 'react-player'
+import { selectToken } from '../../features/tokenSlice'
 
 
 interface Props {
@@ -66,13 +67,14 @@ const Post: React.FC<Props> = ({ post, triggerReload }) => {
     // @ts-ignore
     const [isLiked, setIsLiked] = useState(post.likes.includes(currentUser?._id));
     const [alreadyLiked, setAlreadyLiked] = useState(isLiked)
+    const authToken = useSelector(selectToken)
 
 
 
     const handleLike = async () => {
         try {
             if (currentUser?._id) {
-                const res = await likePosts(post._id, currentUser._id)
+                const res = await LIKE_POSTS(post._id, currentUser._id, authToken)
                 console.log(res.data)
             }
         } catch (error) {
@@ -102,7 +104,7 @@ const Post: React.FC<Props> = ({ post, triggerReload }) => {
                 },
                 followerName: currentUser.userName,
             }
-            const res = await createNewActivity(newActivity)
+            const res = await CREATE_NEW_ACTIVITY(newActivity, authToken)
             console.log(res.data)
         } catch (error) {
             console.log(error)
@@ -112,7 +114,7 @@ const Post: React.FC<Props> = ({ post, triggerReload }) => {
     useEffect(() => {
         async function getPostData() {
             try {
-                const res = await getUser(post.userId, undefined)
+                const res = await GET_USER(post.userId, undefined, authToken)
                 setUser(res.data)
             } catch (error) {
                 console.log(error)

@@ -6,10 +6,11 @@ import { Link } from 'react-router-dom'
 import { selectTheme } from '../../../features/themeSlice'
 import { LikeNotificationProps } from '../../interfaces/activityProps'
 import moment from 'moment'
-import { updateSeen } from '../../../api/activityAPI'
+import { updateSeen, UPDATE_SEEN } from '../../../api/activityAPI'
 import { userProp } from '../../interfaces/userProps'
-import { getaPost } from '../../../api/postAPI'
+import { getaPost, GET_A_POST } from '../../../api/postAPI'
 import ReactPlayer from 'react-player'
+import { selectToken } from '../../../features/tokenSlice'
 
 interface Prop {
     notification: LikeNotificationProps,
@@ -23,11 +24,12 @@ const LikeNotification: React.FC<Prop> = ({ notification, user }) => {
     const [postType, setType] = useState("")
     // eslint-disable-next-line
     const [load, setLoad] = useState(false)
+    const authToken = useSelector(selectToken)
 
     const handleClick = async () => {
         try {
             setSeen(true)
-            await updateSeen(notification._id, user.email)
+            await UPDATE_SEEN(notification._id, user.email, authToken)
         } catch (error) {
             console.log(error)
         }
@@ -35,7 +37,7 @@ const LikeNotification: React.FC<Prop> = ({ notification, user }) => {
 
     const getPostType = async () => {
         try {
-            const res = await getaPost(notification.post.id)
+            const res = await GET_A_POST(notification.post.id, authToken)
             console.log(res.data)
             setType(res.data.type)
         } catch (error) {
@@ -54,10 +56,11 @@ const LikeNotification: React.FC<Prop> = ({ notification, user }) => {
     // }
 
     useEffect(() => {
+        if (!authToken) return
         setLoad(true)
         getPostType()
         // eslint-disable-next-line
-    }, [])
+    }, [authToken])
 
     return (
         <>

@@ -4,8 +4,9 @@ import Modal from '@mui/material/Modal';
 import CloseIcon from '@mui/icons-material/Close';
 import { useSelector } from 'react-redux';
 import { selectTheme } from '../../features/themeSlice';
-import { deletePost } from '../../api/postAPI';
+import { deletePost, DELETE_POST } from '../../api/postAPI';
 import LoadAnimation from '../load/LoadAnimation';
+import { selectToken } from '../../features/tokenSlice';
 
 
 interface Props {
@@ -18,6 +19,7 @@ interface Props {
 const PostDeleteModal: React.FC<Props> = ({ handleClose, open, userId, postId }) => {
     const themePreference = useSelector(selectTheme)
     const [load, setLoad] = useState(false)
+    const authToken = useSelector(selectToken)
     // const [success, setSuccess] = useState(false)
 
 
@@ -37,7 +39,7 @@ const PostDeleteModal: React.FC<Props> = ({ handleClose, open, userId, postId })
     const deleteThisPost = async () => {
         try {
             setLoad(true)
-            const res = await deletePost(postId, userId)
+            const res = await DELETE_POST(postId, userId, authToken)
             console.log(res.data)
             setLoad(false)
             handleClose(true)

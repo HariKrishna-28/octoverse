@@ -4,8 +4,9 @@ import Modal from '@mui/material/Modal';
 import CloseIcon from '@mui/icons-material/Close';
 import { useSelector } from 'react-redux';
 import { selectTheme } from '../../features/themeSlice';
-import { updatePost } from '../../api/postAPI';
+import { updatePost, UPDATE_POST } from '../../api/postAPI';
 import LoadAnimation from '../load/LoadAnimation';
+import { selectToken } from '../../features/tokenSlice';
 
 
 interface Props {
@@ -22,6 +23,7 @@ const UpdatePostModal: React.FC<Props> = ({ handleClose, open, userId, postId, i
     const prevDesc = description
     const [desc, setDesc] = useState(description)
     const [load, setLoad] = useState(false)
+    const authTOken = useSelector(selectToken)
     // const [success, setSuccess] = useState(false)
 
     const style = {
@@ -41,7 +43,7 @@ const UpdatePostModal: React.FC<Props> = ({ handleClose, open, userId, postId, i
         e.preventDefault()
         try {
             setLoad(true)
-            await updatePost(postId, userId, desc)
+            await UPDATE_POST(postId, userId, desc, authTOken)
             setLoad(false)
             handleClose(true)
         } catch (error) {

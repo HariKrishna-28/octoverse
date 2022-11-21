@@ -13,7 +13,8 @@ import { v4 as uuid } from 'uuid'
 // import { uploadPost } from '../../api/postAPI';
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage'
 import { storage } from '../../firebase';
-import { updateUser } from '../../api/userAPI';
+import { updateUser, UPDATE_USER } from '../../api/userAPI';
+import { selectToken } from '../../features/tokenSlice';
 // import { cleanup } from '@testing-library/react';
 
 
@@ -37,6 +38,7 @@ const UpdateProfileModal: React.FC<Props> = ({ handleClose, open, user }) => {
     const [load, setLoad] = useState(false)
     const [url, setUrl] = useState("")
     const [updatedCover, setUpdatedCover] = useState(false)
+    const authToken = useSelector(selectToken)
 
     const style = {
         position: 'absolute',
@@ -71,7 +73,7 @@ const UpdateProfileModal: React.FC<Props> = ({ handleClose, open, user }) => {
             coverPicture: url
         }
         try {
-            const res = await updateUser(data, user._id)
+            const res = await UPDATE_USER(data, user._id, authToken)
             console.log(res.data)
             handleClose(true)
         } catch (error) {
