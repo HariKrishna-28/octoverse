@@ -43,8 +43,8 @@ const RightBar: React.FC<Props> = ({ user, triggerReload, profile = false }) => 
             const res = await GET_USER_FRIENDS(userId, authToken)
             setFriends(res.data)
             setLoad(false)
-        } catch (error) {
-            console.log(error)
+        } catch (error: any) {
+            console.log(error.message)
         }
     }
 
@@ -53,8 +53,8 @@ const RightBar: React.FC<Props> = ({ user, triggerReload, profile = false }) => 
             const res = await GET_USER_FOLLOWING(userId, authToken)
             setUserFollowing(res.data)
 
-        } catch (error) {
-            console.log(error)
+        } catch (error: any) {
+            console.log(error.message)
         }
     }
 

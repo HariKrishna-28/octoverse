@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react'
-import { getCurrentUserData } from '../../api/userAPI'
+import { getCurrentUserData, GET_CURRENT_USER_DATA } from '../../api/userAPI'
 import { TopBar, SideBar, Feed, RightBar } from '../../components'
 import { userProp } from '../../components/interfaces/userProps'
 import { useParams } from 'react-router'
 import { Verified } from '@mui/icons-material'
+import { useSelector } from 'react-redux'
+import { selectToken } from '../../features/tokenSlice'
 // import { useSelector } from 'react-redux'
 // import { getUserData } from '../../features/authSlice'
 
@@ -11,11 +13,12 @@ const ProfiePage: React.FC = () => {
     const [user, setUser] = useState<userProp>()
     const [load, setLoad] = useState(false)
     const params = useParams()
+    const authToken = useSelector(selectToken)
 
     async function getPostData() {
         try {
             // @ts-ignore
-            const res = await getCurrentUserData(params.useremail)
+            const res = await GET_CURRENT_USER_DATA(params.useremail, authToken)
             setUser(res.data)
             // console.log(res)
         } catch (error) {
@@ -24,9 +27,10 @@ const ProfiePage: React.FC = () => {
         setLoad(false)
     }
     useEffect(() => {
+        if (!authToken) return
         setLoad(true)
         getPostData()
-    }, [params.useremail])
+    }, [params.useremail, authToken])
 
 
     return (

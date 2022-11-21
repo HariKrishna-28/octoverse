@@ -4,6 +4,8 @@ import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { getUserData } from '../../features/authSlice';
 import { selectToken } from '../../features/tokenSlice';
+import LoadAnimation from '../../components/load/LoadAnimation';
+import LoadingWIndow from '../../components/load/LoadingWIndow';
 
 const HomePage: React.FC = () => {
     const userAuth = useSelector(getUserData)
@@ -19,7 +21,7 @@ const HomePage: React.FC = () => {
     useEffect(() => {
         if (!authToken) return
         setLoad(false)
-    }, [authToken])
+    }, [authToken, userAuth.user])
 
     return (
         <>
@@ -43,7 +45,8 @@ const HomePage: React.FC = () => {
                                     user={undefined} />
                             </div>
                         </div>
-                    </> : <>Token</>
+                    </> : <>
+                        <LoadingWIndow /></>
             }
         </>
     )
