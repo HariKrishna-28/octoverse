@@ -4,11 +4,12 @@ import { Avatar, CircularProgress, Tooltip, Zoom } from '@mui/material'
 import { useSelector } from 'react-redux'
 import { getUserData } from '../../features/authSlice'
 import { userProp } from '../interfaces/userProps'
-import { uploadPost } from '../../api/postAPI'
+import { uploadPost, UPLOAD_POST } from '../../api/postAPI'
 import { v4 as uuid } from 'uuid'
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage'
 import { storage } from '../../firebase'
 import LoadAnimation from '../load/LoadAnimation'
+import { selectToken } from '../../features/tokenSlice'
 // import LoadAnimation from '../load/LoadAnimation'
 
 interface Props {
@@ -28,6 +29,7 @@ const Share: React.FC<Props> = ({ triggerReload }) => {
     // eslint-disable-next-line
     const [post, setPost] = useState(false)
     const [videoURL, setVideoURL] = useState("")
+    const authToken = useSelector(selectToken)
 
     const uploadImage = async (image: File) => {
         try {
@@ -84,7 +86,7 @@ const Share: React.FC<Props> = ({ triggerReload }) => {
             type: imageURL !== "" ? "image" : videoURL !== "" ? "video" : "status"
         }
         try {
-            const res = await uploadPost(newPost)
+            const res = await UPLOAD_POST(newPost, authToken)
             console.log(res.data)
         } catch (error) {
             console.error(error)

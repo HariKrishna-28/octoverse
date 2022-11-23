@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 // import { Visibility, VisibilityOff } from '@mui/icons-material'
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { useDispatch, useSelector } from 'react-redux'
@@ -11,6 +11,7 @@ import { useNavigate } from 'react-router-dom'
 import { auth, provider } from '../../firebase'
 import LoadAnimation from '../../components/load/LoadAnimation';
 import { Google } from '@mui/icons-material';
+import { selectToken, setAuthToken } from '../../features/tokenSlice';
 
 
 const Login: React.FC = () => {
@@ -21,30 +22,40 @@ const Login: React.FC = () => {
 
     const dispatch = useDispatch();
     const navigate = useNavigate()
+    const [flag, setFlag] = useState(false)
     const userAuthStats = useSelector(getUserData)
+    const authToken = useSelector(selectToken)
     // const [showPassword, setShowPassword] = useState(false)
     // const userRef = useRef<HTMLInputElement>(null)
     // const emailRef = useRef<HTMLInputElement>(null)
     // const pwdRef = useRef<HTMLInputElement>(null)
 
+    const tokenSetter = async (user: any) => {
+        await user.getIdToken(true)
+            .then((token: string) => {
+                dispatch(setAuthToken({
+                    token: token
+                }))
+            })
+    }
+
     const signIn = async (e: React.SyntheticEvent) => {
         e.preventDefault()
         await auth.signInWithPopup(provider)
             .then((res) => {
-                // if (user?.displayName && user.email && user.photoURL) {
                 const data = res.user
+                data?.getIdToken(true)
+                    .then(token => {
+                        dispatch(setAuthToken({
+                            token: token
+                        }))
+                    })
                 const cred = {
                     userName: data?.displayName,
                     email: data?.email,
                     profilePicture: data?.photoURL
                 }
-                // const data = {
-                //     userName: user.displayName,
-                //     email: user.email,
-                //     profilePicture: user.photoURL,
-                // }
                 initialiseUser(cred)
-                // }
             })
             .catch((err) => {
                 alert(err.message)
@@ -94,13 +105,20 @@ const Login: React.FC = () => {
         try {
             const res = await login(credentials)
             saveUserData(res.data)
-            console.log("logged in")
+            setFlag(true)
+            // navigate("/")
         } catch (error) {
             console.log(error)
             setUserError(getErrorMessage(error))
         }
     }
 
+    useEffect(() => {
+        if (!authToken) return
+        if (flag) {
+            navigate("/")
+        }
+    }, [authToken, flag])
 
     // const handleSubmit = (e: React.SyntheticEvent) => {
     //     e.preventDefault()
@@ -114,11 +132,11 @@ const Login: React.FC = () => {
     // }
 
 
-    useEffect(() => {
-        userAuthStats.user &&
-            navigate("/")
-        // eslint-disable-next-line
-    }, [userAuthStats])
+    // useEffect(() => {
+    //     userAuthStats.user && flag &&
+    //         navigate("/")
+    //     // eslint-disable-next-line
+    // }, [userAuthStats, flag])
 
 
     return (

@@ -6,8 +6,9 @@ import { Link } from 'react-router-dom'
 import { selectTheme } from '../../../features/themeSlice'
 import { FollowNotificationProps } from '../../interfaces/activityProps'
 import moment from 'moment'
-import { updateSeen } from '../../../api/activityAPI'
+import { updateSeen, UPDATE_SEEN } from '../../../api/activityAPI'
 import { userProp } from '../../interfaces/userProps'
+import { selectToken } from '../../../features/tokenSlice'
 
 interface Prop {
     notification: FollowNotificationProps,
@@ -17,12 +18,13 @@ interface Prop {
 const FollowNotification: React.FC<Prop> = ({ notification, user }) => {
     const themePreference = useSelector(selectTheme)
     const [seen, setSeen] = useState(notification.hasSeen)
+    const authToken = useSelector(selectToken)
     const hoverColour = !seen ? themePreference ? "#010409" : "#F6F8FA" : ""
 
     const handleClick = async () => {
         try {
             setSeen(true)
-            await updateSeen(notification._id, user.email)
+            await UPDATE_SEEN(notification._id, user.email, authToken)
         } catch (error) {
             console.log(error)
         }
