@@ -4,7 +4,7 @@ import { useAuthState } from 'react-firebase-hooks/auth';
 import { useDispatch, useSelector } from 'react-redux'
 import { getUserData, setUserStatus } from '../../features/authSlice'
 import { userCredentials } from '../../components/interfaces/userCredentials'
-import { login } from '../../api/authAPI'
+import { LOGIN, login } from '../../api/authAPI'
 // import { CircularProgress } from '@mui/material'
 import { getErrorMessage } from '../../components/helpers/errorMessageGenerator'
 import { useNavigate } from 'react-router-dom'
@@ -46,16 +46,18 @@ const Login: React.FC = () => {
                 const data = res.user
                 data?.getIdToken(true)
                     .then(token => {
+                        // if (token != authToken) {
                         dispatch(setAuthToken({
                             token: token
                         }))
+                        const cred = {
+                            userName: data?.displayName,
+                            email: data?.email,
+                            profilePicture: data?.photoURL
+                        }
+                        initialiseUser(cred)
+                        // }
                     })
-                const cred = {
-                    userName: data?.displayName,
-                    email: data?.email,
-                    profilePicture: data?.photoURL
-                }
-                initialiseUser(cred)
             })
             .catch((err) => {
                 alert(err.message)
@@ -103,7 +105,7 @@ const Login: React.FC = () => {
 
     const initialiseUser = async (credentials: any) => {
         try {
-            const res = await login(credentials)
+            const res = await LOGIN(credentials, authToken)
             saveUserData(res.data)
             setFlag(true)
             // navigate("/")

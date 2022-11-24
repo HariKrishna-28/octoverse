@@ -3,6 +3,7 @@ import {
   userCredentials,
   newUserCredentials,
 } from "../components/interfaces/userCredentials";
+import { tokenHeader } from "../utils/tokenHeader";
 const auth = `${process.env.REACT_APP_API_URL}/auth`;
 // const profileAPI = `${process.env.REACT_APP_API_URL}/profile`;
 
@@ -12,6 +13,16 @@ export function login(authCredentials: userCredentials) {
     method: "post",
     url: `${auth}/login`,
     data: authCredentials,
+  };
+  return axios(config);
+}
+
+export function LOGIN(authCredentials: userCredentials, token: string) {
+  const config: AxiosRequestConfig = {
+    method: "post",
+    url: `${auth}/login`,
+    data: authCredentials,
+    headers: tokenHeader(token),
   };
   return axios(config);
 }

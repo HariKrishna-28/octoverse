@@ -16,6 +16,5 @@ export function GET_NEWS_DATA(token: string) {
     url: newsURL,
     headers: tokenHeader(token),
   };
-  console.log(config);
   return axios(config);
 }

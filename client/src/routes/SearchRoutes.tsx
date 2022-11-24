@@ -20,6 +20,7 @@ const SearchRoutes: React.FC = () => {
   const [currentUser, loading] = useAuthState(auth)
   const token = useSelector(selectToken)
   const [authToken, setToken] = useState("")
+  const [alreadySet, setAlreadySet] = useState(false)
   // const [primaryLoad, setPrimaryLoad] = useState(true)
 
 
@@ -45,11 +46,13 @@ const SearchRoutes: React.FC = () => {
   }
 
   const tokenSetter = async (currentUser: any) => {
+    if (alreadySet) return
     await currentUser.getIdToken(true)
       .then((token: string) => {
         dispatch(setAuthToken({
           token: token
         }))
+        setAlreadySet(true)
         setToken(token)
       })
   }
