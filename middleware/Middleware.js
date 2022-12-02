@@ -9,10 +9,10 @@ module.exports.VerifyToken = async (req, res, next) => {
       req.user = decodeValue;
       return next();
     }
-    return res.status(403).json({ message: "Unauthorised" });
+    return res.status(401).json({ message: "Unauthorised" });
   } catch (e) {
     // console.log(e.message);
-    return res.status(403).json({ message: "Access denied" });
+    return res.status(401).json({ message: "Access denied" });
   }
 };
 
