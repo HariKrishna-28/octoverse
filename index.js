@@ -19,6 +19,12 @@ const { VerifyToken } = require("./src/middleware/Middleware");
 app.use(express.json());
 app.use(helmet());
 app.use(cors());
+// Database connection
+connectDb();
+
+app.get("/", (_, res) => {
+  res.send("Octoverse up");
+});
 
 app.use(VerifyToken);
 // app.use(morgan("common"));
@@ -29,13 +35,6 @@ app.use("/api/post", postRoute);
 app.use("/api/search", searchRoute);
 app.use("/api/news", newsRoute);
 app.use("/api/activity", activityRoute);
-
-// Database connection
-connectDb();
-
-app.get("/", (_, res) => {
-  res.send("Octoverse up");
-});
 
 app.listen(process.env.PORT || 5000, () => {
   console.log("Server up");
