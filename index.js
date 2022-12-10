@@ -5,15 +5,15 @@ const dotenv = require("dotenv");
 const helmet = require("helmet");
 const morgan = require("morgan");
 const cors = require("cors");
-const connectDb = require("./components/connection");
-const userRoute = require("./routes/users");
-const authRoute = require("./routes/auth");
-const postRoute = require("./routes/posts");
-const searchRoute = require("./routes/search");
-const newsRoute = require("./routes/news");
-const activityRoute = require("./routes/activity");
-const serviceAccount = require("./config/admin-config");
-const { VerifyToken } = require("./middleware/Middleware");
+const connectDb = require("./src/components/connection");
+const userRoute = require("./src/routes/users");
+const authRoute = require("./src/routes/auth");
+const postRoute = require("./src/routes/posts");
+const searchRoute = require("./src/routes/search");
+const newsRoute = require("./src/routes/news");
+const activityRoute = require("./src/routes/activity");
+const serviceAccount = require("./src/config/admin-config");
+const { VerifyToken } = require("./src/middleware/Middleware");
 
 // Middleware
 app.use(express.json());
