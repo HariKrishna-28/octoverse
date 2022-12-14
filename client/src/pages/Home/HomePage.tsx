@@ -6,6 +6,7 @@ import { getUserData } from '../../features/authSlice';
 import { selectToken } from '../../features/tokenSlice';
 import LoadAnimation from '../../components/load/LoadAnimation';
 import LoadingWIndow from '../../components/load/LoadingWIndow';
+import { CircularProgress } from '@mui/material';
 
 const HomePage: React.FC = () => {
     const userAuth = useSelector(getUserData)
