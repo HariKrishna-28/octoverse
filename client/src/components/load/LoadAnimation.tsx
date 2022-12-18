@@ -1,6 +1,5 @@
 import { CircularProgress } from '@mui/material';
 import React from 'react'
-import { ScaleLoader } from "react-spinners";
 
 const LoadAnimation: React.FC = () => {
 

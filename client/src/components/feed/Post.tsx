@@ -6,14 +6,14 @@ import moment from 'moment'
 import { Link } from 'react-router-dom'
 // import { postInterface } from '.././interfaces/postProps'
 import { userProp } from '../interfaces/userProps'
-import { likePosts, LIKE_POSTS } from '../../api/postAPI'
+import { LIKE_POSTS } from '../../api/postAPI'
 import { useSelector } from 'react-redux'
 import { getUserData } from '../../features/authSlice'
 import PostDropDown from '../dropdown/PostDropDown'
 import PostDeleteModal from '../modals/PostDeleteModal'
 import UpdatePostModal from '../modals/UpdatePostModal'
 import { Verified } from '@mui/icons-material'
-import { createNewActivity, CREATE_NEW_ACTIVITY } from '../../api/activityAPI'
+import { CREATE_NEW_ACTIVITY } from '../../api/activityAPI'
 import { Avatar } from '@mui/material'
 import LikesModal from '../modals/Likes/LikesModal'
 import ReactPlayer from 'react-player'
@@ -194,6 +194,7 @@ const Post: React.FC<Props> = ({ post, triggerReload }) => {
                                     src={post?.img}
                                     alt="post"
                                     draggable="false"
+                                    loading='lazy'
                                 />
                             </div>
 
@@ -201,8 +202,8 @@ const Post: React.FC<Props> = ({ post, triggerReload }) => {
                                 <div className='flex justify-center mt-2 mb-2'>
                                     <ReactPlayer
                                         url={post?.img}
-                                        controls
                                         loop
+                                        controls
                                     />
                                 </div>
                                 : null

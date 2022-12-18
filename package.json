@@ -5,9 +5,9 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon index.js",
-    "client": "cd client && npm start",
-    "socket": "cd socket && npm start"
+    "start": "node index.js",
+    "dev": "nodemon index.js",
+    "client": "cd client && npm start"
   },
   "keywords": [],
   "author": "",
