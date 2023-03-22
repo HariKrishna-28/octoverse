@@ -7,7 +7,7 @@ dotenv.config();
 router.get("/", async (req, res) => {
   const options = {
     method: "GET",
-    url: `https://${process.env.RAPID_API_HOST}/v1/search`,
+    url: `https://${process.env.RAPID_API_NEWS_HOST}/v1/search`,
     params: {
       q: "Tech news",
       lang: "en",
@@ -15,8 +15,8 @@ router.get("/", async (req, res) => {
       page_size: "10",
     },
     headers: {
-      "X-RapidAPI-Key": process.env.RAPID_API_KEY,
-      "X-RapidAPI-Host": process.env.RAPID_API_HOST,
+      "X-RapidAPI-Key": process.env.RAPID_API_NEWS_KEY,
+      "X-RapidAPI-Host": process.env.RAPID_API_NEWS_HOST,
     },
   };
   axios
