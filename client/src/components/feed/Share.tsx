@@ -4,7 +4,7 @@ import { Avatar, CircularProgress, Tooltip, Zoom } from '@mui/material'
 import { useSelector } from 'react-redux'
 import { getUserData } from '../../features/authSlice'
 import { userProp } from '../interfaces/userProps'
-import { UPLOAD_POST } from '../../api/postAPI'
+import { UPLOAD_POST, VALIDATE_POST } from '../../api/postAPI'
 import { v4 as uuid } from 'uuid'
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage'
 import { storage } from '../../firebase'
@@ -101,12 +101,24 @@ const Share: React.FC<Props> = ({ triggerReload }) => {
         triggerReload()
     }
 
+    const validatePost = async (message: string) => {
+        try {
+            const res = await VALIDATE_POST(message, authToken)
+            console.log(res.data)
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
     const handleSubmit = async (e: React.SyntheticEvent) => {
         e.preventDefault()
         // @ts-ignore
         if (desc.current.value === "" && imageURL === "") return
+        if (desc.current?.value) {
+            validatePost(desc.current.value)
+        }
         setPost(true)
-        uploadCurrentPost()
+        // uploadCurrentPost()
         setPost(false)
     }
 
@@ -114,7 +126,7 @@ const Share: React.FC<Props> = ({ triggerReload }) => {
     return (
         <>
             {user.user ?
-                <div className='w-100 h-44 rounded-lg dark:bg-dark_feed_secondary shadow-lg bg-light_feed_secondary dark:text-navBar_Text text-black'>
+                <div className='text-black rounded-lg shadow-lg w-100 h-44 dark:bg-dark_feed_secondary bg-light_feed_secondary dark:text-navBar_Text'>
                     <div className='p-3'>
                         <div className='flex items-center'
                         >
@@ -123,7 +135,7 @@ const Share: React.FC<Props> = ({ triggerReload }) => {
                                 src={currUser?.profilePicture === "" ? `https://avatars.dicebear.com/api/initials/${currUser?.userName}.svg` : currUser?.profilePicture}
                                 alt=""
                             // draggable="false"
-                            // className='object-cover rounded-full cursor-pointer w-12 h-12 mr-2'
+                            // className='object-cover w-12 h-12 mr-2 rounded-full cursor-pointer'
                             />
                             <div className='flex justify-between w-full'>
                                 <input
@@ -173,7 +185,7 @@ const Share: React.FC<Props> = ({ triggerReload }) => {
                         <hr className='my-4' />
                         <div className='mt-4'>
                             <div className='flex justify-evenly'>
-                                <div className='flex flex-wrap gap-2 items-center'>
+                                <div className='flex flex-wrap items-center gap-2'>
                                     {/* <Tooltip
                                 TransitionComponent={Zoom}
                                 TransitionProps={{ timeout: 400 }}
@@ -244,7 +256,7 @@ const Share: React.FC<Props> = ({ triggerReload }) => {
                                         !upload ?
                                             imageURL !== "" &&
                                             // <img src={imageURL} />
-                                            <img src={imageURL} alt="" className='h-10 w-auto' />
+                                            <img src={imageURL} alt="" className='w-auto h-10' />
                                             :
                                             <>
                                                 <CircularProgress />
@@ -255,7 +267,7 @@ const Share: React.FC<Props> = ({ triggerReload }) => {
                                     {!upload ?
                                         <button
                                             onClick={(e) => handleSubmit(e)}
-                                            className='bg-green-500 hover:bg-green-700 text-white font-bold py-1 px-3 rounded'>
+                                            className='px-3 py-1 font-bold text-white bg-green-500 rounded hover:bg-green-700'>
                                             {/* <Shortcut /> */}
                                             Post
                                         </button>
@@ -276,7 +288,7 @@ const Share: React.FC<Props> = ({ triggerReload }) => {
                     </div>
                 </div>
                 :
-                <div className='w-100 h-44 flex items-center justify-center'>
+                <div className='flex items-center justify-center w-100 h-44'>
                     <LoadAnimation />
                 </div>
             }

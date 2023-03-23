@@ -4,7 +4,7 @@ const dotenv = require("dotenv");
 
 dotenv.config();
 
-router.get("/", (req, res) => {
+router.post("/", (req, res) => {
   const val = req.body.message;
   const options = {
     method: "GET",

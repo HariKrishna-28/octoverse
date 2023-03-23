@@ -36,7 +36,20 @@ export function GET_USER_PROFILE_POSTS(userEmail: string, token: string) {
     url: `${postAPI}/profile/${userEmail}`,
     headers: tokenHeader(token),
   };
-  console.log(token);
+  return axios(config);
+}
+
+export function VALIDATE_POST(text: string, token: string) {
+  const data = {
+    message: text,
+  };
+  const config: AxiosRequestConfig = {
+    method: "post",
+    url: `${process.env.REACT_APP_API_URL}/hs`,
+    data: data,
+    headers: tokenHeader(token),
+  };
+  console.log(config);
   return axios(config);
 }
 
