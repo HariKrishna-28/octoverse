@@ -12,7 +12,7 @@ const postRoute = require("./src/routes/posts");
 const searchRoute = require("./src/routes/search");
 const newsRoute = require("./src/routes/news");
 const activityRoute = require("./src/routes/activity");
-const offensiveCheckRoute = require("./src/routes/hateSpeech");
+const offensiveCheckRoute = require("./src/routes/moderation");
 const serviceAccount = require("./src/config/admin-config");
 const { VerifyToken } = require("./src/middleware/Middleware");
 
@@ -20,8 +20,9 @@ const { VerifyToken } = require("./src/middleware/Middleware");
 app.use(express.json());
 app.use(helmet());
 app.use(cors());
+
 // Database connection
-connectDb();
+// connectDb();
 
 app.get("/", (_, res) => {
   res.send("Octoverse up");
