@@ -123,6 +123,7 @@ const Post: React.FC<Props> = ({ post, triggerReload }) => {
         }
         setLoad(true)
         getPostData()
+        // eslint-disable-next-line
     }, [post.userId])
 
 
@@ -137,7 +138,7 @@ const Post: React.FC<Props> = ({ post, triggerReload }) => {
 
     return (
         <>
-            <div className='w-full dark:bg-dark_feed_secondary rounded-lg mt-3  shadow-lg bg-light_feed_secondary dark:text-navBar_Text text-black'>
+            <div className='w-full mt-3 text-black rounded-lg shadow-lg dark:bg-dark_feed_secondary bg-light_feed_secondary dark:text-navBar_Text'>
                 <div className='p-3'>
                     {/* top */}
                     <div className='flex items-center justify-between'>
@@ -149,7 +150,7 @@ const Post: React.FC<Props> = ({ post, triggerReload }) => {
 
                                 />
                             </Link>
-                            <div className='flex w-full items-center justify-between'>
+                            <div className='flex items-center justify-between w-full'>
                                 <div className='flex items-center gap-2'>
                                     <span className='font-bold'>{user?.userName}</span>
                                     <div>
@@ -211,13 +212,13 @@ const Post: React.FC<Props> = ({ post, triggerReload }) => {
                         <div className='p-2 mt-2'>{post?.desc}</div>
                     </div >
                     {/* bottom */}
-                    <div className='flex items-center p-2 w-full justify-between'>
-                        <div className='flex gap-3 items-center'>
+                    <div className='flex items-center justify-between w-full p-2'>
+                        <div className='flex items-center gap-3'>
                             {/* <Favorite className='cursor-pointer' /> */}
                             <ThumbUp
                                 className={`cursor-pointer ${isLiked ? "text-blue-600" : ""}`}
                                 onClick={handleLike} />
-                            <span className='text-sm hover:underline cursor-pointer' onClick={() => setOpenLikes(true)}>{like} likes</span>
+                            <span className='text-sm cursor-pointer hover:underline' onClick={() => setOpenLikes(true)}>{like} likes</span>
                         </div>
                         <div>
                             <span className='text-sm text-blue-600'>{moment(post?.createdAt).fromNow()}</span>

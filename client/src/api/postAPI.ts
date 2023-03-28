@@ -45,7 +45,7 @@ export function VALIDATE_POST(text: string, token: string) {
   };
   const config: AxiosRequestConfig = {
     method: "post",
-    url: `${process.env.REACT_APP_API_URL}/hs`,
+    url: `${process.env.REACT_APP_API_URL}/hs/perspective`,
     data: data,
     headers: tokenHeader(token),
   };

@@ -22,12 +22,13 @@ app.use(helmet());
 app.use(cors());
 
 // Database connection
-// connectDb();
+connectDb();
 
 app.get("/", (_, res) => {
   res.send("Octoverse up");
 });
 
+// Token autentication
 // app.use(VerifyToken);
 // app.use(morgan("common"));
 
