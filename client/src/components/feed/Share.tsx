@@ -1,6 +1,6 @@
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { PermMedia } from "@mui/icons-material"
-import { Avatar, CircularProgress, Tooltip, Zoom } from '@mui/material'
+import { Avatar, CircularProgress, Tooltip, Zoom, Alert, AlertTitle } from '@mui/material'
 import { useSelector } from 'react-redux'
 import { getUserData } from '../../features/authSlice'
 import { userProp } from '../interfaces/userProps'
@@ -30,6 +30,12 @@ const Share: React.FC<Props> = ({ triggerReload }) => {
     const [post, setPost] = useState(false)
     const [videoURL, setVideoURL] = useState("")
     const authToken = useSelector(selectToken)
+    const [valResult, setValResult] = useState({})
+    const [sexExp, setSexExp] = useState(false)
+    const [toxic, setToxic] = useState(false)
+    const [identAt, setIdentityAttack] = useState(false)
+    const [canPost, setCanPost] = useState(true)
+    const toxicityThreshold = 50
 
     const uploadImage = async (image: File) => {
         try {
@@ -104,30 +110,46 @@ const Share: React.FC<Props> = ({ triggerReload }) => {
     const validatePost = async (message: string) => {
         try {
             const res = await VALIDATE_POST(message, authToken)
-            console.log(res.data)
+            setValResult(res.data)
+            if (parseInt(res.data.IDENTITY_ATTACK) > toxicityThreshold) setIdentityAttack(true)
+            // if (parseInt(res.data.SEXUALLY_EXPLICIT) > toxicityThreshold) setSexExp(true)
+            if (parseInt(res.data.TOXICITY) > toxicityThreshold) setToxic(true)
+            // if (sexExp || toxic || identAt) {
+            //     setCanPost(false)
+            // }
         } catch (error) {
             console.log(error)
         }
     }
 
     const handleSubmit = async (e: React.SyntheticEvent) => {
+        setToxic(false)
+        setIdentityAttack(false)
+        setSexExp(false)
         e.preventDefault()
         // @ts-ignore
         if (desc.current.value === "" && imageURL === "") return
         if (desc.current?.value) {
             validatePost(desc.current.value)
+            // uploadCurrentPost()
         }
         setPost(true)
-        // uploadCurrentPost()
+        if (!toxic && !identAt) {
+            uploadCurrentPost()
+        }
         setPost(false)
     }
 
+    useEffect(() => {
+        console.log(sexExp, toxic, identAt, canPost)
+    }, [sexExp, toxic, identAt, canPost])
 
     return (
         <>
             {user.user ?
                 <div className='text-black rounded-lg shadow-lg w-100 h-44 dark:bg-dark_feed_secondary bg-light_feed_secondary dark:text-navBar_Text'>
                     <div className='p-3'>
+
                         <div className='flex items-center'
                         >
                             <Avatar
@@ -286,12 +308,24 @@ const Share: React.FC<Props> = ({ triggerReload }) => {
                             </div>
                         </div>
                     </div>
+
                 </div>
                 :
                 <div className='flex items-center justify-center w-100 h-44'>
                     <LoadAnimation />
                 </div>
             }
+            <div className='p-3'>
+                {
+                    toxic || sexExp || identAt ?
+                        <Alert severity="error" variant='filled'>
+                            <AlertTitle>Cant post this</AlertTitle>
+                            This post has been flagged for being <strong>{toxic && "toxic, "} {sexExp && "Sexually explicit,"} {identAt && "Identity Attack"}</strong>
+                            . Please be respectful towards other users
+                        </Alert>
+                        : null
+                }
+            </div>
         </>
     )
 }

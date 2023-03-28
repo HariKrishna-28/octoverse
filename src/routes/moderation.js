@@ -1,7 +1,7 @@
 const router = require("express").Router();
 const axios = require("axios");
 const dotenv = require("dotenv");
-// const { google } = require("googleapis");
+const { google } = require("googleapis");
 const Perspective = require("perspective-api-client");
 
 const perspective = new Perspective({
@@ -9,9 +9,9 @@ const perspective = new Perspective({
 });
 
 dotenv.config();
-// API_KEY = process.env.PERSPECTIVE_API_KEY;
-// DISCOVERY_URL =
-//   "https://commentanalyzer.googleapis.com/$discovery/rest?version=v1alpha1";
+API_KEY = process.env.PERSPECTIVE_API_KEY;
+DISCOVERY_URL =
+  "https://commentanalyzer.googleapis.com/$discovery/rest?version=v1alpha1";
 
 router.post("/", (req, res) => {
   const val = req.body.message;
@@ -35,57 +35,106 @@ router.post("/", (req, res) => {
     });
 });
 
-// router.post("/moderate", async (req, res) => {
-//   const message = req.body.message;
-//   google
-//     .discoverAPI(DISCOVERY_URL)
-//     .then((client) => {
-//       const analyzeRequest = {
-//         comment: {
-//           text: "Jiminy cricket! Well gosh durned it! Oh damn it all!",
-//         },
-//         requestedAttributes: {
-//           TOXICITY: {},
-//         },
-//       };
+router.post("/moderate", async (req, res) => {
+  const message = req.body.message;
+  google
+    .discoverAPI(DISCOVERY_URL)
+    .then((client) => {
+      const analyzeRequest = {
+        comment: {
+          text: message,
+        },
+        requestedAttributes: {
+          TOXICITY: {},
+          SEXUALLY_EXPLICIT: {},
+          IDENTITY_ATTACK: {},
+        },
+      };
 
-//       client.comments.analyze(
-//         {
-//           key: API_KEY,
-//           resource: analyzeRequest,
-//         },
-//         (err, response) => {
-//           if (err) throw err;
-//           console.log(JSON.stringify(response.data, null, 2));
-//         }
-//       );
-//     })
-//     .catch((err) => {
-//       throw err;
-//     });
-// });
-
-router.post("/perspective", async (req, res) => {
-  try {
-    const message = req.body.message;
-    const result = await perspective.analyze(message, {
-      attributes: [
-        "TOXICITY",
-        // "PROFANITY",
-        "SEXUALLY_EXPLICIT",
-        "IDENTITY_ATTACK",
-        // "INSULT",
-        // "THREAT",
-        // "OBSCENE",
-      ],
+      client.comments.analyze(
+        {
+          key: API_KEY,
+          resource: analyzeRequest,
+        },
+        (err, result) => {
+          if (err)
+            res.status(200).json({
+              IDENTITY_ATTACK: "0",
+              SEXUALLY_EXPLICIT: "0",
+              TOXICITY: "0",
+            });
+          else {
+            const processedResult = {
+              IDENTITY_ATTACK: (
+                result.data.attributeScores.IDENTITY_ATTACK.summaryScore.value *
+                100
+              ).toFixed(2),
+              SEXUALLY_EXPLICIT: (
+                result.data.attributeScores.SEXUALLY_EXPLICIT.summaryScore
+                  .value * 100
+              ).toFixed(2),
+              TOXICITY: (
+                result.data.attributeScores.TOXICITY.summaryScore.value * 100
+              ).toFixed(2),
+            };
+            res.status(200).json(processedResult);
+          }
+          // console.log(JSON.stringify(response.data, null, 2));
+        }
+      );
+    })
+    .catch((err) => {
+      res.status(500).json(err.message);
     });
-    res.status(200).json(result);
-    // res.status(200).json(JSON.stringify(result, null, 2));
-    // console.log(JSON.stringify(result, null, 2));
-  } catch (error) {
-    console.log(error);
-    res.status(500).json(error);
-  }
 });
+
+// router.post("/perspective", async (req, res) => {
+//   const message = req.body.message;
+//   try {
+//     // const result = await perspective.analyze(message, {
+//     //   attributes: [
+//     //     "TOXICITY",
+//     //     // "PROFANITY",
+//     //     "SEXUALLY_EXPLICIT",
+//     //     "IDENTITY_ATTACK",
+//     //     // "INSULT",
+//     //     // "THREAT",
+//     //     // "OBSCENE",
+//     //   ],
+//     // });
+//     perspective
+//       .analyze(message, {
+//         attributes: [
+//           "TOXICITY",
+//           // "PROFANITY",
+//           "SEXUALLY_EXPLICIT",
+//           "IDENTITY_ATTACK",
+//           // "INSULT",
+//           // "THREAT",
+//           // "OBSCENE",
+//         ],
+//       })
+//       .then((response) => {
+//         res.status(200).json(response);
+//       })
+//       .catch((error) => res.status(500).json(error));
+
+//     // const processedResult = {
+//     //   IDENTITY_ATTACK: (
+//     //     result.attributeScores.IDENTITY_ATTACK.summaryScore.value * 100
+//     //   ).toFixed(2),
+//     //   SEXUALLY_EXPLICIT: (
+//     //     result.attributeScores.SEXUALLY_EXPLICIT.summaryScore.value * 100
+//     //   ).toFixed(2),
+//     //   TOXICITY: (
+//     //     result.attributeScores.TOXICITY.summaryScore.value * 100
+//     //   ).toFixed(2),
+//     // };
+//     // res.status(200).json(processedResult);
+//   } catch (error) {
+//     console.log(error);
+//     res.status(500).json(error);
+//   }
+// });
 
 module.exports = router;

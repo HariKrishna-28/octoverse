@@ -45,11 +45,10 @@ export function VALIDATE_POST(text: string, token: string) {
   };
   const config: AxiosRequestConfig = {
     method: "post",
-    url: `${process.env.REACT_APP_API_URL}/hs/perspective`,
+    url: `${process.env.REACT_APP_API_URL}/hs/moderate`,
     data: data,
     headers: tokenHeader(token),
   };
-  console.log(config);
   return axios(config);
 }
 
