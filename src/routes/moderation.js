@@ -91,53 +91,53 @@ router.post("/moderate", async (req, res) => {
     });
 });
 
-// router.post("/perspective", async (req, res) => {
-//   const message = req.body.message;
-//   try {
-//     // const result = await perspective.analyze(message, {
-//     //   attributes: [
-//     //     "TOXICITY",
-//     //     // "PROFANITY",
-//     //     "SEXUALLY_EXPLICIT",
-//     //     "IDENTITY_ATTACK",
-//     //     // "INSULT",
-//     //     // "THREAT",
-//     //     // "OBSCENE",
-//     //   ],
-//     // });
-//     perspective
-//       .analyze(message, {
-//         attributes: [
-//           "TOXICITY",
-//           // "PROFANITY",
-//           "SEXUALLY_EXPLICIT",
-//           "IDENTITY_ATTACK",
-//           // "INSULT",
-//           // "THREAT",
-//           // "OBSCENE",
-//         ],
-//       })
-//       .then((response) => {
-//         res.status(200).json(response);
-//       })
-//       .catch((error) => res.status(500).json(error));
+router.post("/perspective", async (req, res) => {
+  const message = req.body.message;
+  try {
+    // const result = await perspective.analyze(message, {
+    //   attributes: [
+    //     "TOXICITY",
+    //     // "PROFANITY",
+    //     "SEXUALLY_EXPLICIT",
+    //     "IDENTITY_ATTACK",
+    //     // "INSULT",
+    //     // "THREAT",
+    //     // "OBSCENE",
+    //   ],
+    // });
+    perspective
+      .analyze(message, {
+        attributes: [
+          "TOXICITY",
+          // "PROFANITY",
+          "SEXUALLY_EXPLICIT",
+          "IDENTITY_ATTACK",
+          // "INSULT",
+          // "THREAT",
+          // "OBSCENE",
+        ],
+      })
+      .then((response) => {
+        res.status(200).json(response);
+      })
+      .catch((error) => res.status(500).json(error));
 
-//     // const processedResult = {
-//     //   IDENTITY_ATTACK: (
-//     //     result.attributeScores.IDENTITY_ATTACK.summaryScore.value * 100
-//     //   ).toFixed(2),
-//     //   SEXUALLY_EXPLICIT: (
-//     //     result.attributeScores.SEXUALLY_EXPLICIT.summaryScore.value * 100
-//     //   ).toFixed(2),
-//     //   TOXICITY: (
-//     //     result.attributeScores.TOXICITY.summaryScore.value * 100
-//     //   ).toFixed(2),
-//     // };
-//     // res.status(200).json(processedResult);
-//   } catch (error) {
-//     console.log(error);
-//     res.status(500).json(error);
-//   }
-// });
+    // const processedResult = {
+    //   IDENTITY_ATTACK: (
+    //     result.attributeScores.IDENTITY_ATTACK.summaryScore.value * 100
+    //   ).toFixed(2),
+    //   SEXUALLY_EXPLICIT: (
+    //     result.attributeScores.SEXUALLY_EXPLICIT.summaryScore.value * 100
+    //   ).toFixed(2),
+    //   TOXICITY: (
+    //     result.attributeScores.TOXICITY.summaryScore.value * 100
+    //   ).toFixed(2),
+    // };
+    // res.status(200).json(processedResult);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json(error);
+  }
+});
 
 module.exports = router;

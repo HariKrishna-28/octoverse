@@ -29,7 +29,7 @@ app.get("/", (_, res) => {
 });
 
 // Token autentication
-// app.use(VerifyToken);
+app.use(VerifyToken);
 // app.use(morgan("common"));
 
 app.use("/api/users", userRoute);
