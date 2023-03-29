@@ -1,6 +1,6 @@
 import React, { useRef, useState, useEffect } from 'react'
 import { PermMedia } from "@mui/icons-material"
-import { Avatar, CircularProgress, Tooltip, Zoom } from '@mui/material'
+import { Avatar, CircularProgress, Tooltip, Zoom, Alert, AlertTitle } from '@mui/material'
 import { useSelector } from 'react-redux'
 import { getUserData } from '../../features/authSlice'
 import { userProp } from '../interfaces/userProps'
@@ -88,15 +88,14 @@ const Share: React.FC<Props> = ({ triggerReload }) => {
             type: imageURL !== "" ? "image" : videoURL !== "" ? "video" : "status"
         }
         try {
-            console.log(violations)
-            if (violations.length !== 0) {
-                console.log("can't be posted")
-            }
-            else {
-                console.log("yes")
-            }
-            // const res = await UPLOAD_POST(newPost, authToken)
-            // console.log(res.data)
+            // if (violations.length !== 0) {
+            //     console.log("can't be posted")
+            // }
+            // else {
+            //     console.log("yes")
+            // }
+            const res = await UPLOAD_POST(newPost, authToken)
+            console.log(res.data)
         } catch (error) {
             console.error(error)
         }
@@ -112,8 +111,18 @@ const Share: React.FC<Props> = ({ triggerReload }) => {
 
     const validatePost = async (message: string) => {
         try {
-            const res = await VALIDATE_POST(message, authToken)
-            setViolations(res.data)
+            VALIDATE_POST(message, authToken)
+                .then((data) => {
+                    const check = data.data
+                    setViolations(check)
+                    if (check.length === 0) {
+                        // console.log("yes")
+                        uploadCurrentPost()
+                    } else {
+                        console.log("no")
+                    }
+                })
+            // setViolations(res.data)
         } catch (error) {
             console.log(error)
         }
@@ -129,15 +138,16 @@ const Share: React.FC<Props> = ({ triggerReload }) => {
             // const res = await VALIDATE_POST(desc.current.value, authToken)
             // setViolations(res.data)
             validatePost(desc.current.value)
+        } else {
+            uploadCurrentPost()
         }
-        uploadCurrentPost()
         setPost(false)
     }
 
-    // useEffect(() => {
-    //     if (violations.length === 0) return
-    //     console.log(violations)
-    // }, [violations])
+    useEffect(() => {
+        if (violations.length === 0) return
+        console.log(violations)
+    }, [violations])
 
 
     return (
@@ -248,6 +258,18 @@ const Share: React.FC<Props> = ({ triggerReload }) => {
                     <LoadAnimation />
                 </div>
             }
+            <div className='p-3'>
+                {
+                    (violations.length !== 0) ?
+                        <Alert severity="error" variant='filled'>
+                            <AlertTitle>Cant post this</AlertTitle>
+                            {/* @ts-ignore */}
+                            This post has been flagged for being <strong>{violations?.includes("Toxic") && "Toxic"} {violations?.includes("Identity Attack") && "Identity Attack"} {violations?.includes("Sexually Explicit") && "Sexually Explicit"}</strong>
+                            . We kindly ask you to be respectful towards others while using our platform.
+                        </Alert>
+                        : null
+                }
+            </div>
         </>
     )
 }

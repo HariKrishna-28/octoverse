@@ -58,7 +58,7 @@ router.post("/moderate", async (req, res) => {
           resource: analyzeRequest,
         },
         (err, result) => {
-          if (err) res.status(200).json({});
+          if (err) res.status(200).json([]);
           else {
             const processedResult = {
               IDENTITY_ATTACK: (
