@@ -37,6 +37,7 @@ router.post("/", (req, res) => {
 
 router.post("/moderate", async (req, res) => {
   const message = req.body.message;
+  const toxicityThreshold = 50;
   google
     .discoverAPI(DISCOVERY_URL)
     .then((client) => {
@@ -57,12 +58,7 @@ router.post("/moderate", async (req, res) => {
           resource: analyzeRequest,
         },
         (err, result) => {
-          if (err)
-            res.status(200).json({
-              IDENTITY_ATTACK: "0",
-              SEXUALLY_EXPLICIT: "0",
-              TOXICITY: "0",
-            });
+          if (err) res.status(200).json({});
           else {
             const processedResult = {
               IDENTITY_ATTACK: (
@@ -77,7 +73,14 @@ router.post("/moderate", async (req, res) => {
                 result.data.attributeScores.TOXICITY.summaryScore.value * 100
               ).toFixed(2),
             };
-            res.status(200).json(processedResult);
+            let val = [];
+            if (parseInt(processedResult.IDENTITY_ATTACK) > toxicityThreshold)
+              val.push("Identity Attack");
+            if (parseInt(processedResult.SEXUALLY_EXPLICIT) > toxicityThreshold)
+              val.push("Sexually Explicit");
+            if (parseInt(processedResult.TOXICITY) > toxicityThreshold)
+              val.push("Toxic");
+            res.status(200).json(val);
           }
           // console.log(JSON.stringify(response.data, null, 2));
         }
