@@ -4,7 +4,7 @@ import MenuItem from '@mui/material/MenuItem';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
-import { Edit, MoreVert, Settings } from '@mui/icons-material';
+import { MoreVert, Settings } from '@mui/icons-material';
 import Box from '@mui/material/Box';
 // import Avatar from '@mui/material/Avatar';
 // import Divider from '@mui/material/Divider';
@@ -49,7 +49,7 @@ const PostDropDown: React.FC<Props> = ({ userId, postId, handleDelete, handleUpd
                         aria-expanded={open ? 'true' : undefined}
                     >
                         <div className='cursor-pointer p-1.5 dark:hover:bg-navBar_BG hover:bg-light_feed_primary transition-all duration-300 ease-out rounded-lg'>
-                            <MoreVert className='dark:text-navBar_Text text-black' />
+                            <MoreVert className='text-black dark:text-navBar_Text' />
                         </div>
                     </IconButton>
                 </Tooltip>
@@ -102,7 +102,7 @@ const PostDropDown: React.FC<Props> = ({ userId, postId, handleDelete, handleUpd
                         Delete
                     </span>
                 </MenuItem>
-                <MenuItem
+                {/* <MenuItem
                     onClick={handleUpdate}
                 // onClick={logOut}
                 >
@@ -112,7 +112,7 @@ const PostDropDown: React.FC<Props> = ({ userId, postId, handleDelete, handleUpd
                     <span className='font-sans'>
                         Edit
                     </span>
-                </MenuItem>
+                </MenuItem> */}
             </Menu>
         </React.Fragment>
     );

@@ -1,15 +1,16 @@
-import React, { useRef, useState } from 'react'
+import React, { useRef, useState, useEffect } from 'react'
 import { PermMedia } from "@mui/icons-material"
-import { Avatar, CircularProgress, Tooltip, Zoom } from '@mui/material'
+import { Avatar, CircularProgress, Tooltip, Zoom, Alert, AlertTitle } from '@mui/material'
 import { useSelector } from 'react-redux'
 import { getUserData } from '../../features/authSlice'
 import { userProp } from '../interfaces/userProps'
-import { UPLOAD_POST } from '../../api/postAPI'
+import { UPLOAD_POST, VALIDATE_POST } from '../../api/postAPI'
 import { v4 as uuid } from 'uuid'
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage'
 import { storage } from '../../firebase'
 import LoadAnimation from '../load/LoadAnimation'
 import { selectToken } from '../../features/tokenSlice'
+// import { messaging } from 'firebase-admin'
 // import LoadAnimation from '../load/LoadAnimation'
 
 interface Props {
@@ -30,6 +31,7 @@ const Share: React.FC<Props> = ({ triggerReload }) => {
     const [post, setPost] = useState(false)
     const [videoURL, setVideoURL] = useState("")
     const authToken = useSelector(selectToken)
+    const [violations, setViolations] = useState([])
 
     const uploadImage = async (image: File) => {
         try {
@@ -86,6 +88,12 @@ const Share: React.FC<Props> = ({ triggerReload }) => {
             type: imageURL !== "" ? "image" : videoURL !== "" ? "video" : "status"
         }
         try {
+            // if (violations.length !== 0) {
+            //     console.log("can't be posted")
+            // }
+            // else {
+            //     console.log("yes")
+            // }
             const res = await UPLOAD_POST(newPost, authToken)
             console.log(res.data)
         } catch (error) {
@@ -101,20 +109,51 @@ const Share: React.FC<Props> = ({ triggerReload }) => {
         triggerReload()
     }
 
+    const validatePost = async (message: string) => {
+        try {
+            VALIDATE_POST(message, authToken)
+                .then((data) => {
+                    const check = data.data
+                    setViolations(check)
+                    if (check.length === 0) {
+                        // console.log("yes")
+                        uploadCurrentPost()
+                    } else {
+                        console.log("no")
+                    }
+                })
+            // setViolations(res.data)
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
     const handleSubmit = async (e: React.SyntheticEvent) => {
+        setViolations([])
         e.preventDefault()
         // @ts-ignore
         if (desc.current.value === "" && imageURL === "") return
         setPost(true)
-        uploadCurrentPost()
+        if (desc.current?.value) {
+            // const res = await VALIDATE_POST(desc.current.value, authToken)
+            // setViolations(res.data)
+            validatePost(desc.current.value)
+        } else {
+            uploadCurrentPost()
+        }
         setPost(false)
     }
+
+    useEffect(() => {
+        if (violations.length === 0) return
+        console.log(violations)
+    }, [violations])
 
 
     return (
         <>
             {user.user ?
-                <div className='w-100 h-44 rounded-lg dark:bg-dark_feed_secondary shadow-lg bg-light_feed_secondary dark:text-navBar_Text text-black'>
+                <div className='text-black rounded-lg shadow-lg w-100 h-44 dark:bg-dark_feed_secondary bg-light_feed_secondary dark:text-navBar_Text'>
                     <div className='p-3'>
                         <div className='flex items-center'
                         >
@@ -123,11 +162,17 @@ const Share: React.FC<Props> = ({ triggerReload }) => {
                                 src={currUser?.profilePicture === "" ? `https://avatars.dicebear.com/api/initials/${currUser?.userName}.svg` : currUser?.profilePicture}
                                 alt=""
                             // draggable="false"
-                            // className='object-cover rounded-full cursor-pointer w-12 h-12 mr-2'
+                            // className='object-cover w-12 h-12 mr-2 rounded-full cursor-pointer'
                             />
                             <div className='flex justify-between w-full'>
                                 <input
                                     ref={desc}
+                                    onChange={() => {
+                                        if (violations.length > 0) {
+                                            setViolations([])
+                                        }
+                                        // if (desc.current?.value.length == 1)
+                                    }}
                                     type="text"
                                     placeholder={"What's in your mind " + currUser?.userName + "?"}
                                     className='w-full focus:outline-none rounded-md dark:bg-navBar_secondary text-black dark:text-navBar_Text p-1.5' />
@@ -173,78 +218,13 @@ const Share: React.FC<Props> = ({ triggerReload }) => {
                         <hr className='my-4' />
                         <div className='mt-4'>
                             <div className='flex justify-evenly'>
-                                <div className='flex flex-wrap gap-2 items-center'>
-                                    {/* <Tooltip
-                                TransitionComponent={Zoom}
-                                TransitionProps={{ timeout: 400 }}
-                                title="Photo/Video">
-                                <label
-                                    htmlFor='image-upload'
-                                    className='cursor-pointer p-1.5 hover:bg-red-600 transition-all duration-300 ease-out rounded-lg'>
-                                    <PermMedia />
-                                </label>
-                            </Tooltip> */}
-                                    {/* <input
-                                // hidden input for image upload
-                                className='hidden'
-                                id='image-upload'
-                                type="file"
-                                onChange={(e) => {
-                                    // @ts-ignore
-                                    setFile(e.target?.files ? e.target.files[0] : undefined)
-                                    // @ts-ignore
-                                    const filee = e.target.files[0]
-                                    if (filee !== undefined) {
-                                        console.log("hi")
-                                        if (filee.size > 3000000) {
-                                            alert("File can only be below 3 mb")
-                                            setFile(undefined)
-                                        }
-                                        else {
-                                            // @ts-ignore
-                                            uploadImage(filee)
-                                        }
-                                    }
-                                }}
-                                accept='.png, .jpeg, .jpg' /> */}
-                                    {/* <span>Photo or Video</span> */}
-                                    {/* <Tooltip
-                                TransitionComponent={Zoom}
-                                TransitionProps={{ timeout: 400 }}
-                                title="Tag">
-                                <div className='cursor-pointer p-1.5 hover:bg-blue-600 transition-all duration-300 ease-out rounded-lg'>
-                                    <Label />
-                                </div>
-                            </Tooltip>
+                                <div className='flex flex-wrap items-center gap-2'>
 
-                            <Tooltip
-                                TransitionComponent={Zoom}
-                                TransitionProps={{ timeout: 400 }}
-                                title="Location">
-                                <div className='cursor-pointer p-1.5 hover:bg-purple-600 transition-all duration-300 ease-out rounded-lg'>
-                                    <Room />
-                                </div>
-                            </Tooltip>
-
-                            <Tooltip
-                                TransitionComponent={Zoom}
-                                TransitionProps={{ timeout: 400 }}
-                                title="Feeling">
-                                <div className='cursor-pointer p-1.5 hover:bg-yellow-600 transition-all duration-300 ease-out rounded-lg'>
-                                    <EmojiEmotions />
-                                </div>
-                            </Tooltip> */}
-
-
-                                    {/* <Tooltip
-                                TransitionComponent={Zoom}
-                                TransitionProps={{ timeout: 400 }}
-                                title="Share"> */}
                                     {
                                         !upload ?
                                             imageURL !== "" &&
                                             // <img src={imageURL} />
-                                            <img src={imageURL} alt="" className='h-10 w-auto' />
+                                            <img src={imageURL} alt="" className='w-auto h-10' />
                                             :
                                             <>
                                                 <CircularProgress />
@@ -255,7 +235,7 @@ const Share: React.FC<Props> = ({ triggerReload }) => {
                                     {!upload ?
                                         <button
                                             onClick={(e) => handleSubmit(e)}
-                                            className='bg-green-500 hover:bg-green-700 text-white font-bold py-1 px-3 rounded'>
+                                            className='px-3 py-1 font-bold text-white bg-green-500 rounded hover:bg-green-700'>
                                             {/* <Shortcut /> */}
                                             Post
                                         </button>
@@ -276,14 +256,25 @@ const Share: React.FC<Props> = ({ triggerReload }) => {
                     </div>
                 </div>
                 :
-                <div className='w-100 h-44 flex items-center justify-center'>
+                <div className='flex items-center justify-center w-100 h-44'>
                     <LoadAnimation />
                 </div>
             }
+            <div className='p-3'>
+                {
+                    (violations.length !== 0) ?
+                        <Alert severity="error" variant='filled'>
+                            <AlertTitle>Cant post this</AlertTitle>
+                            {/* @ts-ignore */}
+                            This post has been flagged for being <strong>{violations?.includes("Toxic") && "Toxic"} {violations?.includes("Identity Attack") && "identity attacking"} {violations?.includes("Sexually Explicit") && "Sexually Explicit"}</strong>
+                            . We kindly ask you to be respectful towards others while using our platform.
+                        </Alert>
+                        : null
+                }
+            </div>
         </>
     )
 }
 
 export default Share
-
 
