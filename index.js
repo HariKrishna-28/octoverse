@@ -29,13 +29,13 @@ app.get("/", (_, res) => {
 });
 
 // Token autentication
-app.use("/api/news", newsRoute);
 app.use(VerifyToken);
 // app.use(morgan("common"));
 
 app.use("/api/users", userRoute);
 app.use("/api/auth", authRoute);
 app.use("/api/post", postRoute);
+app.use("/api/news", newsRoute);
 app.use("/api/search", searchRoute);
 app.use("/api/activity", activityRoute);
 app.use("/api/hs", offensiveCheckRoute);
