@@ -70,7 +70,6 @@ const Post: React.FC<Props> = ({ post, triggerReload }) => {
     const authToken = useSelector(selectToken)
 
 
-
     const handleLike = async () => {
         try {
             if (currentUser?._id) {

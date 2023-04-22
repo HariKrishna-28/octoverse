@@ -49,7 +49,7 @@ const PostDropDown: React.FC<Props> = ({ userId, postId, handleDelete, handleUpd
                         aria-expanded={open ? 'true' : undefined}
                     >
                         <div className='cursor-pointer p-1.5 dark:hover:bg-navBar_BG hover:bg-light_feed_primary transition-all duration-300 ease-out rounded-lg'>
-                            <MoreVert className='dark:text-navBar_Text text-black' />
+                            <MoreVert className='text-black dark:text-navBar_Text' />
                         </div>
                     </IconButton>
                 </Tooltip>
@@ -102,7 +102,7 @@ const PostDropDown: React.FC<Props> = ({ userId, postId, handleDelete, handleUpd
                         Delete
                     </span>
                 </MenuItem>
-                <MenuItem
+                {/* <MenuItem
                     onClick={handleUpdate}
                 // onClick={logOut}
                 >
@@ -112,7 +112,7 @@ const PostDropDown: React.FC<Props> = ({ userId, postId, handleDelete, handleUpd
                     <span className='font-sans'>
                         Edit
                     </span>
-                </MenuItem>
+                </MenuItem> */}
             </Menu>
         </React.Fragment>
     );

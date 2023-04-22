@@ -168,8 +168,10 @@ const Share: React.FC<Props> = ({ triggerReload }) => {
                                 <input
                                     ref={desc}
                                     onChange={() => {
+                                        if (violations.length > 0) {
+                                            setViolations([])
+                                        }
                                         // if (desc.current?.value.length == 1)
-                                        setViolations([])
                                     }}
                                     type="text"
                                     placeholder={"What's in your mind " + currUser?.userName + "?"}
@@ -264,7 +266,7 @@ const Share: React.FC<Props> = ({ triggerReload }) => {
                         <Alert severity="error" variant='filled'>
                             <AlertTitle>Cant post this</AlertTitle>
                             {/* @ts-ignore */}
-                            This post has been flagged for being <strong>{violations?.includes("Toxic") && "Toxic"} {violations?.includes("Identity Attack") && "Identity Attack"} {violations?.includes("Sexually Explicit") && "Sexually Explicit"}</strong>
+                            This post has been flagged for being <strong>{violations?.includes("Toxic") && "Toxic"} {violations?.includes("Identity Attack") && "identity attacking"} {violations?.includes("Sexually Explicit") && "Sexually Explicit"}</strong>
                             . We kindly ask you to be respectful towards others while using our platform.
                         </Alert>
                         : null
