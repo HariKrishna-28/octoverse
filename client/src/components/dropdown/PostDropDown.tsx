@@ -4,7 +4,7 @@ import MenuItem from '@mui/material/MenuItem';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
-import { Edit, MoreVert, Settings } from '@mui/icons-material';
+import { MoreVert, Settings } from '@mui/icons-material';
 import Box from '@mui/material/Box';
 // import Avatar from '@mui/material/Avatar';
 // import Divider from '@mui/material/Divider';

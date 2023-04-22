@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { ThumbUp } from '@mui/icons-material'
 // import { Users } from '../../dummyData'
-import { getUser, GET_USER } from '../../api/userAPI'
+import { GET_USER } from '../../api/userAPI'
 import moment from 'moment'
 import { Link } from 'react-router-dom'
 // import { postInterface } from '.././interfaces/postProps'
