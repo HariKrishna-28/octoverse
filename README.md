@@ -2,10 +2,13 @@
 
 # [OctoVerse](https://octo-verse.vercel.app/)
 
-> ### _Connect with friends around the world using OctoVerse. Share your thoughts as a post or a message and follow your friends to see what they are up to. Octoverse is a social media application built using ReactJs, NodeJs and backed by mongodb_
-
 </div>
+<div align = "justify">
+
+### _Social media has become an integral part of our daily lives, allowing individuals to connect with others and share their experiences, thoughts and opinions. With the rise of social media, there has been an increasing need for platforms that offer advanced functionalities, such as content moderation and multimedia support, while still maintaining a user-friendly interface. Octoverse is a social media web application built using modern technologies to achieve such functionalities. The system is implemented using ReactJS for the frontend, ExpressJS for the backend, MongoDB for the database, and Firebase for authentication, authorization, and storage. The system also employs Google's Perspective API to filter out posts that promote toxicity, explicit speech and profanity._
+
 <br>
+</div>
 
 ## Tech Stack and Dependencies
 
@@ -17,6 +20,7 @@
 | ------------------------------------------------------------------------------ | ---------------------------------------------------------------------------- |
 | **[ReactJs](https://reactjs.org)**                                             | Front End JavaScript Library                                                 |
 | **[ExpressJs](https://expressjs.com/)**                                        | Back End Web Application Framework                                           |
+| **[Google perspective API](https://perspectiveapi.com/)**                      | Content moderation and analysis API                                          |
 | **[Tailwind CSS](https://tailwindcss.com/)**                                   | A utility-first CSS framework                                                |
 | **[MUI](https://mui.com/material-ui/getting-started/installation/)**           | React UI library                                                             |
 | **[Axios](https://axios-http.com/docs/intro)**                                 | Promise based HTTP client for the browser and NodeJs                         |
@@ -34,17 +38,7 @@
 </div>
 <br>
 
-<!-- ## Demo
-
-<br>
-
-
-![Demo](https://github.com/HariKrishna-28/ChatRoom/blob/main/Output/Demo2.gif)
-
-<br>
--->
-
-> ### _As the server is hosted on a free Heroku account, the server enters ‘sleep mode’ when not in use for 60 minutes. If you notice an initial delay, please allow a few seconds for the servers to wake up._
+> ### _As the server is hosted on a free Render web service, the server enters ‘sleep mode’ when not in use for 30 minutes. If you notice an initial delay, please wait for the servers to wake up._
 
 <br>
 
