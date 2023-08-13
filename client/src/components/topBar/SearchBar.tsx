@@ -49,9 +49,9 @@ const SearchBar: React.FC = () => {
             {searchTerm !== "" && <div className='absolute overflow-y-auto rounded-lg scrollbar-hide bg-navBar_BG text-navBar_Text max-h-36' >
                 {suggestions.map((search, index) => {
                     return (
-                        <>
+                        <div key={index}>
                             {/* @ts-ignore  */}
-                            <Link key={index} to={`/profile/${search?.email}`}>
+                            <Link to={`/profile/${search?.email}`}>
                                 <div
                                     style={{ width: "350px" }}
                                     className='flex items-center gap-2 p-1 transition-all duration-300 ease-out hover:bg-dark_feed_secondary'
@@ -67,8 +67,7 @@ const SearchBar: React.FC = () => {
                                     </span>
                                 </div>
                             </Link>
-                        </>
-
+                        </div>
                     )
                 })}
             </div>}
