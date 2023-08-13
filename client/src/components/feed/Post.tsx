@@ -102,7 +102,6 @@ const Post: React.FC<Props> = ({ post, triggerReload }) => {
                 followerName: currentUser.userName,
             }
             const res = await CREATE_NEW_ACTIVITY(newActivity)
-            console.log(res.data)
         } catch (error) {
             console.log(error)
         }

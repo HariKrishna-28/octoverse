@@ -38,7 +38,6 @@ const LikeNotification: React.FC<Prop> = ({ notification, user }) => {
     const getPostType = async () => {
         try {
             const res = await GET_A_POST(notification.post.id)
-            console.log(res.data)
             setType(res.data.type)
         } catch (error) {
             console.log(error)
