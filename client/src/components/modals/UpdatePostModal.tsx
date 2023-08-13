@@ -4,9 +4,8 @@ import Modal from '@mui/material/Modal';
 import CloseIcon from '@mui/icons-material/Close';
 import { useSelector } from 'react-redux';
 import { selectTheme } from '../../features/themeSlice';
-import { updatePost, UPDATE_POST } from '../../api/postAPI';
+import { UPDATE_POST } from '../../api/postAPI';
 import LoadAnimation from '../load/LoadAnimation';
-import { selectToken } from '../../features/tokenSlice';
 
 
 interface Props {
@@ -23,7 +22,6 @@ const UpdatePostModal: React.FC<Props> = ({ handleClose, open, userId, postId, i
     const prevDesc = description
     const [desc, setDesc] = useState(description)
     const [load, setLoad] = useState(false)
-    const authTOken = useSelector(selectToken)
     // const [success, setSuccess] = useState(false)
 
     const style = {
@@ -43,7 +41,7 @@ const UpdatePostModal: React.FC<Props> = ({ handleClose, open, userId, postId, i
         e.preventDefault()
         try {
             setLoad(true)
-            await UPDATE_POST(postId, userId, desc, authTOken)
+            await UPDATE_POST(postId, userId, desc)
             setLoad(false)
             handleClose(true)
         } catch (error) {
@@ -85,7 +83,7 @@ const UpdatePostModal: React.FC<Props> = ({ handleClose, open, userId, postId, i
                             <img
                                 src={imageUrl}
                                 alt=""
-                                className='max-h-20 rounded-lg'
+                                className='rounded-lg max-h-20'
                                 draggable="false"
                             />
                         </div>}
@@ -105,7 +103,7 @@ const UpdatePostModal: React.FC<Props> = ({ handleClose, open, userId, postId, i
                                     type='submit'
                                     // onClick={updateThisPost}
                                     style={{ width: "100px" }}
-                                    className='bg-green-500 hover:bg-green-700 text-white font-bold py-1 px-3 rounded'>
+                                    className='px-3 py-1 font-bold text-white bg-green-500 rounded hover:bg-green-700'>
                                     Update
                                 </button>
 

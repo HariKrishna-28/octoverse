@@ -5,10 +5,10 @@ import CloseIcon from '@mui/icons-material/Close';
 import { useSelector } from 'react-redux';
 import { selectTheme } from '../../../features/themeSlice';
 import { userFriendsProp } from '../../interfaces/userProps';
-import { getLikes, GET_LIKES } from '../../../api/postAPI';
+import { GET_LIKES } from '../../../api/postAPI';
 import LoadAnimation from '../../load/LoadAnimation';
 import LikesList from './LikesList';
-import { selectToken } from '../../../features/tokenSlice';
+import Cookies from 'js-cookie';
 // import LikeNotification from './LikeNotification';
 // import FollowNotification from './FollowNotification';
 // import { getUserData } from '../../../features/authSlice';
@@ -25,7 +25,7 @@ const LikesModal: React.FC<Props> = ({ postId, open, handleClose }) => {
     const themePreference = useSelector(selectTheme)
     const [load, setLoad] = useState(false)
     const [likesData, setLikesData] = useState<userFriendsProp>(null!)
-    const authToken = useSelector(selectToken)
+    const tok = Cookies.get('idToken')
     // const [load, setLoad] = useState(false)
     // const user = useSelector(getUserData)
     // const currentUser = user.user
@@ -46,7 +46,7 @@ const LikesModal: React.FC<Props> = ({ postId, open, handleClose }) => {
 
     const postLikesData = async (postId: string) => {
         try {
-            const res = await GET_LIKES(postId, authToken)
+            const res = await GET_LIKES(postId)
             setLikesData(res.data)
         } catch (error) {
             console.log(error)
@@ -55,10 +55,10 @@ const LikesModal: React.FC<Props> = ({ postId, open, handleClose }) => {
     }
 
     useEffect(() => {
-        if (!authToken) return
+        if (!tok) return
         setLoad(true)
         postLikesData(postId)
-    }, [postId, authToken])
+    }, [tok])
 
 
 

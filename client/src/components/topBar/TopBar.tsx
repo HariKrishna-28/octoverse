@@ -9,9 +9,10 @@ import { getUserData, setUserStatus } from '../../features/authSlice';
 import { auth } from '../../firebase';
 import DropDown from '../dropdown/DropDown';
 import SearchBar from './SearchBar';
-import { getActivity, getActivityCount, GET_ACTIVITY, GET_ACTIVITY_COUNT } from '../../api/activityAPI';
+import { GET_ACTIVITY, GET_ACTIVITY_COUNT } from '../../api/activityAPI';
 import NotificationModal from '../modals/Notification/NotificationModal';
 import { selectToken } from '../../features/tokenSlice';
+import Cookies from 'js-cookie';
 
 const TopBar: React.FC = () => {
     const dispatch = useDispatch()
@@ -23,7 +24,6 @@ const TopBar: React.FC = () => {
     const [notif, setNotif] = useState([])
     const [newNotif, setNewNotif] = useState(0)
     const [open, setOpen] = useState(false)
-    const authToken = useSelector(selectToken)
 
     const changeTheme = () => {
         dispatch(setTheme({
@@ -37,6 +37,7 @@ const TopBar: React.FC = () => {
             isFetching: false,
             error: { message: "" },
         }))
+        Cookies.remove('idToken')
         await auth.signOut()
         navigate("/")
     }
@@ -44,7 +45,7 @@ const TopBar: React.FC = () => {
     const getUserActivity = async () => {
         try {
             if (currUser?.email) {
-                const res = await GET_ACTIVITY(currUser.email, authToken)
+                const res = await GET_ACTIVITY(currUser.email)
                 setNotif(res.data)
             }
         } catch (error) {
@@ -56,7 +57,7 @@ const TopBar: React.FC = () => {
     const getNotificationCount = async () => {
         try {
             if (currUser?.email) {
-                const res = await GET_ACTIVITY_COUNT(currUser.email, authToken)
+                const res = await GET_ACTIVITY_COUNT(currUser.email)
                 setNewNotif(res.data.count)
             }
         } catch (error) {
@@ -65,22 +66,22 @@ const TopBar: React.FC = () => {
     }
 
     useEffect(() => {
-        if (!authToken) return
+        if (!Cookies.get("idToken")) return
         setLoad(true)
         getNotificationCount()
         getUserActivity()
-    }, [currUser, authToken])
+    }, [currUser])
 
 
     return (
         <>
             <div
-                className='flex w-full sticky items-center flex-wrap justify-between mt-0 bg-navBar_BG text-navBar_Text h-auto p-2 '>
+                className='sticky flex flex-wrap items-center justify-between w-full h-auto p-2 mt-0 bg-navBar_BG text-navBar_Text '>
                 {/* logo */}
 
                 <div className='font-bold lg:text-2xl'>
                     <Link to="/">
-                        <span className='hover:text-blue-600 cursor-pointer'>OctoVerse</span>
+                        <span className='cursor-pointer hover:text-blue-600'>OctoVerse</span>
                     </Link>
                 </div>
 
@@ -90,8 +91,8 @@ const TopBar: React.FC = () => {
                 </div>
 
                 {/* Right section */}
-                <div className='flex justify-evenly items-center gap-6'>
-                    <div className='flex space-x-1 items-center justify-center'>
+                <div className='flex items-center gap-6 justify-evenly'>
+                    <div className='flex items-center justify-center space-x-1'>
 
                         <Tooltip
                             onClick={() => setOpen(true)}
@@ -123,7 +124,7 @@ const TopBar: React.FC = () => {
                         />
                     </div>
                 </div >
-                <div className='flex lg:hidden md:hidden justify-center p-2'>
+                <div className='flex justify-center p-2 lg:hidden md:hidden'>
                     <SearchBar />
                 </div>
             </div >

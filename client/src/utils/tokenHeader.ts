@@ -1,5 +1,8 @@
-export function tokenHeader(token: string) {
+import Cookies from "js-cookie";
+
+export function tokenHeader() {
+  const idToken = Cookies.get("idToken");
   return {
-    Authorization: "Bearer" + token,
+    Authorization: "Bearer" + idToken,
   };
 }

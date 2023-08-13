@@ -7,22 +7,12 @@ import { tokenHeader } from "../utils/tokenHeader";
 const auth = `${process.env.REACT_APP_API_URL}/auth`;
 // const profileAPI = `${process.env.REACT_APP_API_URL}/profile`;
 
-// export function login(email: string, password: string) {
-export function login(authCredentials: userCredentials) {
+export function LOGIN(authCredentials: userCredentials) {
   const config: AxiosRequestConfig = {
     method: "post",
     url: `${auth}/login`,
     data: authCredentials,
-  };
-  return axios(config);
-}
-
-export function LOGIN(authCredentials: userCredentials, token: string) {
-  const config: AxiosRequestConfig = {
-    method: "post",
-    url: `${auth}/login`,
-    data: authCredentials,
-    headers: tokenHeader(token),
+    headers: tokenHeader(),
   };
   return axios(config);
 }

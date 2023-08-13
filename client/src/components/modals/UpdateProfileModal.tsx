@@ -13,9 +13,7 @@ import { v4 as uuid } from 'uuid'
 // import { uploadPost } from '../../api/postAPI';
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage'
 import { storage } from '../../firebase';
-import { updateUser, UPDATE_USER } from '../../api/userAPI';
-import { selectToken } from '../../features/tokenSlice';
-// import { cleanup } from '@testing-library/react';
+import { UPDATE_USER } from '../../api/userAPI';
 
 
 interface Props {
@@ -38,7 +36,6 @@ const UpdateProfileModal: React.FC<Props> = ({ handleClose, open, user }) => {
     const [load, setLoad] = useState(false)
     const [url, setUrl] = useState("")
     const [updatedCover, setUpdatedCover] = useState(false)
-    const authToken = useSelector(selectToken)
 
     const style = {
         position: 'absolute',
@@ -73,7 +70,7 @@ const UpdateProfileModal: React.FC<Props> = ({ handleClose, open, user }) => {
             coverPicture: url
         }
         try {
-            const res = await UPDATE_USER(data, user._id, authToken)
+            const res = await UPDATE_USER(data, user._id)
             console.log(res.data)
             handleClose(true)
         } catch (error) {
@@ -136,7 +133,7 @@ const UpdateProfileModal: React.FC<Props> = ({ handleClose, open, user }) => {
 
                 <div>
                     <div className='flex items-center justify-between '>
-                        <div className='flex items-center gap-1 ml-3 mt-4'>
+                        <div className='flex items-center gap-1 mt-4 ml-3'>
                             <img
                                 src={user?.profilePicture}
                                 alt=""
@@ -246,7 +243,7 @@ const UpdateProfileModal: React.FC<Props> = ({ handleClose, open, user }) => {
                                         type='submit'
                                         // onClick={updateThisPost}
                                         style={{ width: "100px" }}
-                                        className='bg-green-500 hover:bg-green-700 text-white font-bold py-1 px-3 rounded'>
+                                        className='px-3 py-1 font-bold text-white bg-green-500 rounded hover:bg-green-700'>
                                         Update
                                     </button>
                                     :

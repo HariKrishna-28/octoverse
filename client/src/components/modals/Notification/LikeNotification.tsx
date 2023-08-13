@@ -6,11 +6,11 @@ import { Link } from 'react-router-dom'
 import { selectTheme } from '../../../features/themeSlice'
 import { LikeNotificationProps } from '../../interfaces/activityProps'
 import moment from 'moment'
-import { updateSeen, UPDATE_SEEN } from '../../../api/activityAPI'
+import { UPDATE_SEEN } from '../../../api/activityAPI'
 import { userProp } from '../../interfaces/userProps'
-import { getaPost, GET_A_POST } from '../../../api/postAPI'
+import { GET_A_POST } from '../../../api/postAPI'
 import ReactPlayer from 'react-player'
-import { selectToken } from '../../../features/tokenSlice'
+import Cookies from 'js-cookie'
 
 interface Prop {
     notification: LikeNotificationProps,
@@ -24,12 +24,12 @@ const LikeNotification: React.FC<Prop> = ({ notification, user }) => {
     const [postType, setType] = useState("")
     // eslint-disable-next-line
     const [load, setLoad] = useState(false)
-    const authToken = useSelector(selectToken)
+    const tok = Cookies.get('idToken')
 
     const handleClick = async () => {
         try {
             setSeen(true)
-            await UPDATE_SEEN(notification._id, user.email, authToken)
+            await UPDATE_SEEN(notification._id, user.email)
         } catch (error) {
             console.log(error)
         }
@@ -37,8 +37,7 @@ const LikeNotification: React.FC<Prop> = ({ notification, user }) => {
 
     const getPostType = async () => {
         try {
-            const res = await GET_A_POST(notification.post.id, authToken)
-            console.log(res.data)
+            const res = await GET_A_POST(notification.post.id)
             setType(res.data.type)
         } catch (error) {
             console.log(error)
@@ -56,11 +55,11 @@ const LikeNotification: React.FC<Prop> = ({ notification, user }) => {
     // }
 
     useEffect(() => {
-        if (!authToken) return
+        if (!tok) return
         setLoad(true)
         getPostType()
         // eslint-disable-next-line
-    }, [authToken])
+    }, [tok])
 
     return (
         <>
@@ -74,7 +73,7 @@ const LikeNotification: React.FC<Prop> = ({ notification, user }) => {
                     <div className='flex items-center gap-1'>
                         <Avatar alt="" src={notification.profilePic} />
                         <Link to={`/profile/${notification.followerEmail}`}>
-                            <span className='font-bold hover:underline hover:text-blue-600 cursor-pointer'>
+                            <span className='font-bold cursor-pointer hover:underline hover:text-blue-600'>
                                 {notification.followerName}
                             </span>
                         </Link>
@@ -83,7 +82,7 @@ const LikeNotification: React.FC<Prop> = ({ notification, user }) => {
                             {moment(notification.createdAt).fromNow()}
                         </div>
                     </div>
-                    <div className='flex gap-1 items-center'>
+                    <div className='flex items-center gap-1'>
                         {
                             postType === "video" ?
                                 <ReactPlayer

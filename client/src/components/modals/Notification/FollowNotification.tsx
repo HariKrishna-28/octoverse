@@ -6,9 +6,8 @@ import { Link } from 'react-router-dom'
 import { selectTheme } from '../../../features/themeSlice'
 import { FollowNotificationProps } from '../../interfaces/activityProps'
 import moment from 'moment'
-import { updateSeen, UPDATE_SEEN } from '../../../api/activityAPI'
+import { UPDATE_SEEN } from '../../../api/activityAPI'
 import { userProp } from '../../interfaces/userProps'
-import { selectToken } from '../../../features/tokenSlice'
 
 interface Prop {
     notification: FollowNotificationProps,
@@ -18,13 +17,12 @@ interface Prop {
 const FollowNotification: React.FC<Prop> = ({ notification, user }) => {
     const themePreference = useSelector(selectTheme)
     const [seen, setSeen] = useState(notification.hasSeen)
-    const authToken = useSelector(selectToken)
     const hoverColour = !seen ? themePreference ? "#010409" : "#F6F8FA" : ""
 
     const handleClick = async () => {
         try {
             setSeen(true)
-            await UPDATE_SEEN(notification._id, user.email, authToken)
+            await UPDATE_SEEN(notification._id, user.email)
         } catch (error) {
             console.log(error)
         }
@@ -42,7 +40,7 @@ const FollowNotification: React.FC<Prop> = ({ notification, user }) => {
                     <div className='flex items-center gap-1'>
                         <Avatar alt="" src={notification.profilePic} />
                         <Link to={`/profile/${notification.followerEmail}`}>
-                            <span className='font-bold hover:underline hover:text-blue-600 cursor-pointer'>
+                            <span className='font-bold cursor-pointer hover:underline hover:text-blue-600'>
                                 {notification.followerName}
                             </span>
                         </Link>

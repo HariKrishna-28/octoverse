@@ -3,15 +3,14 @@ import { TopBar, SideBar, Feed, RightBar } from '../../components'
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { getUserData } from '../../features/authSlice';
-import { selectToken } from '../../features/tokenSlice';
-import LoadAnimation from '../../components/load/LoadAnimation';
 import LoadingWIndow from '../../components/load/LoadingWIndow';
+import Cookies from 'js-cookie';
 
 const HomePage: React.FC = () => {
     const userAuth = useSelector(getUserData)
     const navigate = useNavigate();
-    const authToken = useSelector(selectToken)
     const [load, setLoad] = useState(true)
+    const tok = Cookies.get('idToken')
 
     useEffect(() => {
         !userAuth.user && navigate("/")
@@ -19,9 +18,9 @@ const HomePage: React.FC = () => {
     }, [])
 
     useEffect(() => {
-        if (!authToken) return
+        if (!tok) return
         setLoad(false)
-    }, [authToken, userAuth.user])
+    }, [tok, userAuth.user])
 
     return (
         <>
@@ -38,7 +37,7 @@ const HomePage: React.FC = () => {
                             <div className='w-full '>
                                 <Feed userName={undefined} />
                             </div>
-                            <div className='hidden md:block lg:block w-1/3'>
+                            <div className='hidden w-1/3 md:block lg:block'>
                                 <RightBar
                                     profile={false}
                                     triggerReload={() => console.log("hi")}
