@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useDispatch, useSelector } from "react-redux";
 import { Routes, Route, Navigate } from 'react-router-dom'
-import { getCurrentUserData, GET_CURRENT_USER_DATA } from "../api/userAPI";
+import { GET_CURRENT_USER_DATA } from "../api/userAPI";
 import { userProp } from "../components/interfaces/userProps";
 import LoadingWIndow from "../components/load/LoadingWIndow";
 import { getUserData, setUserStatus } from "../features/authSlice";
@@ -12,6 +12,7 @@ import HomePage from "../pages/Home/HomePage";
 import Login from "../pages/login/Login";
 // import Register from "../pages/login/register/Register";
 import ProfiePage from "../pages/profile/ProfiePage";
+import Cookies from 'js-cookie';
 
 const SearchRoutes: React.FC = () => {
   const user = useSelector(getUserData)
@@ -67,6 +68,17 @@ const SearchRoutes: React.FC = () => {
     }
     // eslint-disable-next-line
   }, [currentUser, loading, authToken])
+
+  useEffect(() => {
+    auth.onIdTokenChanged(async (user) => {
+      if (user) {
+        const idToken = await user.getIdToken()
+        Cookies.set('idToken', idToken);
+      } else {
+        Cookies.remove('idToken');
+      }
+    })
+  }, [])
 
 
   return <>

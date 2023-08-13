@@ -12,6 +12,7 @@ import { auth, provider } from '../../firebase'
 import LoadAnimation from '../../components/load/LoadAnimation';
 import { Google } from '@mui/icons-material';
 import { selectToken, setAuthToken } from '../../features/tokenSlice';
+import Cookies from 'js-cookie'
 
 
 const Login: React.FC = () => {
@@ -25,10 +26,6 @@ const Login: React.FC = () => {
     const [flag, setFlag] = useState(false)
     const userAuthStats = useSelector(getUserData)
     const authToken = useSelector(selectToken)
-    // const [showPassword, setShowPassword] = useState(false)
-    // const userRef = useRef<HTMLInputElement>(null)
-    // const emailRef = useRef<HTMLInputElement>(null)
-    // const pwdRef = useRef<HTMLInputElement>(null)
 
     const tokenSetter = async (user: any) => {
         await user.getIdToken(true)
@@ -46,6 +43,7 @@ const Login: React.FC = () => {
                 const data = res.user
                 data?.getIdToken(true)
                     .then(token => {
+                        Cookies.set("idToken", token)
                         // if (token != authToken) {
                         dispatch(setAuthToken({
                             token: token
@@ -63,29 +61,6 @@ const Login: React.FC = () => {
                 alert(err.message)
             })
     }
-
-    // useEffect(() => {
-    //     if (user) {
-    //         const data = {
-    //             userName: user.displayName,
-    //             email: user.email,
-    //             profilePicture: user.photoURL,
-    //         }
-    //     }
-    //     console.log(data)
-    // }, [user])
-
-
-
-    // const navigator = (url: string) => {
-    //     navigate(`/${url}`)
-    // }
-
-    // const loginStart = (status: boolean) => {
-    //     dispatch(setUserStatus({
-    //         isFetching: status,
-    //     }))
-    // }
 
     const saveUserData = (user: userCredentials) => {
         dispatch(setUserStatus({
@@ -122,30 +97,12 @@ const Login: React.FC = () => {
         }
     }, [authToken, flag])
 
-    // const handleSubmit = (e: React.SyntheticEvent) => {
-    //     e.preventDefault()
-    //     loginStart(true)
-    //     if (emailRef.current?.value && pwdRef.current?.value) {
-    //         const credentials = {
-    //             email: emailRef.current.value,
-    //             password: pwdRef.current.value
-    //         }
-    //     }
-    // }
-
-
-    // useEffect(() => {
-    //     userAuthStats.user && flag &&
-    //         navigate("/")
-    //     // eslint-disable-next-line
-    // }, [userAuthStats, flag])
-
 
     return (
-        <div className='w-screen h-screen flex flex-col items-center justify-center dark:bg-dark_feed_primary bg-light_feed_primary dark:text-dark_Text text-black'>
-            <div className='flex flex-col items-center justify-center gap-4 md:flex-row lg:flex-row mx-4 p-5 lg:p-20 lg:gap-20 rounded-lg  '>
+        <div className='flex flex-col items-center justify-center w-screen h-screen text-black dark:bg-dark_feed_primary bg-light_feed_primary dark:text-dark_Text'>
+            <div className='flex flex-col items-center justify-center gap-4 p-5 mx-4 rounded-lg md:flex-row lg:flex-row lg:p-20 lg:gap-20 '>
                 <div className='flex flex-col items-center justify-center gap-2'>
-                    <div className='font-bold text-3xl md:text-5xl lg:text-7xl'>OctoVerse</div>
+                    <div className='text-3xl font-bold md:text-5xl lg:text-7xl'>OctoVerse</div>
                     <span className='lg:text-2xl'>Connect with friends around the world</span>
                 </div>
                 <div>
@@ -153,12 +110,12 @@ const Login: React.FC = () => {
 
 
                         {/* <form onSubmit={(e) => handleSubmit(e)}> */}
-                        <div className='flex flex-col p-10 lg:p-16 gap-3 dark:bg-dark_feed_secondary shadow-lg bg-light_feed_secondary rounded-lg'>
-                            <div className='font-bold text-2xl text-center'>Login</div>
+                        <div className='flex flex-col gap-3 p-10 rounded-lg shadow-lg lg:p-16 dark:bg-dark_feed_secondary bg-light_feed_secondary'>
+                            <div className='text-2xl font-bold text-center'>Login</div>
 
                             {!authLoading ?
                                 <button
-                                    className='cursor-pointer flex items-center justify-center gap-2 bg-blue-700 hover:bg-blue-500 text-white font-bold py-1 px-3 rounded'
+                                    className='flex items-center justify-center gap-2 px-3 py-1 font-bold text-white bg-blue-700 rounded cursor-pointer hover:bg-blue-500'
                                     onClick={(e) => signIn(e)}>
                                     Login With Google <Google className='h-auto' />
                                 </button>
