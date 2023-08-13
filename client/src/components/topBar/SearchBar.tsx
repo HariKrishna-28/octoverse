@@ -2,7 +2,7 @@ import { Avatar } from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
-import { getSearchTerms, GET_SEARCH_TERMS } from '../../api/searchAPI'
+import { GET_SEARCH_TERMS } from '../../api/searchAPI'
 import { selectToken } from '../../features/tokenSlice'
 
 
@@ -10,7 +10,6 @@ import { selectToken } from '../../features/tokenSlice'
 const SearchBar: React.FC = () => {
     const [suggestions, setSuggestions] = useState([])
     const [searchTerm, setSearchTerm] = useState("")
-    const authToken = useSelector(selectToken)
 
     const handleInput = (e: React.SyntheticEvent) => {
         // @ts-ignore
@@ -24,7 +23,7 @@ const SearchBar: React.FC = () => {
 
     const getSuggestions = async () => {
         try {
-            const res = await GET_SEARCH_TERMS(searchTerm, authToken)
+            const res = await GET_SEARCH_TERMS(searchTerm)
             setSuggestions(res.data)
         } catch (error) {
             console.log(error)
@@ -47,7 +46,7 @@ const SearchBar: React.FC = () => {
                 className='focus:outline-none rounded-md dark:bg-navBar_secondary text-black dark:text-navBar_Text p-1.5'
                 placeholder='Search for a friend' />
 
-            {searchTerm !== "" && <div className='absolute overflow-y-auto scrollbar-hide rounded-lg bg-navBar_BG text-navBar_Text max-h-36' >
+            {searchTerm !== "" && <div className='absolute overflow-y-auto rounded-lg scrollbar-hide bg-navBar_BG text-navBar_Text max-h-36' >
                 {suggestions.map((search, index) => {
                     return (
                         <>
@@ -55,7 +54,7 @@ const SearchBar: React.FC = () => {
                             <Link key={index} to={`/profile/${search?.email}`}>
                                 <div
                                     style={{ width: "350px" }}
-                                    className='flex items-center p-1 gap-2 hover:bg-dark_feed_secondary transition-all duration-300 ease-out'
+                                    className='flex items-center gap-2 p-1 transition-all duration-300 ease-out hover:bg-dark_feed_secondary'
                                 >
                                     <Avatar
                                         // @ts-ignore

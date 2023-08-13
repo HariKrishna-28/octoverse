@@ -4,9 +4,8 @@ import Modal from '@mui/material/Modal';
 import CloseIcon from '@mui/icons-material/Close';
 import { useSelector } from 'react-redux';
 import { selectTheme } from '../../features/themeSlice';
-import { deletePost, DELETE_POST } from '../../api/postAPI';
+import { DELETE_POST } from '../../api/postAPI';
 import LoadAnimation from '../load/LoadAnimation';
-import { selectToken } from '../../features/tokenSlice';
 
 
 interface Props {
@@ -19,7 +18,6 @@ interface Props {
 const PostDeleteModal: React.FC<Props> = ({ handleClose, open, userId, postId }) => {
     const themePreference = useSelector(selectTheme)
     const [load, setLoad] = useState(false)
-    const authToken = useSelector(selectToken)
     // const [success, setSuccess] = useState(false)
 
 
@@ -39,7 +37,7 @@ const PostDeleteModal: React.FC<Props> = ({ handleClose, open, userId, postId })
     const deleteThisPost = async () => {
         try {
             setLoad(true)
-            const res = await DELETE_POST(postId, userId, authToken)
+            const res = await DELETE_POST(postId, userId)
             console.log(res.data)
             setLoad(false)
             handleClose(true)
@@ -74,9 +72,9 @@ const PostDeleteModal: React.FC<Props> = ({ handleClose, open, userId, postId })
                 </div>
 
                 <div>
-                    <div className='text-sm font-light p-2 mb-2 text-center'>
+                    <div className='p-2 mb-2 text-sm font-light text-center'>
                         Do you want to delete?
-                        <span className='mx-1 text-discord_purple font-bold'>
+                        <span className='mx-1 font-bold text-discord_purple'>
                         </span>
                         This action won't be reversed.
                     </div>
@@ -86,14 +84,14 @@ const PostDeleteModal: React.FC<Props> = ({ handleClose, open, userId, postId })
                             <button
                                 onClick={deleteThisPost}
                                 style={{ width: "50px" }}
-                                className='bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-3 rounded'>
+                                className='px-3 py-1 font-bold text-white bg-red-500 rounded hover:bg-red-700'>
                                 Yes
                             </button>
 
                             <button
                                 style={{ width: "50px" }}
                                 onClick={() => handleClose(false)}
-                                className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-3 rounded'>
+                                className='px-3 py-1 font-bold text-white bg-blue-500 rounded hover:bg-blue-700'>
                                 No
                             </button>
                         </>

@@ -24,7 +24,6 @@ const TopBar: React.FC = () => {
     const [notif, setNotif] = useState([])
     const [newNotif, setNewNotif] = useState(0)
     const [open, setOpen] = useState(false)
-    const authToken = useSelector(selectToken)
 
     const changeTheme = () => {
         dispatch(setTheme({
@@ -46,7 +45,7 @@ const TopBar: React.FC = () => {
     const getUserActivity = async () => {
         try {
             if (currUser?.email) {
-                const res = await GET_ACTIVITY(currUser.email, authToken)
+                const res = await GET_ACTIVITY(currUser.email)
                 setNotif(res.data)
             }
         } catch (error) {
@@ -58,7 +57,7 @@ const TopBar: React.FC = () => {
     const getNotificationCount = async () => {
         try {
             if (currUser?.email) {
-                const res = await GET_ACTIVITY_COUNT(currUser.email, authToken)
+                const res = await GET_ACTIVITY_COUNT(currUser.email)
                 setNewNotif(res.data.count)
             }
         } catch (error) {
@@ -67,11 +66,11 @@ const TopBar: React.FC = () => {
     }
 
     useEffect(() => {
-        if (!authToken) return
+        if (!Cookies.get("idToken")) return
         setLoad(true)
         getNotificationCount()
         getUserActivity()
-    }, [currUser, authToken])
+    }, [currUser])
 
 
     return (

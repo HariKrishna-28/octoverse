@@ -4,7 +4,7 @@ import { Add, Close, Edit, Person, RssFeed } from '@mui/icons-material'
 // import ActiveUsers from './ActiveUsers'
 import UserFriends from './UserFriends'
 import { userFriendsProp, userProp } from '../interfaces/userProps'
-import { followOrUnfollowUser, FOLLOW_OR_UNFOLLOW_USER, getCurrentUserData, getFriendSuggestions, getUserFollowing, getUserFriends, GET_CURRENT_USER_DATA, GET_FRIEND_SUGGESTIONS, GET_USER_FOLLOWING, GET_USER_FRIENDS } from '../../api/userAPI'
+import { FOLLOW_OR_UNFOLLOW_USER, GET_CURRENT_USER_DATA, GET_FRIEND_SUGGESTIONS, GET_USER_FOLLOWING, GET_USER_FRIENDS } from '../../api/userAPI'
 import LoadAnimation from '../load/LoadAnimation'
 import { useDispatch, useSelector } from 'react-redux'
 import { getUserData, setUserStatus } from '../../features/authSlice'
@@ -13,8 +13,8 @@ import { Tooltip, Zoom } from '@mui/material'
 import SideBarLists from '../sideBar/SideBarLists'
 import { Link } from 'react-router-dom'
 // import OnlineFriends from './OnlineFriends'
-import { createNewActivity, CREATE_NEW_ACTIVITY } from '../../api/activityAPI'
-import { selectToken } from '../../features/tokenSlice'
+import { CREATE_NEW_ACTIVITY } from '../../api/activityAPI'
+import Cookies from 'js-cookie'
 
 
 interface Props {
@@ -36,11 +36,10 @@ const RightBar: React.FC<Props> = ({ user, triggerReload, profile = false }) => 
     const [following, setFollowing] = useState(curr?.following?.includes(user?._id))
     const [alreadyFollowed, setAlreadyFollowed] = useState(following)
     const [userFollowing, setUserFollowing] = useState([])
-    const authToken = useSelector(selectToken)
 
     const getFriends = async (userId: string) => {
         try {
-            const res = await GET_USER_FRIENDS(userId, authToken)
+            const res = await GET_USER_FRIENDS(userId)
             setFriends(res.data)
             setLoad(false)
         } catch (error: any) {
@@ -50,7 +49,7 @@ const RightBar: React.FC<Props> = ({ user, triggerReload, profile = false }) => 
 
     const getFollowing = async (userId: string) => {
         try {
-            const res = await GET_USER_FOLLOWING(userId, authToken)
+            const res = await GET_USER_FOLLOWING(userId)
             setUserFollowing(res.data)
 
         } catch (error: any) {
@@ -60,7 +59,7 @@ const RightBar: React.FC<Props> = ({ user, triggerReload, profile = false }) => 
 
     const updateUser = async () => {
         try {
-            const res = await GET_CURRENT_USER_DATA(curr.email, authToken)
+            const res = await GET_CURRENT_USER_DATA(curr.email)
             dispatch(setUserStatus({
                 user: res.data,
                 isFetching: false,
@@ -75,7 +74,7 @@ const RightBar: React.FC<Props> = ({ user, triggerReload, profile = false }) => 
     const handleClick = async () => {
         try {
             if (!user) return
-            await FOLLOW_OR_UNFOLLOW_USER(user._id, following, curr._id, authToken)
+            await FOLLOW_OR_UNFOLLOW_USER(user._id, following, curr._id)
             setFollowing(!following)
             if (following) setAlreadyFollowed(true)
             if (!following && !alreadyFollowed) createFollowActivity()
@@ -89,7 +88,7 @@ const RightBar: React.FC<Props> = ({ user, triggerReload, profile = false }) => 
 
     const getUserFriendSuggestions = async (userId: string) => {
         try {
-            const response = await GET_FRIEND_SUGGESTIONS(userId, authToken)
+            const response = await GET_FRIEND_SUGGESTIONS(userId)
             setFriendSuggestions(response.data)
             setLoad(false)
         } catch (error) {
@@ -109,7 +108,7 @@ const RightBar: React.FC<Props> = ({ user, triggerReload, profile = false }) => 
                 hasSeen: false,
                 followerName: curr.userName
             }
-            const res = await CREATE_NEW_ACTIVITY(newActivity, authToken)
+            const res = await CREATE_NEW_ACTIVITY(newActivity)
             console.log(res.data)
         } catch (error) {
             console.log(error)
@@ -123,7 +122,7 @@ const RightBar: React.FC<Props> = ({ user, triggerReload, profile = false }) => 
     }, [curr, user?._id])
 
     useEffect(() => {
-        if (!authToken) return
+        if (!Cookies.get('idToken')) return
         if (profile) {
             if (!user) return
             setLoad(true)
@@ -134,7 +133,7 @@ const RightBar: React.FC<Props> = ({ user, triggerReload, profile = false }) => 
             setLoad(true)
             getUserFriendSuggestions(curr._id)
         }
-    }, [user, profile, curr, authToken])
+    }, [user, profile, curr])
 
     const HomeRightBar = () => {
         const listStyling = 'dark:list__cards__dark list__cards__light transition-all duration-200 ease-out my-1'
@@ -160,7 +159,7 @@ const RightBar: React.FC<Props> = ({ user, triggerReload, profile = false }) => 
                     </ul>
                 </div>
                 <hr className='mt-2 mb-2' />
-                <div className='flex items-center mb-2 gap-2'>
+                <div className='flex items-center gap-2 mb-2'>
                     <Person className='text-blue-600' />
                     <h4 className='font-bold'>People you may know</h4>
                 </div>
@@ -188,7 +187,7 @@ const RightBar: React.FC<Props> = ({ user, triggerReload, profile = false }) => 
 
                 {/* <hr className='mt-2 mb-2' /> */}
                 <div>
-                    {/* <div className='font-bold my-2'>
+                    {/* <div className='my-2 font-bold'>
                         Online Friends
                     </div>
                     <OnlineFriends /> */}
@@ -252,7 +251,7 @@ const RightBar: React.FC<Props> = ({ user, triggerReload, profile = false }) => 
                     </div>
                 }
 
-                <div className='font-bold p-3'>
+                <div className='p-3 font-bold'>
                     Followers
                 </div>
                 <div>
@@ -273,7 +272,7 @@ const RightBar: React.FC<Props> = ({ user, triggerReload, profile = false }) => 
                         }
                     </div>
                 </div>
-                <div className='font-bold p-3'>
+                <div className='p-3 font-bold'>
                     Following
                 </div>
                 <div>

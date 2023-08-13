@@ -4,14 +4,13 @@ import { useAuthState } from 'react-firebase-hooks/auth';
 import { useDispatch, useSelector } from 'react-redux'
 import { getUserData, setUserStatus } from '../../features/authSlice'
 import { userCredentials } from '../../components/interfaces/userCredentials'
-import { LOGIN, login } from '../../api/authAPI'
+import { LOGIN } from '../../api/authAPI'
 // import { CircularProgress } from '@mui/material'
 import { getErrorMessage } from '../../components/helpers/errorMessageGenerator'
 import { useNavigate } from 'react-router-dom'
 import { auth, provider } from '../../firebase'
 import LoadAnimation from '../../components/load/LoadAnimation';
 import { Google } from '@mui/icons-material';
-import { selectToken, setAuthToken } from '../../features/tokenSlice';
 import Cookies from 'js-cookie'
 
 
@@ -24,17 +23,9 @@ const Login: React.FC = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate()
     const [flag, setFlag] = useState(false)
-    const userAuthStats = useSelector(getUserData)
-    const authToken = useSelector(selectToken)
-
-    const tokenSetter = async (user: any) => {
-        await user.getIdToken(true)
-            .then((token: string) => {
-                dispatch(setAuthToken({
-                    token: token
-                }))
-            })
-    }
+    // const userAuthStats = useSelector(getUserData)
+    // const authToken = useSelector(selectToken)
+    const authToken = Cookies.get('idToken')
 
     const signIn = async (e: React.SyntheticEvent) => {
         e.preventDefault()
@@ -44,17 +35,12 @@ const Login: React.FC = () => {
                 data?.getIdToken(true)
                     .then(token => {
                         Cookies.set("idToken", token)
-                        // if (token != authToken) {
-                        dispatch(setAuthToken({
-                            token: token
-                        }))
                         const cred = {
                             userName: data?.displayName,
                             email: data?.email,
                             profilePicture: data?.photoURL
                         }
                         initialiseUser(cred)
-                        // }
                     })
             })
             .catch((err) => {
@@ -80,7 +66,7 @@ const Login: React.FC = () => {
 
     const initialiseUser = async (credentials: any) => {
         try {
-            const res = await LOGIN(credentials, authToken)
+            const res = await LOGIN(credentials)
             saveUserData(res.data)
             setFlag(true)
             // navigate("/")

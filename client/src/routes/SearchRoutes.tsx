@@ -19,17 +19,10 @@ const SearchRoutes: React.FC = () => {
   const dispatch = useDispatch()
   // @ts-ignore
   const [currentUser, loading] = useAuthState(auth)
-  const token = useSelector(selectToken)
-  const [authToken, setToken] = useState("")
-  const [alreadySet, setAlreadySet] = useState(false)
-  // const [primaryLoad, setPrimaryLoad] = useState(true)
-
 
   const getUserDtails = async (userEmail: string) => {
     try {
-      // const res = await getCurrentUserData(userEmail)
-      const res = await GET_CURRENT_USER_DATA(userEmail, authToken)
-      // console.log(res.data)
+      const res = await GET_CURRENT_USER_DATA(userEmail)
       updateUser(res.data)
     } catch (error) {
       console.log(error)
@@ -42,32 +35,17 @@ const SearchRoutes: React.FC = () => {
       isFetching: false,
       error: { message: "" },
     }))
-    // console.log(user)
-    // setPrimaryLoad(false)
-  }
-
-  const tokenSetter = async (currentUser: any) => {
-    if (alreadySet) return
-    await currentUser.getIdToken(true)
-      .then((token: string) => {
-        dispatch(setAuthToken({
-          token: token
-        }))
-        setAlreadySet(true)
-        setToken(token)
-      })
   }
 
   useEffect(() => {
     if (loading) return
-    // setPrimaryLoad(true)
     if (currentUser?.email) {
-      tokenSetter(currentUser)
+      const authToken = Cookies.get('idToken')
       authToken &&
         getUserDtails(currentUser.email)
     }
     // eslint-disable-next-line
-  }, [currentUser, loading, authToken])
+  }, [currentUser, loading])
 
   useEffect(() => {
     auth.onIdTokenChanged(async (user) => {

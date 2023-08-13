@@ -17,7 +17,6 @@ import { CREATE_NEW_ACTIVITY } from '../../api/activityAPI'
 import { Avatar } from '@mui/material'
 import LikesModal from '../modals/Likes/LikesModal'
 import ReactPlayer from 'react-player'
-import { selectToken } from '../../features/tokenSlice'
 
 
 interface Props {
@@ -67,13 +66,12 @@ const Post: React.FC<Props> = ({ post, triggerReload }) => {
     // @ts-ignore
     const [isLiked, setIsLiked] = useState(post.likes.includes(currentUser?._id));
     const [alreadyLiked, setAlreadyLiked] = useState(isLiked)
-    const authToken = useSelector(selectToken)
 
 
     const handleLike = async () => {
         try {
             if (currentUser?._id) {
-                const res = await LIKE_POSTS(post._id, currentUser._id, authToken)
+                const res = await LIKE_POSTS(post._id, currentUser._id)
                 console.log(res.data)
             }
         } catch (error) {
@@ -103,7 +101,7 @@ const Post: React.FC<Props> = ({ post, triggerReload }) => {
                 },
                 followerName: currentUser.userName,
             }
-            const res = await CREATE_NEW_ACTIVITY(newActivity, authToken)
+            const res = await CREATE_NEW_ACTIVITY(newActivity)
             console.log(res.data)
         } catch (error) {
             console.log(error)
@@ -113,7 +111,7 @@ const Post: React.FC<Props> = ({ post, triggerReload }) => {
     useEffect(() => {
         async function getPostData() {
             try {
-                const res = await GET_USER(post.userId, undefined, authToken)
+                const res = await GET_USER(post.userId, undefined)
                 setUser(res.data)
             } catch (error) {
                 console.log(error)

@@ -1,18 +1,12 @@
 import React, { useEffect, useState } from 'react'
-import { RssFeed, Person, Whatshot } from '@mui/icons-material'
-// import { Users } from '../../dummyData'
-// import SideBarLists from './SideBarLists'
-import { Link } from 'react-router-dom'
+import { Whatshot } from '@mui/icons-material'
 import { useSelector } from 'react-redux'
 import { getUserData } from '../../features/authSlice'
-import { getFriendSuggestions } from '../../api/userAPI'
-import { userFriendsProp } from '../interfaces/userProps'
 import LoadAnimation from '../load/LoadAnimation'
-import UserFriends from '../rightBar/UserFriends'
 import { newsProps } from '../interfaces/newsProps'
-import { getNewsData, GET_NEWS_DATA } from '../../api/newsAPI'
+import { GET_NEWS_DATA } from '../../api/newsAPI'
 import NewsBlock from './NewsBlock'
-import { selectToken } from '../../features/tokenSlice'
+import Cookies from 'js-cookie'
 
 
 const Sidebar: React.FC = () => {
@@ -22,12 +16,11 @@ const Sidebar: React.FC = () => {
     // @ts-ignore
     const [news, setNews] = useState<newsProps>([])
     const [alreadyGot, setAlreadyGot] = useState(false)
-    const authToken = useSelector(selectToken)
     const listStyling = 'dark:list__cards__dark list__cards__light transition-all duration-200 ease-out my-1'
 
     const getNews = async () => {
         try {
-            const res = await GET_NEWS_DATA(authToken)
+            const res = await GET_NEWS_DATA()
             setNews(res.data)
             setLoad(false)
             setAlreadyGot(true)
@@ -38,14 +31,14 @@ const Sidebar: React.FC = () => {
     }
 
     useEffect(() => {
-        if (currUser?._id && authToken) {
+        if (currUser?._id && Cookies.get('idToken')) {
             if (!alreadyGot) {
                 setLoad(true)
                 getNews()
             }
         }
         // eslint-disable-next-line
-    }, [currUser, authToken])
+    }, [currUser])
 
     return (
         <div className='flex-grow h-full overflow-y-auto text-black dark:bg-sideBar_dark_primary scrollbar-hide bg-sideBar_light_primary dark:text-dark_Text'>

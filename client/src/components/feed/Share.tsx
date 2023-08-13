@@ -9,7 +9,6 @@ import { v4 as uuid } from 'uuid'
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage'
 import { storage } from '../../firebase'
 import LoadAnimation from '../load/LoadAnimation'
-import { selectToken } from '../../features/tokenSlice'
 // import { messaging } from 'firebase-admin'
 // import LoadAnimation from '../load/LoadAnimation'
 
@@ -30,7 +29,6 @@ const Share: React.FC<Props> = ({ triggerReload }) => {
     // eslint-disable-next-line
     const [post, setPost] = useState(false)
     const [videoURL, setVideoURL] = useState("")
-    const authToken = useSelector(selectToken)
     const [violations, setViolations] = useState([])
 
     const uploadImage = async (image: File) => {
@@ -94,7 +92,7 @@ const Share: React.FC<Props> = ({ triggerReload }) => {
             // else {
             //     console.log("yes")
             // }
-            const res = await UPLOAD_POST(newPost, authToken)
+            const res = await UPLOAD_POST(newPost)
             console.log(res.data)
         } catch (error) {
             console.error(error)
@@ -111,7 +109,7 @@ const Share: React.FC<Props> = ({ triggerReload }) => {
 
     const validatePost = async (message: string) => {
         try {
-            VALIDATE_POST(message, authToken)
+            VALIDATE_POST(message)
                 .then((data) => {
                     const check = data.data
                     setViolations(check)
@@ -135,7 +133,7 @@ const Share: React.FC<Props> = ({ triggerReload }) => {
         if (desc.current.value === "" && imageURL === "") return
         setPost(true)
         if (desc.current?.value) {
-            // const res = await VALIDATE_POST(desc.current.value, authToken)
+            // const res = await VALIDATE_POST(desc.current.value)
             // setViolations(res.data)
             validatePost(desc.current.value)
         } else {

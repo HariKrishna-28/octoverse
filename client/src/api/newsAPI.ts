@@ -2,19 +2,11 @@ import axios, { AxiosRequestConfig } from "axios";
 import { tokenHeader } from "../utils/tokenHeader";
 const newsURL = `${process.env.REACT_APP_API_URL}/news`;
 
-export function getNewsData() {
+export function GET_NEWS_DATA() {
   const config: AxiosRequestConfig = {
     method: "get",
     url: newsURL,
-  };
-  return axios(config);
-}
-
-export function GET_NEWS_DATA(token: string) {
-  const config: AxiosRequestConfig = {
-    method: "get",
-    url: newsURL,
-    headers: tokenHeader(token),
+    headers: tokenHeader(),
   };
   return axios(config);
 }
