@@ -35,6 +35,10 @@ const UpdatePostModal: React.FC<Props> = ({ handleClose, open, userId, postId, i
         borderRadius: 3,
         p: 3,
         color: themePreference ? "#F0F6FC" : "black",
+        '@media (max-width: 600px)': {
+            width: '90%',
+            height: '70%',
+        },
     };
 
     const updateThisPost = async (e: React.SyntheticEvent) => {
