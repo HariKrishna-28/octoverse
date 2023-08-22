@@ -33,6 +33,10 @@ const NotificationModal: React.FC<Props> = ({ notification, open, handleClose })
         borderRadius: 3,
         p: 3,
         color: themePreference ? "#F0F6FC" : "black",
+        '@media (max-width: 600px)': {
+            width: '90%',
+            height: '70%',
+        },
     };
     return (
         <Modal

@@ -44,8 +44,11 @@ const HomePage: React.FC = () => {
                                     user={undefined} />
                             </div>
                         </div>
-                    </> : <>
-                        <LoadingWIndow /></>
+                    </>
+                    :
+                    <>
+                        <LoadingWIndow />
+                    </>
             }
         </>
     )

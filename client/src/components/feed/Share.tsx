@@ -9,6 +9,7 @@ import { v4 as uuid } from 'uuid'
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage'
 import { storage } from '../../firebase'
 import LoadAnimation from '../load/LoadAnimation'
+import ServerInfoMessage from '../alerts/ServerInfoMessage'
 // import { messaging } from 'firebase-admin'
 // import LoadAnimation from '../load/LoadAnimation'
 
@@ -254,8 +255,9 @@ const Share: React.FC<Props> = ({ triggerReload }) => {
                     </div>
                 </div>
                 :
-                <div className='flex items-center justify-center w-100 h-44'>
+                <div className='flex flex-col items-center justify-center w-100 h-44'>
                     <LoadAnimation />
+                    <ServerInfoMessage />
                 </div>
             }
             <div className='p-3'>
